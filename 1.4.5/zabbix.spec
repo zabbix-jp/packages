@@ -265,6 +265,13 @@ fi
 %{_datadir}/%{name}/js/*
 
 %changelog
+* Wed Apr 15 2009 Kodai Terashima <kodai74@gmail.com> 1.4.5-2
+- Add a patch to fix compilation on x86_64 architecture (Patch1)
+- Add a patch to fix selecting Japanese language when selected Chinese language (Patch2)
+- Add a patch to support Japanese font for Graph and Map (Patch3)
+- Update Japanese locale (Source5)
+- Change data.sql to select Japanese locale by default (Source6)
+
 * Wed Apr 02 2008 Kodai Terashima <kodai74@gmail.com> 1.4.5-1
 - New upstream release
 
