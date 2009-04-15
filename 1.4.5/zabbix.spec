@@ -76,7 +76,7 @@ The zabbix client agent, to be installed on monitored systems.
 %package web
 Summary:        Zabbix Web Frontend
 Group:          Applications/Internet
-Requires:       php, php-%{zdb}, php-gd, php-bcmath
+Requires:       php, php-%{zdb}, php-gd, php-bcmath, fonts-japanese
 
 %description web
 The php frontend to display the zabbix web interface.
