@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.4.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -11,7 +11,12 @@ Source1:        zabbix-web.conf
 Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-logrotate.in
+Source5:        zabbix-1.4.5-ja_jp.inc.php
+Source6:        zabbix-1.4.5-data.sql
 Patch0:         zabbix-1.4.2-cpustats.patch
+Patch1:		zabbix-1.4.4-lcrypto.patch
+Patch2:         zabbix-1.4.5-locale.patch
+Patch3:         zabbix-1.4.5-frontend.patch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define database mysql
@@ -78,7 +83,16 @@ The php frontend to display the zabbix web interface.
 
 %prep
 %setup -q
-%patch0 -p1 -b .cpustats
+
+rm frontends/php/include/locales/ja_jp.inc.php
+cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
+rm create/data/data.sql
+cp %{SOURCE6} create/data/data.sql
+
+%patch0 -p1 -b .cpustats.orig
+%patch1 -p1 -b .lcrypto.orig
+%patch2 -p1 -b .locale.orig
+%patch3 -p1 -b .frontend.orig
 
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
@@ -117,6 +131,7 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
 # php frontend
+find ./frontends/php -name '*.orig'|xargs rm -f
 cp -a frontends/php $RPM_BUILD_ROOT%{_datadir}/%{name}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/include/db.inc.php \
     $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
