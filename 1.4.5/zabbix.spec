@@ -13,6 +13,7 @@ Source3:        zabbix-agent.init
 Source4:        zabbix-logrotate.in
 Source5:        zabbix-1.4.5-ja_jp.inc.php
 Source6:        zabbix-1.4.5-data.sql
+Source7:		zabbix.conf.php
 Patch0:         zabbix-1.4.2-cpustats.patch
 Patch1:		zabbix-1.4.4-lcrypto.patch
 Patch2:         zabbix-1.4.5-locale.patch
@@ -137,11 +138,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/include/db.inc.php \
     $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
 ln -s ../../../..%{_sysconfdir}/%{name}/db.inc.php \
     $RPM_BUILD_ROOT%{_datadir}/%{name}/include/db.inc.php
-cat << __EOF__ >> $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix.conf.php
-# This file is a place-holder. When you run through the zabbix
-# web setup, a proper configuration file should be generated
-# for you to drop in this location.
-__EOF__
+install -m 644 %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix.conf.php
 ln -s ../../../..%{_sysconfdir}/%{name}/zabbix.conf.php \
     $RPM_BUILD_ROOT%{_datadir}/%{name}/conf/zabbix.conf.php
 # kill off .htaccess files, options set in SOURCE1
@@ -271,6 +268,7 @@ fi
 - Add a patch to support Japanese font for Graph and Map (Patch3)
 - Update Japanese locale (Source5)
 - Change data.sql to select Japanese locale by default (Source6)
+- Add PHP Configuration to zabbix.conf
 - Add Requires: fonts-japanese to zabbix-web
 
 * Wed Apr 02 2008 Kodai Terashima <kodai74@gmail.com> 1.4.5-1
