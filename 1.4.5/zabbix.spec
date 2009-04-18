@@ -271,6 +271,7 @@ fi
 - Add a patch to support Japanese font for Graph and Map (Patch3)
 - Update Japanese locale (Source5)
 - Change data.sql to select Japanese locale by default (Source6)
+- Add Requires: fonts-japanese to zabbix-web
 
 * Wed Apr 02 2008 Kodai Terashima <kodai74@gmail.com> 1.4.5-1
 - New upstream release
