@@ -12,12 +12,12 @@ Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-logrotate.in
 Source5:        zabbix-1.4.5-ja_jp.inc.php
-Source6:        zabbix-1.4.5-data.sql
-Source7:		zabbix.conf.php
+Source6:		zabbix.conf.php
 Patch0:         zabbix-1.4.2-cpustats.patch
-Patch1:		zabbix-1.4.4-lcrypto.patch
+Patch1:			zabbix-1.4.4-lcrypto.patch
 Patch2:         zabbix-1.4.5-locale.patch
 Patch3:         zabbix-1.4.5-frontend.patch
+Patch4:			zabbix-1.4.5-datasql.patch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define database mysql
@@ -87,13 +87,12 @@ The php frontend to display the zabbix web interface.
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
-rm create/data/data.sql
-cp %{SOURCE6} create/data/data.sql
 
 %patch0 -p1 -b .cpustats.orig
 %patch1 -p1 -b .lcrypto.orig
 %patch2 -p1 -b .locale.orig
 %patch3 -p1 -b .frontend.orig
+%patch4 -p1 -b .datasql.orig
 
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
@@ -138,7 +137,7 @@ mv $RPM_BUILD_ROOT%{_datadir}/%{name}/include/db.inc.php \
     $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
 ln -s ../../../..%{_sysconfdir}/%{name}/db.inc.php \
     $RPM_BUILD_ROOT%{_datadir}/%{name}/include/db.inc.php
-install -m 644 %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix.conf.php
+install -m 644 %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix.conf.php
 ln -s ../../../..%{_sysconfdir}/%{name}/zabbix.conf.php \
     $RPM_BUILD_ROOT%{_datadir}/%{name}/conf/zabbix.conf.php
 # kill off .htaccess files, options set in SOURCE1
