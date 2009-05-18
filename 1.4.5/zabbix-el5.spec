@@ -18,6 +18,7 @@ Patch1:	        zabbix-1.4.4-lcrypto.patch
 Patch2:         zabbix-1.4.5-locale.patch
 Patch3:         zabbix-1.4.5-frontend.patch
 Patch4:	        zabbix-1.4.5-datasql.patch
+Patch5:         zabbix-1.4.5-loglength.patch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define database mysql
@@ -93,6 +94,7 @@ cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
 %patch2 -p1 -b .locale.orig
 %patch3 -p1 -b .frontend.orig
 %patch4 -p1 -b .datasql.orig
+%patch5 -p1 -b .loglength.orig
 
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
