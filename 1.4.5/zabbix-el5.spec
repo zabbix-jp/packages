@@ -12,12 +12,12 @@ Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-logrotate.in
 Source5:        zabbix-1.4.5-ja_jp.inc.php
-Source6:		zabbix.conf.php
+Source6:        zabbix.conf.php
 Patch0:         zabbix-1.4.2-cpustats.patch
-Patch1:			zabbix-1.4.4-lcrypto.patch
+Patch1:	        zabbix-1.4.4-lcrypto.patch
 Patch2:         zabbix-1.4.5-locale.patch
 Patch3:         zabbix-1.4.5-frontend.patch
-Patch4:			zabbix-1.4.5-datasql.patch
+Patch4:	        zabbix-1.4.5-datasql.patch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define database mysql
@@ -104,10 +104,7 @@ cp create/data/data.sql dbinit/data/
 %{__perl} -pi.orig -e 's|_LIBDIR=/usr/lib|_LIBDIR=%{_libdir}|g' \
     configure
 
-
 %build
-#export LIBCURL_LDFLAGS="-I%{_includedir}/curl"
-#export LIBCURL_LIBS="-lcurl"
 %configure \
     --enable-server \
     --enable-agent \
@@ -117,7 +114,6 @@ cp create/data/data.sql dbinit/data/
     --with-libcurl \
     --with-jabber
 
-#make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS"
 make %{?_smp_mflags}
 
 %install

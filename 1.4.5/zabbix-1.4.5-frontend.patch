@@ -6,7 +6,7 @@
  			$x=$this->fullSizeX/2-ImageFontWidth($fontnum)*strlen($str)/2;
 -			ImageString($this->im, $fontnum,$x,1, $str , $this->GetColor("Dark Red No Alpha"));
 +			//ImageString($this->im, $fontnum,$x,1, $str , $this->GetColor("Dark Red No Alpha"));
-+			ImageTTFText($this->im, $fontnum+6, 0, $x+10, 13, $this->GetColor("Dark Red No Alpha"), "/usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf", $str);
++			ImageTTFText($this->im, $fontnum+6, 0, $x+10, 13, $this->GetColor("Dark Red No Alpha"), "/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $str);
 +			
  		}
  
@@ -28,7 +28,7 @@
 -					$this->GetColor("Black No Alpha"));
 +					$this->sizeY+$this->shiftY+(62-5)+12*$i+11,
 +					$this->GetColor("Black No Alpha"),
-+					"/usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf",
++					"/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf",
 +					$str);
  			}
  
@@ -258,7 +258,7 @@
  		$x=imagesx($im)/2-ImageFontWidth(4)*strlen($name)/2;
 -		ImageString($im, 4,$x,1, $name , $darkred);
 +		//ImageString($im, 4,$x,1, $name , $darkred);
-+		ImageTTFText($im, 10, 0, $x+10, 14, $darkred, "/usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf", $name);
++		ImageTTFText($im, 10, 0, $x+10, 14, $darkred, "/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $name);
  	}
  	unset($db_image);
  
@@ -268,7 +268,7 @@
  				$white);
 -			ImageString($im, 2, $x_label, $y_label, $label_line,$label_color);
 +			//ImageString($im, 2, $x_label, $y_label, $label_line,$label_color);
-+			ImageTTFText($im, 9, 0, $x_label+2, $y_label+10, $label_color,"/usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf", $label_line);
++			ImageTTFText($im, 9, 0, $x_label+2, $y_label+10, $label_color,"/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $label_line);
  		}
  
  		if($info_line!="")
@@ -278,7 +278,7 @@
  				$white);
 -			ImageString($im, 2, $x_info, $y_info, $info_line,$color);
 +			//ImageString($im, 2, $x_info, $y_info, $info_line,$color);
-+			ImageTTFText($im, 8, 0, $x_info+9, $y_info+10, $color, "/usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf", $info_line);
++			ImageTTFText($im, 8, 0, $x_info+9, $y_info+10, $color, "/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $info_line);
  		}
  	}
  
