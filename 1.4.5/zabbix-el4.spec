@@ -35,7 +35,7 @@ Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  %{database}-devel, net-snmp-devel
 BuildRequires:  openldap-devel, gnutls-devel
-BuildRequires:  iksemel-devel, curl-devel
+BuildRequires:  iksemel-devel
 Requires:       logrotate, fping, net-snmp-libs
 Requires(pre):      /usr/sbin/useradd
 Requires(post):     /sbin/chkconfig
@@ -78,7 +78,7 @@ The zabbix client agent, to be installed on monitored systems.
 %package web
 Summary:        Zabbix Web Frontend
 Group:          Applications/Internet
-Requires:       php, php-%{zdb}, php-gd, php-bcmath, php-mbstring, fonts-japanese
+Requires:       php, php-%{zdb}, php-gd, php-mbstring, ttfonts-ja
 
 %description web
 The php frontend to display the zabbix web interface.
@@ -113,7 +113,7 @@ cp create/data/data.sql dbinit/data/
     --with-%{zdb} \
     --with-net-snmp \
     --with-ldap \
-    --with-libcurl \
+    --without-libcurl \
     --with-jabber
 
 make %{?_smp_mflags}
