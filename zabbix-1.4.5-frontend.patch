@@ -1,0 +1,364 @@
+--- zabbix.orig/frontends/php/include/classes/graph.inc.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/include/classes/graph.inc.php	2008-09-11 22:40:52.000000000 +0900
+@@ -408,7 +408,9 @@
+ 				$fontnum = 4;
+ 			}
+ 			$x=$this->fullSizeX/2-ImageFontWidth($fontnum)*strlen($str)/2;
+-			ImageString($this->im, $fontnum,$x,1, $str , $this->GetColor("Dark Red No Alpha"));
++			//ImageString($this->im, $fontnum,$x,1, $str , $this->GetColor("Dark Red No Alpha"));
++			ImageTTFText($this->im, $fontnum+6, 0, $x+10, 13, $this->GetColor("Dark Red No Alpha"), "/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $str);
++			
+ 		}
+ 
+ 		function setHeader($header)
+@@ -644,11 +646,17 @@
+ 				ImageFilledRectangle($this->im,$this->shiftXleft,$this->sizeY+$this->shiftY+62+12*$i,$this->shiftXleft+5,$this->sizeY+$this->shiftY+5+62+12*$i,$color);
+ 				ImageRectangle($this->im,$this->shiftXleft,$this->sizeY+$this->shiftY+62+12*$i,$this->shiftXleft+5,$this->sizeY+$this->shiftY+5+62+12*$i,$this->GetColor("Black No Alpha"));
+ 
+-				ImageString($this->im, 2,
++				//ImageString($this->im, 2,
++					//$this->shiftXleft+9,
++					//$this->sizeY+$this->shiftY+(62-5)+12*$i,
++					//$str,
++					//$this->GetColor("Black No Alpha"));
++				ImageTTFText($this->im, 8, 0,
+ 					$this->shiftXleft+9,
+-					$this->sizeY+$this->shiftY+(62-5)+12*$i,
+-					$str,
+-					$this->GetColor("Black No Alpha"));
++					$this->sizeY+$this->shiftY+(62-5)+12*$i+11,
++					$this->GetColor("Black No Alpha"),
++					"/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf",
++					$str);
+ 			}
+ 
+ 			if($this->sizeY < 120) return;
+--- zabbix.orig/frontends/php/include/forms.inc.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/include/forms.inc.php	2008-09-11 22:40:52.000000000 +0900
+@@ -1602,7 +1602,7 @@
+ 		}
+ 
+ 		if(count($delay_flex_el)==0)
+-			array_push($delay_flex_el, "No flexible intervals");
++			array_push($delay_flex_el, S_NO_FLEXIBLE_INTERVALS);
+ 		else
+ 			array_push($delay_flex_el, new CButton('del_delay_flex','delete selected'));
+ 
+@@ -1756,8 +1756,8 @@
+ 		if($type != ITEM_TYPE_TRAPPER && $type != ITEM_TYPE_HTTPTEST)
+ 		{
+ 			$frmItem->AddRow(S_UPDATE_INTERVAL_IN_SEC, new CNumericBox("delay",$delay,5));
+-			$frmItem->AddRow("Flexible intervals (sec)", $delay_flex_el);
+-			$frmItem->AddRow("New flexible interval", 
++			$frmItem->AddRow(S_FLEXIBLE_INTERVALS, $delay_flex_el);
++			$frmItem->AddRow(S_NEW_FLEXIBLE_INTERVAL, 
+ 				array(
+ 					S_DELAY, SPACE,
+ 					new CNumericBox("new_delay_flex[delay]","50",5), 
+@@ -2288,10 +2288,10 @@
+ 		}
+ 
+ 		if(count($dep_el)==0)
+-			array_push($dep_el, "No dependences defined");
++			array_push($dep_el, S_NO_DEPENDENCES_DEFINED);
+ 		else
+ 			array_push($dep_el, new CButton('del_dependence','delete selected'));
+-		$frmTrig->AddRow("The trigger depends on",$dep_el);
++		$frmTrig->AddRow(S_THE_TRIGGER_DEPENDS_ON,$dep_el);
+ 	/* end dependences */
+ 
+ 		global $USER_DETAILS;
+@@ -2306,7 +2306,7 @@
+ 				"&srcfld1=triggerid&srcfld2=description',600,450);",
+ 				'T');
+ 		
+-		$frmTrig->AddRow("New dependency",array($txtCondVal, 
++		$frmTrig->AddRow(S_NEW_DEPENDENCY,array($txtCondVal, 
+ 			$btnSelect, BR,
+ 			new CButton("add_dependence",S_ADD)
+ 			),'new');
+@@ -4481,7 +4481,7 @@
+ 
+ 		$frmEl->AddRow(S_TYPE,$cmbType);
+ 
+-		$frmEl->AddRow("Label", new CTextBox("label", $label, 32));
++		$frmEl->AddRow(S_LABEL, new CTextBox("label", $label, 32));
+ 
+ 		$cmbLocation = new CComboBox("label_location",$label_location);
+ 		$cmbLocation->AddItem(-1,'-');
+@@ -4606,8 +4606,8 @@
+ 		$frmEl->AddRow(S_ICON_ON,$cmbIconOn);
+ 		$frmEl->AddRow(S_ICON_UNKNOWN,$cmbIconUnknown);
+ 
+-		$frmEl->AddRow("Coordinate X", new CNumericBox("x", $x, 5));
+-		$frmEl->AddRow("Coordinate Y", new CNumericBox("y", $y, 5));
++		$frmEl->AddRow(S_COORDINATE_X, new CNumericBox("x", $x, 5));
++		$frmEl->AddRow(S_COORDINATE_Y, new CNumericBox("y", $y, 5));
+ 		$frmEl->AddRow(S_URL, new CTextBox("url", $url, 64));
+ 
+ 		$frmEl->AddItemToBottomRow(new CButton("save",S_SAVE));
+@@ -4710,16 +4710,18 @@
+ 		
+ 		$cmbColor_off = new CComboBox("color_off",$color_off);
+ 		$cmbColor_on = new CComboBox("color_on",$color_on);
+-		foreach(array('Black','Blue','Cyan','Dark Blue','Dark Green',
+-			'Dark Red','Dark Yellow','Green','Red','White','Yellow') as $value)
++		/*foreach(array('Black','Blue','Cyan','Dark Blue','Dark Green',
++			'Dark Red','Dark Yellow','Green','Red','White','Yellow') as $value) */
++		foreach(array(S_BLACK,S_BLUE,S_CYAN,S_DARK_BLUE,S_DARK_GREEN,
++			S_DARK_RED,S_DARK_YELLOW,S_GREEN,S_RED,S_WHITE,S_YELLOW) as $value)
+ 		{
+ 			$cmbColor_off->AddItem($value, $value);
+ 			$cmbColor_on->AddItem($value, $value);
+ 		}
+ /* END preparation */
+ 
+-		$frmCnct->AddRow("Element 1",$cmbElements1);
+-		$frmCnct->AddRow("Element 2",$cmbElements2);
++		$frmCnct->AddRow(S_ELEMENT_1,$cmbElements1);
++		$frmCnct->AddRow(S_ELEMENT_2,$cmbElements2);
+ 
+ 		$frmCnct->AddVar('triggerid',$triggerid);
+ 
+@@ -4734,13 +4736,13 @@
+ 			"return PopUp('popup.php?dstfrm=".$frmCnct->GetName().
+ 			"&dstfld1=triggerid&dstfld2=trigger&srctbl=triggers&srcfld1=triggerid&srcfld2=description');",
+ 			'T');
+-		$frmCnct->AddRow("Link status indicator",array($txtTrigger, $btnSelect));
++		$frmCnct->AddRow(S_LINK_STATUS_INDICATOR,array($txtTrigger, $btnSelect));
+ 
+-		$frmCnct->AddRow("Type (OFF)",$cmbType_off);
+-		$frmCnct->AddRow("Color (OFF)",$cmbColor_off);
++		$frmCnct->AddRow(S_TYPE_OFF,$cmbType_off);
++		$frmCnct->AddRow(S_COLOR_OFF,$cmbColor_off);
+ 
+-		$frmCnct->AddRow("Type (ON)",$cmbType_on);
+-		$frmCnct->AddRow("Color (ON)",$cmbColor_on);
++		$frmCnct->AddRow(S_TYPE_ON,$cmbType_on);
++		$frmCnct->AddRow(S_COLOR_ON,$cmbColor_on);
+ 
+ 		$frmCnct->AddItemToBottomRow(new CButton("save_link",S_SAVE));
+ 		if(isset($_REQUEST["linkid"]))
+--- zabbix.orig/frontends/php/include/graphs.inc.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/include/graphs.inc.php	2008-09-11 22:40:52.000000000 +0900
+@@ -77,11 +77,11 @@
+ 
+ 		switch($drawtype)
+ 		{
+-			case GRAPH_ITEM_DRAWTYPE_LINE:		$drawtype = "Line";		break;
+-			case GRAPH_ITEM_DRAWTYPE_FILLED_REGION:	$drawtype = "Filled region";	break;
+-			case GRAPH_ITEM_DRAWTYPE_BOLD_LINE:	$drawtype = "Bold line";	break;
+-			case GRAPH_ITEM_DRAWTYPE_DOT:		$drawtype = "Dot";		break;
+-			case GRAPH_ITEM_DRAWTYPE_DASHED_LINE:	$drawtype = "Dashed line";	break;
++			case GRAPH_ITEM_DRAWTYPE_LINE:		$drawtype = S_LINE;		break;
++			case GRAPH_ITEM_DRAWTYPE_FILLED_REGION:	$drawtype = S_FILLED_REGION;	break;
++			case GRAPH_ITEM_DRAWTYPE_BOLD_LINE:	$drawtype = S_BOLD_LINE;	break;
++			case GRAPH_ITEM_DRAWTYPE_DOT:		$drawtype = S_DOT;		break;
++			case GRAPH_ITEM_DRAWTYPE_DASHED_LINE:	$drawtype = S_DASHED_LINE;	break;
+ 			default: $drawtype = S_UNKNOWN;		break;
+ 		}
+ 		return $drawtype;
+--- zabbix.orig/frontends/php/include/locales/en_gb.inc.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/include/locales/en_gb.inc.php	2008-09-11 22:40:52.000000000 +0900
+@@ -367,6 +367,13 @@
+ 	'S_WHITE'=>				'White',
+ 	'S_YELLOW'=>				'Yellow',
+ 
++// Lines
++	'S_LINE'=>				'Line',
++	'S_FILLED_REGION'=>			'Filled region',
++	'S_BOLD_LINE'=>				'Bold line',
++	'S_DOT'=>				'Dot',
++	'S_DASHED_LINE'=>			'Dashed line',
++
+ //	config.php
+ 	'S_CANNNOT_UPDATE_VALUE_MAP'=>		'Cannot update value map',
+ 	'S_VALUE_MAP_ADDED'=>			'Value map added',
+@@ -782,6 +789,7 @@
+ 	'S_ORIGINAL'=>				'Original',
+ 	'S_NEW_FLEXIBLE_INTERVAL'=>		'New flexible interval',
+ 	'S_FLEXIBLE_INTERVALS'=>		'Flexible intervals (sec)',
++	'S_NO_FLEXIBLE_INTERVALS'=>		'No flexible intervals',
+ 
+ //	events.php
+ 	'S_LATEST_EVENTS'=>			'Latest events',
+@@ -795,7 +803,6 @@
+ 
+ //	sysmap.php
+ 	'S_LINK'=>				'Link',
+-	'S_LABEL'=>				'Label',
+ 	'S_X'=>					'X',
+ 	'S_Y'=>					'Y',
+ 	'S_ICON_ON'=>				'Icon (on)',
+@@ -805,11 +812,23 @@
+ 	'S_ELEMENT_2'=>				'Element 2',
+ 	'S_LINK_STATUS_INDICATOR'=>		'Link status indicator',
+ 	'S_CONFIGURATION_OF_NETWORK_MAPS'=>	'Configuration of network maps',
++	'S_CONFIGURATION_OF_NETWORK_MAPS_BIG'=>	'CONFIGURATION OF NETWORK MAPS',
++	'S_DISPLAYED_ELEMENTS'=>		'DISPLAYED ELEMENTS',
++	'S_CONNECTORS'=>			'CONNECTORS',
++	'S_ADD_ELEMENT'=>			'Add element',
++	'S_CREATE_CONNECTION'=>			'Create connection',
++	'S_COORDINATE_X'=>			'Coordinate X',
++	'S_COORDINATE_Y'=>			'Coordinate Y',
++	'S_TYPE_OFF'=>				'Type (OFF)',
++	'S_TYPE_ON'=>				'Type (ON)',
++	'S_COLOR_OFF'=>				'Color (OFF)',
++	'S_COLOR_ON'=>				'Color (ON)',
++	
++	
+ 
+ //	sysmaps.php
+ 	'S_MAPS_BIG'=>				'MAPS',
+ 	'S_NO_MAPS_DEFINED'=>			'No maps defined',
+-	'S_CONFIGURATION_OF_NETWORK_MAPS'=>	'CONFIGURATION OF NETWORK MAPS',
+ 	'S_CREATE_MAP'=>			'Create Map',
+ 	'S_ICON_LABEL_LOCATION'=>		'Icon label location',
+ 	'S_BOTTOM'=>				'Bottom',
+@@ -1172,6 +1191,9 @@
+ 	'S_LAST_OF'=>				'Last of',
+ 	'S_SHOW_DISABLED_TRIGGERS'=>		'Show disabled triggers',
+ 	'S_HIDE_DISABLED_TRIGGERS'=>		'Hide disabled triggers',
++	'S_THE_TRIGGER_DEPENDS_ON'=>		'The trigger depends on',
++	'S_NO_DEPENDENCES_DEFINED'=>		'No dependences defined',
++	'S_NEW_DEPENDENCY'=>			'New dependency',
+ 
+ 
+ //	tr_comments.php
+@@ -1191,6 +1213,7 @@
+ 	'S_HIDE_DETAILS'=>			'Hide details',
+ 	'S_SHOW_DETAILS'=>			'Show details',
+ 	'S_SELECT'=>				'Select',
++	'S_INVERSE_SELECT'=>			'Inverse Select',
+ 	'S_HIDE_SELECT'=>			'Hide select',
+ 	'S_TRIGGERS_BIG'=>			'TRIGGERS',
+ 	'S_NAME_BIG'=>				'NAME',
+--- zabbix.orig/frontends/php/include/maps.inc.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/include/maps.inc.php	2008-09-11 22:40:52.000000000 +0900
+@@ -57,10 +57,10 @@
+         {
+ 		switch($drawtype)
+ 		{
+-			case MAP_LINK_DRAWTYPE_LINE:		$drawtype = "Line";		break;
+-			case MAP_LINK_DRAWTYPE_BOLD_LINE:	$drawtype = "Bold line";	break;
+-			case MAP_LINK_DRAWTYPE_DOT:		$drawtype = "Dot";		break;
+-			case MAP_LINK_DRAWTYPE_DASHED_LINE:	$drawtype = "Dashed line";	break;
++			case MAP_LINK_DRAWTYPE_LINE:		$drawtype = S_LINE;		break;
++			case MAP_LINK_DRAWTYPE_BOLD_LINE:	$drawtype = S_BOLD_LINE;	break;
++			case MAP_LINK_DRAWTYPE_DOT:		$drawtype = S_DOT;		break;
++			case MAP_LINK_DRAWTYPE_DASHED_LINE:	$drawtype = S_DASHED_LINE;	break;
+ 			default: $drawtype = S_UNKNOWN;		break;
+ 		}
+ 		return $drawtype;
+--- zabbix.orig/frontends/php/map.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/map.php	2008-09-11 22:40:52.000000000 +0900
+@@ -103,7 +103,8 @@
+ 	else
+ 	{
+ 		$x=imagesx($im)/2-ImageFontWidth(4)*strlen($name)/2;
+-		ImageString($im, 4,$x,1, $name , $darkred);
++		//ImageString($im, 4,$x,1, $name , $darkred);
++		ImageTTFText($im, 10, 0, $x+10, 14, $darkred, "/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $name);
+ 	}
+ 	unset($db_image);
+ 
+@@ -248,7 +249,8 @@
+ 				$x_label-2, $y_label,
+ 				$x_label+ImageFontWidth(2)*strlen($label_line), $y_label+ImageFontHeight(2),
+ 				$white);
+-			ImageString($im, 2, $x_label, $y_label, $label_line,$label_color);
++			//ImageString($im, 2, $x_label, $y_label, $label_line,$label_color);
++			ImageTTFText($im, 9, 0, $x_label+2, $y_label+10, $label_color,"/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $label_line);
+ 		}
+ 
+ 		if($info_line!="")
+@@ -257,7 +259,8 @@
+ 				$x_info-2, $y_info,
+ 				$x_info+ImageFontWidth(2)*strlen($info_line), $y_info+ImageFontHeight(2),
+ 				$white);
+-			ImageString($im, 2, $x_info, $y_info, $info_line,$color);
++			//ImageString($im, 2, $x_info, $y_info, $info_line,$color);
++			ImageTTFText($im, 8, 0, $x_info+9, $y_info+10, $color, "/usr/share/fonts/ja/TrueType/kochi-gothic-subst.ttf", $info_line);
+ 		}
+ 	}
+ 
+--- zabbix.orig/frontends/php/srv_status.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/srv_status.php	2008-09-11 22:40:52.000000000 +0900
+@@ -88,7 +88,7 @@
+ 		$row = array(
+ 						'0' => 0,'serviceid' => 0,
+ 						'1' => 0,'serviceupid' => 0,
+-						'2' => '','caption' => 'root',
++						'2' => '','caption' => S_ROOT_SMALL,
+ 						'3' => '','status' => SPACE,
+ 						'4' => '','reason' => SPACE,
+ 						'5' => '','sla' => SPACE,
+--- zabbix.orig/frontends/php/sysmap.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/sysmap.php	2008-09-11 22:40:52.000000000 +0900
+@@ -69,7 +69,7 @@
+ 	check_fields($fields);
+ ?>
+ <?php
+-	show_table_header("CONFIGURATION OF NETWORK MAP");
++	show_table_header(S_CONFIGURATION_OF_NETWORK_MAPS_BIG);
+ 	if(!sysmap_accessiable($_REQUEST["sysmapid"],PERM_READ_WRITE)) access_deny();
+ 	
+ 	$sysmap = DBfetch(DBselect("select * from sysmaps where sysmapid=".$_REQUEST["sysmapid"]));
+@@ -161,7 +161,7 @@
+ 	if(isset($_REQUEST["form"]) && ($_REQUEST["form"]=="add_element" ||
+ 		($_REQUEST["form"]=="update" && isset($_REQUEST["selementid"]))))
+ 	{
+-		show_table_header("DISPLAYED ELEMENTS");
++		show_table_header(S_DISPLAYED_ELEMENTS);
+ 		echo BR;
+ 		insert_map_element_form();
+ 	}
+@@ -171,7 +171,7 @@
+ 		$row = DBfetch(DBselect("select count(*) as count from sysmaps_elements where sysmapid=".$_REQUEST["sysmapid"]));
+ 		if($row["count"]>1)
+ 		{
+-			show_table_header("CONNECTORS");
++			show_table_header(S_CONNECTORS);
+ 			echo BR;
+ 			insert_map_link_form();
+ 		}
+@@ -182,7 +182,7 @@
+ 	}
+ 	else
+ 	{
+-		show_table_header("DISPLAYED ELEMENTS", new CButton("form","Add element",
++		show_table_header(S_DISPLAYED_ELEMENTS, new CButton("form",S_ADD_ELEMENT,
+ 			"return Redirect('".$page["file"]."?form=add_element".url_param("sysmapid")."');"));
+ 
+ 		$table = new CTableInfo();
+@@ -216,7 +216,7 @@
+ 		$table->show();
+ 
+ 		echo BR;
+-		show_table_header("CONNECTORS", new CButton("form","Create connection",
++		show_table_header(S_CONNECTORS, new CButton("form",S_CREATE_CONNECTION,
+ 			"return Redirect('".$page["file"]."?form=add_link".
+ 			url_param("sysmapid")."');"));
+ 
+--- zabbix.orig/frontends/php/tr_status.php	2008-03-26 17:12:33.000000000 +0900
++++ zabbix/frontends/php/tr_status.php	2008-09-11 22:40:52.000000000 +0900
+@@ -256,8 +256,8 @@
+ 			$form->SetMethod('get');
+ 			
+ 			$form->AddItem(new CTextBox("txt_select",$txt_select,15));
+-			$form->AddItem(new CButton("btnSelect", "Select"));
+-			$form->AddItem(new CButton("btnSelect", "Inverse select"));
++			$form->AddItem(new CButton("btnSelect", S_SELECT));
++			$form->AddItem(new CButton("btnSelect", S_INVERSE_SELECT));
+ 			$form->AddVar("compact",$compact);
+ 			$form->AddVar("onlytrue",$onlytrue);
+ 			$form->AddVar("noactions",$noactions);
+@@ -356,7 +356,7 @@
+ 
+ 		$description = expand_trigger_description($row["triggerid"]);
+ 
+-		if(isset($_REQUEST["btnSelect"]) && '' != $txt_select && ((stristr($description, $txt_select)) == ($_REQUEST["btnSelect"]=="Inverse select"))) continue;
++		if(isset($_REQUEST["btnSelect"]) && '' != $txt_select && ((stristr($description, $txt_select)) == ($_REQUEST["btnSelect"]==S_INVERSE_SELECT))) continue;
+ 
+ 		if($row["url"] != "")
+ 		{
