@@ -51,5 +51,5 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Tue June 16 2009 Kodai Terashima <kodai74@gmail.com> - 4-1
+* Tue Jun 16 2009 Kodai Terashima <kodai74@gmail.com> - 4-1
 - Initial Package for RHEL4
