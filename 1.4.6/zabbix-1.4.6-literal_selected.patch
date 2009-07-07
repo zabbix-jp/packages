@@ -1,0 +1,22 @@
+--- zabbix-1.4.6.orig/frontends/php/items.php	2008-07-23 20:47:31.000000000 +0900
++++ zabbix-1.4.6/frontends/php/items.php	2009-03-06 21:16:56.000000000 +0900
+@@ -778,7 +778,7 @@ include_once "include/page_header.php";
+ 
+ 			$status=new CCol(new CLink(item_status2str($db_item["status"]),
+ 					"?group_itemid%5B%5D=".$db_item["itemid"].
+-					"&group_task=".($db_item["status"] ? "Activate+selected" : "Disable+selected"),
++					"&group_task=".($db_item["status"] ? S_ACTIVATE_SELECTED : S_DISABLE_SELECTED),
+ 					item_status2style($db_item["status"])));
+ 	
+ 			if($db_item["error"] == '')
+--- zabbix-1.4.6.orig/frontends/php/httpconf.php	2008-07-23 20:47:31.000000000 +0900
++++ zabbix-1.4.6/frontends/php/httpconf.php	2009-03-06 21:17:43.000000000 +0900
+@@ -476,7 +476,7 @@ include_once "include/page_header.php";
+ 			$status=new CCol(new CLink(httptest_status2str($httptest_data["status"]),
+ 					"?group_httptestid%5B%5D=".$httptest_data["httptestid"].
+ 					"&hostid=".$_REQUEST["hostid"].
+-					"&group_task=".($httptest_data["status"] ? "Activate+selected" : "Disable+selected"),
++					"&group_task=".($httptest_data["status"] ? S_ACTIVATE_SELECTED : S_DISABLE_SELECTED),
+ 					httptest_status2style($httptest_data["status"])));
+ 	
+ 
