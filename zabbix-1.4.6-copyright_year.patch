@@ -1,0 +1,99 @@
+--- zabbix-1.4.6.orig/frontends/php/include/locales/cn_zh.inc.php	2009-03-07 13:47:02.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/cn_zh.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -210,7 +211,7 @@
+ 	"S_COMPARE"=>				"�Ա�",
+ 
+ //	Footer
+-	"S_COPYRIGHT_BY"=>			"Copyright 2001-2006 by ",
++	"S_COPYRIGHT_BY"=>			"Copyright 2001-2008 by ",
+ 	"S_CONNECTED_AS"=>			"Connected as",
+ 	"S_SIA_ZABBIX"=>			"SIA Zabbix",
+ 
+--- zabbix-1.4.6.orig/frontends/php/include/locales/de_de.inc.php	2009-03-07 13:47:01.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/de_de.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -475,7 +475,7 @@
+         'S_COMPARE'=>				'vergleichen',
+ 
+ //	Footer
+-        'S_COPYRIGHT_BY'=>                      'Copyright 2001-2006 by ',
++        'S_COPYRIGHT_BY'=>                      'Copyright 2001-2008 by ',
+         'S_CONNECTED_AS'=>                      'Angemeldet:',
+         'S_SIA_ZABBIX'=>                        'SIA Zabbix',
+ 
+--- zabbix-1.4.6.orig/frontends/php/include/locales/fr_fr.inc.php	2009-03-07 13:47:01.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/fr_fr.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -260,7 +260,7 @@
+ 
+ 	//	Footer
+         "D3CONCEPT_PART"=>                              "D3CONCEPT Partenaire de ",
+-	"S_COPYRIGHT_BY"=>				"Copyright 2001-2006 par ",
++	"S_COPYRIGHT_BY"=>				"Copyright 2001-2008 par ",
+ 	"S_CONNECTED_AS"=>				"Connect� au nom de",
+ 	"S_SIA_ZABBIX"=>				"SIA Zabbix",
+ 	"S_ZABBIX_VER"=>			        "ZABBIX 1.4.1",
+--- zabbix-1.4.6.orig/frontends/php/include/locales/hu_hu.inc.php	2009-03-07 13:47:01.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/hu_hu.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -481,7 +481,7 @@
+ 
+ //	Footer
+ 	"S_ZABBIX_VER"=>			"ZABBIX 1.4.2",
+-	"S_COPYRIGHT_BY"=>			"Copyright 2001-2007 by ",
++	"S_COPYRIGHT_BY"=>			"Copyright 2001-2008 by ",
+ 	"S_CONNECTED_AS"=>			"Connected as",
+ 	"S_SIA_ZABBIX"=>			"SIA Zabbix",
+ 
+--- zabbix-1.4.6.orig/frontends/php/include/locales/it_it.inc.php	2009-03-07 13:47:01.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/it_it.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -202,7 +202,7 @@
+ 	"S_COMPARE"=>				"Compara",
+ 
+ //	Footer
+-	"S_COPYRIGHT_BY"=>			"Copyright 2001-2006 by ",
++	"S_COPYRIGHT_BY"=>			"Copyright 2001-2008 by ",
+ 	"S_CONNECTED_AS"=>			"Connesso come utente: ",
+ 	"S_SIA_ZABBIX"=>			"SIA Zabbix",
+ 
+--- zabbix-1.4.6.orig/frontends/php/include/locales/lv_lv.inc.php	2009-03-07 13:47:01.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/lv_lv.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -200,7 +200,7 @@
+ 	"S_COMPARE"=>				"Compare",
+ 
+ //	Footer
+-	"S_COPYRIGHT_BY"=>			"Copyright 2001-2006 by ",
++	"S_COPYRIGHT_BY"=>			"Copyright 2001-2008 by ",
+ 	"S_CONNECTED_AS"=>			"Connected as",
+ 	"S_SIA_ZABBIX"=>			"SIA Zabbix",
+ 
+--- zabbix-1.4.6.orig/frontends/php/include/locales/pt_br.inc.php	2009-03-07 13:47:02.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/pt_br.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -476,7 +476,7 @@
+ 
+ //	Footer
+ 	'S_ZABBIX_VER'=>			'ZABBIX 1.4.2',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2007 by ',
++	'S_COPYRIGHT_BY'=>			'Copyright 2001-2008 by ',
+ 	'S_CONNECTED_AS'=>			'Conectado como',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 
+--- zabbix-1.4.6.orig/frontends/php/include/locales/ru_ru.inc.php	2009-03-07 13:47:02.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/ru_ru.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -281,7 +281,7 @@
+ 
+ //	Footer
+ 	"S_ZABBIX_VER"=>			"ZABBIX 1.1.5",
+-	"S_COPYRIGHT_BY"=>			"Copyright 2001-2006 by ",
++	"S_COPYRIGHT_BY"=>			"Copyright 2001-2008 by ",
+ 	"S_CONNECTED_AS"=>			"Подключен как",
+ 	"S_SIA_ZABBIX"=>			"SIA Zabbix",
+ 
+--- zabbix-1.4.6.orig/frontends/php/include/locales/sp_sp.inc.php	2009-03-07 13:47:02.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/locales/sp_sp.inc.php	2009-03-10 11:16:20.000000000 +0900
+@@ -467,7 +467,7 @@
+ 
+ //	Footer
+ 	'S_ZABBIX_VER'=>			'ZABBIX 1.4.2',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2007 por ',
++	'S_COPYRIGHT_BY'=>			'Copyright 2001-2008 por ',
+ 	'S_CONNECTED_AS'=>			'Conectado como',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 
