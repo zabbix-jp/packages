@@ -29,6 +29,7 @@ Patch9:         zabbix-1.4.6-literal_selected.patch
 Patch10:        zabbix-1.4.6-localized_colors.patch
 Patch11:        zabbix-1.4.6-trevent_memory_exhaustedfix.patch
 Patch12:        zabbix-1.4.6-trigger_cond_multibyte_param.patch
+Patch13:        zabbix-1.4.6-powered_by_zabbixjp.patch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 
@@ -123,6 +124,7 @@ cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
 %patch10 -p1 -b .localized_colors.orig
 %patch11 -p1 -b .trevent_memory_exhaustedfix.orig
 %patch12 -p1 -b .trigger_cond_multibyte_param.orig
+%patch13 -p1 -b .powered_by_zabbixjp.orig
 
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
