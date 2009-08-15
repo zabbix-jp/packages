@@ -1,0 +1,24 @@
+--- zabbix-1.4.6.orig/frontends/php/include/page_footer.php	2008-07-23 20:47:31.000000000 +0900
++++ zabbix-1.4.6./frontends/php/include/page_footer.php	2009-08-16 04:04:21.000000000 +0900
+@@ -59,10 +59,17 @@
+ 			$table->SetCellSpacing(0);
+ 			$table->SetCellPadding(1);
+ 			$table->AddRow(array(
+-				new CCol(new CLink(
+-					S_ZABBIX_VER.SPACE.S_COPYRIGHT_BY.SPACE.S_SIA_ZABBIX,
+-					"http://www.zabbix.com", "highlight"),
+-					"page_footer_l"),
++				new CCol(array(
++						new CLink(
++						S_ZABBIX_VER.SPACE.S_COPYRIGHT_BY.SPACE.S_SIA_ZABBIX,
++						"http://www.zabbix.com", "highlight"),
++						new CSpan(SPACE.SPACE.'/'.SPACE.SPACE,'divider'),
++						new CLink(
++						'Powered by ZABBIX-JP',
++						'http://www.zabbix.jp','highlight') 
++						),
++				"page_footer_l"),
++				
+ 				new CCol(array(
+ 						new CSpan(SPACE.SPACE."|".SPACE.SPACE,"divider"),
+ 						S_CONNECTED_AS.SPACE."'".$USER_DETAILS["alias"]."'".

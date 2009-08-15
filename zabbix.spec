@@ -1,13 +1,6 @@
 %define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 %define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
 
-%if %is_el4
-%define dist .el4.JP
-%endif
-%if %is_el5
-%define dist .el5.JP
-%endif
-
 Name:           zabbix
 Version:        1.4.6
 Release:        1%{?dist}
