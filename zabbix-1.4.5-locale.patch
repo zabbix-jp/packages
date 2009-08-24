@@ -1,0 +1,11 @@
+--- zabbix-1.4.5/frontends/php/include/locales/cn_zh.inc.php.orig	2008-07-07 14:24:28.000000000 +0900
++++ zabbix-1.4.5/frontends/php/include/locales/cn_zh.inc.php	2008-07-07 14:25:24.000000000 +0900
+@@ -743,7 +743,7 @@
+ 	"S_USER_PROFILE"=>			"User profile",
+ 	"S_LANGUAGE"=>				"Language",
+ 	"S_ENGLISH_GB"=>			"English (GB)",
+-	"S_JAPANESE_JP"=>			"Chinese (CN)",
++	"S_JAPANESE_JP"=>			"Japanese (JP)",
+ 	"S_FRENCH_FR"=>				"French (FR)",
+ 	"S_GERMAN_DE"=>				"German (DE)",
+ 	"S_ITALIAN_IT"=>			"Italian (IT)",

@@ -1,0 +1,11 @@
+--- zabbix-1.4.4/configure.orig	2008-03-25 16:35:57.000000000 +0900
++++ zabbix-1.4.4/configure	2008-03-25 16:37:38.000000000 +0900
+@@ -10709,7 +10709,7 @@
+ 
+   SNMP_CFLAGS=""
+   SNMP_LDFLAGS=""
+-  SNMP_LIBS=""
++  SNMP_LIBS="-lcrypto"
+ 
+   if test "x$want_netsnmp" != "xno"; then
+ 
