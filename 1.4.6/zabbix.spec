@@ -1,6 +1,3 @@
-%define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
-%define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
-
 Name:           zabbix
 Version:        1.4.6
 Release:        1%{?dist}
@@ -32,10 +29,12 @@ Patch12:        zabbix-1.4.6-trigger_cond_multibyte_param.patch
 Patch13:        zabbix-1.4.6-powered_by_zabbixjp.patch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-
 %define database mysql
 %define zdb mysql
 %define with_postgresql %{?_with_postgresql: 1} %{?!_with_postgresql: 0}
+%define is_el3 %(grep -i "release 3" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
+%define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
+%define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
 
 # Zabbix can only be built with mysql -or- postgresql
 # support. We build with mysql by default, but you can
@@ -45,12 +44,17 @@ Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %define zdb pgsql
 %endif
 
+%if %is_el3
+BuildRequires:  %{database}-devel, net-snmp-devel, openldap-devel, openssl-devel
+%endif
+%if %is_el4
 BuildRequires:  %{database}-devel, net-snmp-devel
 BuildRequires:  openldap-devel, gnutls-devel
-%if %is_el4
 BuildRequires:  iksemel-devel
 %endif
 %if %is_el5
+BuildRequires:  %{database}-devel, net-snmp-devel
+BuildRequires:  openldap-devel, gnutls-devel
 BuildRequires:  iksemel-devel, curl-devel
 %endif
 Requires:       logrotate, fping, net-snmp-libs
@@ -95,11 +99,14 @@ The zabbix client agent, to be installed on monitored systems.
 %package web
 Summary:        Zabbix Web Frontend
 Group:          Applications/Internet
+%if %is_el3
+Requires:       httpd, php, php-%{zdb}, php-gd, php-mbstring, ttfonts-ja
+%endif
 %if %is_el4
-Requires:       php, php-%{zdb}, php-gd, php-mbstring, ttfonts-ja
+Requires:       httpd, php, php-%{zdb}, php-gd, php-mbstring, ttfonts-ja
 %endif
 %if %is_el5
-Requires:       php, php-%{zdb}, php-gd, php-bcmath, php-mbstring, fonts-japanese
+Requires:       httpd, php, php-%{zdb}, php-gd, php-bcmath, php-mbstring, fonts-japanese
 %endif
 
 %description web
@@ -129,7 +136,7 @@ cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
 cp create/schema/%{database}.sql dbinit/schema/
-cp create/data/images_%{database}.sql dbinit/data/
+cp create/data/images_%{zdb}.sql dbinit/data/
 cp create/data/data.sql dbinit/data/
 
 # fix up some lib64 issues
@@ -140,11 +147,14 @@ cp create/data/data.sql dbinit/data/
 %configure \
     --enable-server \
     --enable-agent \
-    --with-%{zdb} \
     --with-net-snmp \
     --with-ldap \
+    --with-%{zdb} \
+  %if %is_el4
     --with-jabber \
+  %endif
   %if %is_el5
+    --with-jabber \
     --with-libcurl
   %endif
 
