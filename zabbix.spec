@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.4.6
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -303,7 +303,7 @@ fi
 %{_datadir}/%{name}/js/*
 
 %changelog
-* Wed Sep 16 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
+* Sun Sep 27 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
 - Add a patch to allow multibyte trigger expression (Patch14)
 
 * Fri Jul 3 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-1
@@ -316,7 +316,6 @@ fi
 - Add a patch from MIRACLE LINUX to fix exhausted memory by using DB cursor (Patch11)
 - Add a patch from MIRACLE LINUX to allow item/trigger parameter to set multibyte character (Patch12)
 - Add a patch to add link to ZABBIX-JP in footer (Patch13)
-- Add a patch to fix multibyte trigger expression (Patch14)
 - Merge el5.spec with el4.spec
 
 * Wed Apr 15 2009 Kodai Terashima <kodai74@gmail.com> 1.4.5-2
