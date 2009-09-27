@@ -27,6 +27,7 @@ Patch10:        zabbix-1.4.6-localized_colors.patch
 Patch11:        zabbix-1.4.6-trevent_memory_exhaustedfix.patch
 Patch12:        zabbix-1.4.6-trigger_cond_multibyte_param.patch
 Patch13:        zabbix-1.4.6-powered_by_zabbixjp.patch
+Patch14:        zabbix-1.4.6-trigger_multibyte_expression.patch
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define database mysql
@@ -132,6 +133,7 @@ cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
 %patch11 -p1 -b .trevent_memory_exhaustedfix.orig
 %patch12 -p1 -b .trigger_cond_multibyte_param.orig
 %patch13 -p1 -b .powered_by_zabbixjp.orig
+%patch14 -p1 -b .trigger_multibyte_expression.orig
 
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
@@ -301,6 +303,9 @@ fi
 %{_datadir}/%{name}/js/*
 
 %changelog
+* Wed Sep 16 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
+- Add a patch to allow multibyte trigger expression (Patch14)
+
 * Fri Jul 3 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-1
 - Update to 1.4.6
 - Add a patch to fix copyright-year in locales file from MIRACLE LINUX (Patch6)
@@ -310,6 +315,8 @@ fi
 - Add a patch from MIRACLE LINUX to fix does not use color link on map when use Japanese language (Patch10)
 - Add a patch from MIRACLE LINUX to fix exhausted memory by using DB cursor (Patch11)
 - Add a patch from MIRACLE LINUX to allow item/trigger parameter to set multibyte character (Patch12)
+- Add a patch to add link to ZABBIX-JP in footer (Patch13)
+- Add a patch to fix multibyte trigger expression (Patch14)
 - Merge el5.spec with el4.spec
 
 * Wed Apr 15 2009 Kodai Terashima <kodai74@gmail.com> 1.4.5-2
