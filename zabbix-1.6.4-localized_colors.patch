@@ -1,0 +1,120 @@
+diff -uNr zabbix-1.6.4.orig/frontends/php/include/locales/cn_zh.inc.php zabbix-1.6.4.localized_colors/frontends/php/include/locales/cn_zh.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/cn_zh.inc.php	2009-04-07 20:41:04.000000000 +0900
++++ zabbix-1.6.4.localized_colors/frontends/php/include/locales/cn_zh.inc.php	2009-04-09 11:49:33.000000000 +0900
+@@ -110,6 +110,7 @@
+ 	'S_DARK_GREEN'=>			'Dark green',
+ 	'S_DARK_RED'=>			'Dark red',
+ 	'S_DARK_YELLOW'=>			'Dark yellow',
++	'S_GRAY'=>			'Gray',
+ 	'S_GREEN'=>			'Green',
+ 	'S_RED'=>			'Red',
+ 	'S_WHITE'=>			'White',
+diff -uNr zabbix-1.6.4.orig/frontends/php/include/locales/en_gb.inc.php zabbix-1.6.4.localized_colors/frontends/php/include/locales/en_gb.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/en_gb.inc.php	2009-04-07 20:41:04.000000000 +0900
++++ zabbix-1.6.4.localized_colors/frontends/php/include/locales/en_gb.inc.php	2009-04-09 11:48:23.000000000 +0900
+@@ -409,6 +409,7 @@
+ 	'S_DARK_GREEN'=>			'Dark green',
+ 	'S_DARK_RED'=>				'Dark red',
+ 	'S_DARK_YELLOW'=>			'Dark yellow',
++	'S_GRAY'=>				'Gray',
+ 	'S_GREEN'=>				'Green',
+ 	'S_RED'=>				'Red',
+ 	'S_WHITE'=>				'White',
+diff -uNr zabbix-1.6.4.orig/frontends/php/include/locales/ja_jp.inc.php zabbix-1.6.4.localized_colors/frontends/php/include/locales/ja_jp.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/ja_jp.inc.php	2009-04-07 20:41:04.000000000 +0900
++++ zabbix-1.6.4.localized_colors/frontends/php/include/locales/ja_jp.inc.php	2009-04-09 11:48:23.000000000 +0900
+@@ -362,6 +362,7 @@
+ 	'S_DARK_GREEN'=>			'濃い緑',
+ 	'S_DARK_RED'=>				'濃い赤',
+ 	'S_DARK_YELLOW'=>			'濃い黄',
++	'S_GRAY'=>				'グレイ',
+ 	'S_GREEN'=>				'緑',
+ 	'S_RED'=>				'赤',
+ 	'S_WHITE'=>				'白',
+diff -uNr zabbix-1.6.4.orig/frontends/php/include/locales/ko_kr.inc.php zabbix-1.6.4.localized_colors/frontends/php/include/locales/ko_kr.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/ko_kr.inc.php	2009-04-07 20:41:04.000000000 +0900
++++ zabbix-1.6.4.localized_colors/frontends/php/include/locales/ko_kr.inc.php	2009-04-09 11:48:23.000000000 +0900
+@@ -362,6 +362,7 @@
+ 	'S_DARK_GREEN'=>			'짙은 녹색',
+ 	'S_DARK_RED'=>				'짙은 빨강',
+ 	'S_DARK_YELLOW'=>			'짙은 노랑',
++	'S_GRAY'=>				'회색',
+ 	'S_GREEN'=>				'녹색',
+ 	'S_RED'=>				'빨강',
+ 	'S_WHITE'=>				'흰색',
+diff -uNr zabbix-1.6.4.orig/frontends/php/include/maps.inc.php zabbix-1.6.4.localized_colors/frontends/php/include/maps.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/maps.inc.php	2009-04-07 20:41:04.000000000 +0900
++++ zabbix-1.6.4.localized_colors/frontends/php/include/maps.inc.php	2009-04-09 11:40:47.000000000 +0900
+@@ -636,9 +636,9 @@
+ 				$out['info'] = $inf['info'];
+ 
+ 			if(isset($inf['priority']) && $inf['priority'] > 3)
+-				$out['color'] = $colors['Red'];
++				$out['color'] = $colors[S_RED];
+ 			else
+-				$out['color'] = $colors['Dark Red'];
++				$out['color'] = $colors[S_DARK_RED];
+ 
+ 			$out['iconid'] = $db_element['iconid_on'];
+ 		}
+@@ -648,7 +648,7 @@
+ 			$out['type'] = TRIGGER_VALUE_UNKNOWN;
+ 			$out['info'] = 'UNKNOWN';
+ 			
+-			$out['color'] = $colors['Gray'];
++			$out['color'] = $colors[S_GRAY];
+ 			if (isset($out['disabled']) && $out['disabled'] == 1)
+ 				$out['iconid'] = $db_element['iconid_disabled'];
+ 			else
+@@ -666,7 +666,7 @@
+ 			if(isset($inf['info']))
+ 				$out['info'] = 'OK';
+ 
+-			$out['color'] = $colors['Dark Green'];
++			$out['color'] = $colors[S_DARK_GREEN];
+ 			$out['iconid'] = $db_element['iconid_off'];
+ 		}
+ 
+diff -uNr zabbix-1.6.4.orig/frontends/php/map.php zabbix-1.6.4.localized_colors/frontends/php/map.php
+--- zabbix-1.6.4.orig/frontends/php/map.php	2009-04-07 20:41:04.000000000 +0900
++++ zabbix-1.6.4.localized_colors/frontends/php/map.php	2009-04-09 11:39:06.000000000 +0900
+@@ -73,18 +73,18 @@
+ 	$black		= imagecolorallocate($im,0,0,0); 
+ 	$gray		= imagecolorallocate($im,150,150,150);
+ 
+-	$colors['Red']		= imagecolorallocate($im,255,0,0); 
+-	$colors['Dark Red']	= imagecolorallocate($im,150,0,0); 
+-	$colors['Green']	= imagecolorallocate($im,0,255,0); 
+-	$colors['Dark Green']	= imagecolorallocate($im,0,150,0); 
+-	$colors['Blue']		= imagecolorallocate($im,0,0,255); 
+-	$colors['Dark Blue']	= imagecolorallocate($im,0,0,150); 
+-	$colors['Yellow']	= imagecolorallocate($im,255,255,0); 
+-	$colors['Dark Yellow']	= imagecolorallocate($im,150,150,0); 
+-	$colors['Cyan']		= imagecolorallocate($im,0,255,255); 
+-	$colors['Black']	= imagecolorallocate($im,0,0,0); 
+-	$colors['Gray']		= imagecolorallocate($im,150,150,150); 
+-	$colors['White']	= imagecolorallocate($im,255,255,255);
++	$colors[S_RED]          = ImageColorAllocate($im,255,0,0);
++	$colors[S_DARK_RED]     = ImageColorAllocate($im,150,0,0);
++	$colors[S_GREEN]        = ImageColorAllocate($im,0,255,0);
++	$colors[S_DARK_GREEN]   = ImageColorAllocate($im,0,150,0);
++	$colors[S_BLUE]         = ImageColorAllocate($im,0,0,255);
++	$colors[S_DARK_BLUE]    = ImageColorAllocate($im,0,0,150);
++	$colors[S_YELLOW]       = ImageColorAllocate($im,255,255,0);
++	$colors[S_DARK_YELLOW]  = ImageColorAllocate($im,150,150,0);
++	$colors[S_CYAN]         = ImageColorAllocate($im,0,255,255);
++	$colors[S_BLACK]        = ImageColorAllocate($im,0,0,0);
++	$colors[S_GRAY]         = ImageColorAllocate($im,150,150,150);
++	$colors[S_WHITE]        = ImageColorAllocate($im,255,255,255);
+ 
+ 	$x=imagesx($im); 
+ 	$y=imagesy($im);
+@@ -256,7 +256,7 @@
+ 	imagestringup($im,0,imagesx($im)-10,imagesy($im)-50, S_ZABBIX_URL, $gray);
+ 
+ 	if(!isset($_REQUEST['border'])){
+-		imagerectangle($im,0,0,$width-1,$height-1,$colors['Black']);
++		imagerectangle($im,0,0,$width-1,$height-1,$colors[S_BLACK]);
+ 	}
+ 
+ 	ImageOut($im);
