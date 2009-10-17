@@ -1,0 +1,37 @@
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/page_footer.php zabbix-1.6.4/frontends/php/include/page_footer.php
+--- zabbix-1.6.4.orig/frontends/php/include/page_footer.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/page_footer.php	2009-10-17 13:50:09.000000000 +0900
+@@ -64,10 +64,16 @@
+ 			$table->SetCellSpacing(0);
+ 			$table->SetCellPadding(1);
+ 			$table->AddRow(array(
+-				new CCol(new CLink(
++                                new CCol(array(
++                                        new CLink(
+ 					S_ZABBIX_VER.SPACE.S_COPYRIGHT_BY.SPACE.S_SIA_ZABBIX,
+ 					"http://www.zabbix.com", "highlight", null, true),
+-					"page_footer_l"),
++                                        new CSpan(SPACE.SPACE.'/'.SPACE.SPACE,'divider'),
++                                        new CLink(
++                                        'Powered by ZABBIX-JP',
++                                        'http://www.zabbix.jp','highlight', null, true) 
++                                        ),
++                                "page_footer_l"),
+ 				new CCol(array(
+ 						new CSpan(SPACE.SPACE."|".SPACE.SPACE,"divider"),
+ 						new CSpan(($USER_DETAILS['userid'] == 0)?S_NOT_CONNECTED:S_CONNECTED_AS.SPACE."'".$USER_DETAILS["alias"]."'".
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/page_header.php zabbix-1.6.4/frontends/php/include/page_header.php
+--- zabbix-1.6.4.orig/frontends/php/include/page_header.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/page_header.php	2009-10-17 13:48:18.000000000 +0900
+@@ -450,9 +450,9 @@
+ 	if(!defined('ZBX_PAGE_NO_MENU')){
+ COpt::compare_files_with_menu($ZBX_MENU);
+ 
+-		$help = new CLink(S_HELP, 'http://www.zabbix.com/documentation.php', 'small_font', null, true);
++ 		$help = new CLink(S_HELP, 'http://www.zabbix.jp/documents', 'small_font', null, true);
+ 		$help->setTarget('_blank');
+-		$support = new CLink(S_GET_SUPPORT, 'http://www.zabbix.com/support.php', 'small_font', null, true);
++ 		$support = new CLink(S_GET_SUPPORT, 'http://www.zabbix.jp/forum', 'small_font', null, true);
+ 		$support->setTarget('_blank');
+ 		$printview = new CLink(S_PRINT, $_SERVER['REQUEST_URI'].(empty($_GET)?'?':'&').'print=1', 'small_font');
+ 		

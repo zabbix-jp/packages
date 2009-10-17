@@ -1,0 +1,100 @@
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/cn_zh.inc.php zabbix-1.6.4/frontends/php/include/locales/cn_zh.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/cn_zh.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/cn_zh.inc.php	2009-10-17 13:21:49.000000000 +0900
+@@ -188,7 +188,6 @@
+ 	'S_GRAPH'=>			'图形显示',
+ 	'S_TREND'=>			'Trend',
+ 	'S_COMPARE'=>			'对比',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Connected as',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_CONFIGURATION_OF_GRAPH'=>			'图表显示配置',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/de_de.inc.php zabbix-1.6.4/frontends/php/include/locales/de_de.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/de_de.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/de_de.inc.php	2009-10-17 13:21:59.000000000 +0900
+@@ -502,7 +502,6 @@
+ 	'S_TREND'=>			'Tendenz',
+ 	'S_COMPARE'=>			'vergleichen',
+ 	'S_ZABBIX_VER'=>			'Zabbix 1.6',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Angemeldet:',
+ 	'S_NOT_CONNECTED'=>			'Nicht angemeldet',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/fr_fr.inc.php zabbix-1.6.4/frontends/php/include/locales/fr_fr.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/fr_fr.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/fr_fr.inc.php	2009-10-17 13:22:13.000000000 +0900
+@@ -419,7 +419,6 @@
+ 	'S_GRAPH'=>			'Graphique',
+ 	'S_TREND'=>			'Tendance',
+ 	'S_COMPARE'=>			'Comparaison',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 par',
+ 	'S_CONNECTED_AS'=>			'Connecté au nom de',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_CONFIGURATION_OF_GRAPH'=>			'Configuration du graphique',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/hu_hu.inc.php zabbix-1.6.4/frontends/php/include/locales/hu_hu.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/hu_hu.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/hu_hu.inc.php	2009-10-17 13:22:22.000000000 +0900
+@@ -427,7 +427,6 @@
+ 	'S_GRAPH'=>			'Grafikon',
+ 	'S_TREND'=>			'Trend',
+ 	'S_COMPARE'=>			'Compare',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2007 by',
+ 	'S_CONNECTED_AS'=>			'Connected as',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_CONFIGURATION_OF_GRAPH'=>			'Configuration of graph',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/it_it.inc.php zabbix-1.6.4/frontends/php/include/locales/it_it.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/it_it.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/it_it.inc.php	2009-10-17 13:22:31.000000000 +0900
+@@ -177,7 +177,6 @@
+ 	'S_GRAPH'=>			'Graph',
+ 	'S_TREND'=>			'Trend',
+ 	'S_COMPARE'=>			'Compara',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Connesso come utente:',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_CONFIGURATION_OF_GRAPH'=>			'Configurazione grafici',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/lv_lv.inc.php zabbix-1.6.4/frontends/php/include/locales/lv_lv.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/lv_lv.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/lv_lv.inc.php	2009-10-17 13:23:00.000000000 +0900
+@@ -177,7 +177,6 @@
+ 	'S_GRAPH'=>			'Graph',
+ 	'S_TREND'=>			'Trend',
+ 	'S_COMPARE'=>			'Compare',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Connected as',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_CONFIGURATION_OF_GRAPH'=>			'Configuration of graph',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/pl_pl.inc.php zabbix-1.6.4/frontends/php/include/locales/pl_pl.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/pl_pl.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/pl_pl.inc.php	2009-10-17 13:23:16.000000000 +0900
+@@ -501,7 +501,6 @@
+ 	'S_GRAPH'=>					'Wykres',
+ 	'S_TREND'=>					'Trend',
+ 	'S_COMPARE'=>					'Porównanie',
+-	'S_COPYRIGHT_BY'=>				'Prawa autorskie 2001-2009 dla',
+ 	'S_CONNECTED_AS'=>				'Połączony jako',
+ 	'S_NOT_CONNECTED'=>				'Nie połączony',
+ 	'S_SIA_ZABBIX'=>				'SIA Zabbix',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/ru_ru.inc.php zabbix-1.6.4/frontends/php/include/locales/ru_ru.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/ru_ru.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/ru_ru.inc.php	2009-10-17 13:23:32.000000000 +0900
+@@ -529,7 +529,6 @@
+ 	'S_TREND'=>			'Динамика изменения',
+ 	'S_COMPARE'=>			'Сравнить',
+ 	'S_ZABBIX_VER'=>			'ZABBIX 1.7',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2008 by',
+ 	'S_CONNECTED_AS'=>			'Подключен как',
+ 	'S_NOT_CONNECTED'=>			'Не подключен',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/locales/sp_sp.inc.php zabbix-1.6.4/frontends/php/include/locales/sp_sp.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/sp_sp.inc.php	2009-04-03 23:44:06.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/sp_sp.inc.php	2009-10-17 13:23:42.000000000 +0900
+@@ -427,7 +427,6 @@
+ 	'S_GRAPH'=>			'Gráficos',
+ 	'S_TREND'=>			'Tendencia',
+ 	'S_COMPARE'=>			'Comparar',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2007 por',
+ 	'S_CONNECTED_AS'=>			'Conectado como',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_CONFIGURATION_OF_GRAPH'=>			'Configuración del gráfico',
+ 	
