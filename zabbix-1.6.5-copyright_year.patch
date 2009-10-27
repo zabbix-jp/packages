@@ -1,0 +1,110 @@
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/cn_zh.inc.php zabbix-1.6.5/frontends/php/include/locales/cn_zh.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/cn_zh.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/cn_zh.inc.php	2009-10-27 23:29:57.000000000 +0900
+@@ -114,7 +114,6 @@
+ 	'S_LATEST_DATA_BIG'=>			'最新数据',
+ 	'S_ALL_SMALL'=>			'all',
+ 	'S_GRAPH'=>			'图形显示',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Connected as',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_ITEM_ADDED'=>			'Item added',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/de_de.inc.php zabbix-1.6.5/frontends/php/include/locales/de_de.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/de_de.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/de_de.inc.php	2009-10-27 23:30:40.000000000 +0900
+@@ -406,7 +406,6 @@
+ 	'S_ALL_SMALL'=>			'alle',
+ 	'S_MINUS_OTHER_MINUS'=>			'- andere -',
+ 	'S_GRAPH'=>			'Graph',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Angemeldet:',
+ 	'S_NOT_CONNECTED'=>			'Nicht angemeldet',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/fr_fr.inc.php zabbix-1.6.5/frontends/php/include/locales/fr_fr.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/fr_fr.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/fr_fr.inc.php	2009-10-27 23:30:55.000000000 +0900
+@@ -327,7 +327,6 @@
+ 	'S_ALL_SMALL'=>			'tout',
+ 	'S_MINUS_OTHER_MINUS'=>			'- autre -',
+ 	'S_GRAPH'=>			'Graphique',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 par',
+ 	'S_CONNECTED_AS'=>			'Connecté au nom de',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_ITEM_ADDED'=>			'Item ajout',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/hu_hu.inc.php zabbix-1.6.5/frontends/php/include/locales/hu_hu.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/hu_hu.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/hu_hu.inc.php	2009-10-27 23:31:02.000000000 +0900
+@@ -335,7 +335,6 @@
+ 	'S_ALL_SMALL'=>			'mind',
+ 	'S_MINUS_OTHER_MINUS'=>			'- egyéb -',
+ 	'S_GRAPH'=>			'Grafikon',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2007 by',
+ 	'S_CONNECTED_AS'=>			'Connected as',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_ITEM_ADDED'=>			'Item added',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/it_it.inc.php zabbix-1.6.5/frontends/php/include/locales/it_it.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/it_it.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/it_it.inc.php	2009-10-27 23:31:09.000000000 +0900
+@@ -105,7 +105,6 @@
+ 	'S_NO_PERMISSIONS'=>			'Accesso negato!',
+ 	'S_ALL_SMALL'=>			'tutti',
+ 	'S_GRAPH'=>			'Graph',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Connesso come utente:',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_ITEM_ADDED'=>			'Elemento agguinto!',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/ja_jp.inc.php zabbix-1.6.5/frontends/php/include/locales/ja_jp.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/ja_jp.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/ja_jp.inc.php	2009-10-27 23:31:20.000000000 +0900
+@@ -407,7 +407,6 @@
+ 	'S_MINUS_OTHER_MINUS'=>			'- その他 -',
+ 	'S_NOT_SELECTED_SMALL'=>			'選択されていません',
+ 	'S_GRAPH'=>			'グラフ',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2008 by',
+ 	'S_CONNECTED_AS'=>			'次のユーザでログイン中',
+ 	'S_NOT_CONNECTED'=>			'未ログイン',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/lv_lv.inc.php zabbix-1.6.5/frontends/php/include/locales/lv_lv.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/lv_lv.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/lv_lv.inc.php	2009-10-27 23:31:27.000000000 +0900
+@@ -105,7 +105,6 @@
+ 	'S_NO_PERMISSIONS'=>			'No permissions !',
+ 	'S_ALL_SMALL'=>			'all',
+ 	'S_GRAPH'=>			'Graph',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2006 by',
+ 	'S_CONNECTED_AS'=>			'Connected as',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_ITEM_ADDED'=>			'Item added',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/pl_pl.inc.php zabbix-1.6.5/frontends/php/include/locales/pl_pl.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/pl_pl.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/pl_pl.inc.php	2009-10-27 23:31:32.000000000 +0900
+@@ -406,7 +406,6 @@
+ 	'S_ALL_SMALL'=>					'wszystkie',
+ 	'S_MINUS_OTHER_MINUS'=>				'- inne -',
+ 	'S_GRAPH'=>					'Wykres',
+-	'S_COPYRIGHT_BY'=>				'Prawa autorskie 2001-2009 dla',
+ 	'S_CONNECTED_AS'=>				'Połączony jako',
+ 	'S_NOT_CONNECTED'=>				'Nie połączony',
+ 	'S_SIA_ZABBIX'=>				'SIA Zabbix',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/ru_ru.inc.php zabbix-1.6.5/frontends/php/include/locales/ru_ru.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/ru_ru.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/ru_ru.inc.php	2009-10-27 23:31:39.000000000 +0900
+@@ -407,7 +407,6 @@
+ 	'S_ALL_SMALL'=>			'все',
+ 	'S_MINUS_OTHER_MINUS'=>			'- прочее -',
+ 	'S_GRAPH'=>			'График',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2008 by',
+ 	'S_CONNECTED_AS'=>			'Подключен как',
+ 	'S_NOT_CONNECTED'=>			'Не подключен',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+diff -Nru zabbix-1.6.5.orig/frontends/php/include/locales/sp_sp.inc.php zabbix-1.6.5/frontends/php/include/locales/sp_sp.inc.php
+--- zabbix-1.6.5.orig/frontends/php/include/locales/sp_sp.inc.php	2009-06-16 22:12:36.000000000 +0900
++++ zabbix-1.6.5/frontends/php/include/locales/sp_sp.inc.php	2009-10-27 23:31:47.000000000 +0900
+@@ -335,7 +335,6 @@
+ 	'S_ALL_SMALL'=>			'todo',
+ 	'S_MINUS_OTHER_MINUS'=>			'- otros -',
+ 	'S_GRAPH'=>			'Gráficos',
+-	'S_COPYRIGHT_BY'=>			'Copyright 2001-2007 por',
+ 	'S_CONNECTED_AS'=>			'Conectado como',
+ 	'S_SIA_ZABBIX'=>			'SIA Zabbix',
+ 	'S_ITEM_ADDED'=>			'Monitor añadido',

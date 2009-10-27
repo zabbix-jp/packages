@@ -1,0 +1,25 @@
+--- zabbix-1.6.4.orig/src/libs/zbxwin32/perfmon.c.orig	2009-06-16 19:12:38.000000000 +0900
++++ zabbix-1.6.4/src/libs/zbxwin32/perfmon.c	2009-06-16 19:05:08.000000000 +0900
+@@ -83,12 +83,17 @@
+ 	int				is_numeric;
+ 
+ 	dwSize = 0;
+-retry:
++	status = PdhParseCounterPath(counterPath, cpe, &dwSize, 0);
++	if (status == PDH_MORE_DATA || status == ERROR_SUCCESS) {
++		cpe = (PDH_COUNTER_PATH_ELEMENTS *)zbx_malloc(cpe, dwSize);
++	} else {
++		zabbix_log(LOG_LEVEL_DEBUG, "Can't get required buffer size. Counter path is \"%s\": %s",
++				counterPath, strerror_from_module(status, "PDH.DLL"));
++
++		zbx_free(cpe);
++		return FAIL;
++	}
+ 	if (ERROR_SUCCESS != (status = PdhParseCounterPath(counterPath, cpe, &dwSize, 0))) {
+-		if (status == PDH_MORE_DATA) {
+-			cpe = (PDH_COUNTER_PATH_ELEMENTS *)zbx_malloc(cpe, dwSize);
+-			goto retry;
+-		}
+ 		zabbix_log(LOG_LEVEL_DEBUG, "Can't parse counter path \"%s\": %s",
+ 				counterPath, strerror_from_module(status, "PDH.DLL"));
+ 
