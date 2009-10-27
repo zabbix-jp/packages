@@ -1,0 +1,44 @@
+diff -uNr zabbix-1.6.4.old/frontends/php/include/defines.inc.php zabbix-1.6.4/frontends/php/include/defines.inc.php
+--- zabbix-1.6.4.old/frontends/php/include/defines.inc.php	2009-04-03 22:44:06.000000000 +0800
++++ zabbix-1.6.4/frontends/php/include/defines.inc.php	2009-05-14 13:36:30.659124395 +0800
+@@ -477,7 +477,7 @@
+ }
+ 	define('ZBX_EREG_INTERNAL_NAMES', '([0-9a-zA-Z_.[:space:][.'.ZBX_EREG_MINUS_SYMB.'.]$]+)');
+ 	define('ZBX_EREG_KEY_NAME', '([0-9a-zA-Z_.,[.:.][:space:][.'.ZBX_EREG_MINUS_SYMB.'.]$]+)');
+-	define('ZBX_EREG_PARAMS', '([[:print:]]+){0,1}');
++	define('ZBX_EREG_PARAMS', '([^[:cntrl:]]+){0,1}');
+ 	define('ZBX_EREG_SIGN', '([&|><=+*/#[.'.ZBX_EREG_MINUS_SYMB.'.]])');
+ 	define('ZBX_EREG_NUMBER', '([[.'.ZBX_EREG_MINUS_SYMB.'.]+]*[0-9]+[.]{0,1}[0-9]*[A-Z]{0,1})');
+ //-------
+diff -uNr zabbix-1.6.4.old/frontends/php/include/forms.inc.php zabbix-1.6.4/frontends/php/include/forms.inc.php
+--- zabbix-1.6.4.old/frontends/php/include/forms.inc.php	2009-04-03 22:44:06.000000000 +0800
++++ zabbix-1.6.4/frontends/php/include/forms.inc.php	2009-05-14 13:36:30.816116064 +0800
+@@ -2268,7 +2268,7 @@
+ 				($limited ? null : new CButton('insert',S_INSERT,
+ 					"return PopUp('popup_trexpr.php?dstfrm=".$frmTrig->GetName().
+ 					"&dstfld1=expression&srctbl=expression".
+-					"&srcfld1=expression&expression=' + escape(getSelectedText(this.form.elements['expression'])),700,200);"))
++					"&srcfld1=expression&expression=' + encodeURI(getSelectedText(this.form.elements['expression'])),700,200);"))
+ 			));
+ 	/* dependencies */
+ 		foreach($dependencies as $val){
+diff -uNr zabbix-1.6.4.old/frontends/php/js/menu.js zabbix-1.6.4/frontends/php/js/menu.js
+--- zabbix-1.6.4.old/frontends/php/js/menu.js	2009-04-03 22:44:06.000000000 +0800
++++ zabbix-1.6.4/frontends/php/js/menu.js	2009-05-14 13:38:08.641927265 +0800
+@@ -488,12 +488,12 @@
+ // updates status bar message of the browser
+ // ------------------------------------------------------------------------------------------
+ function mitem_upstatus (b_clear) {
+-	window.setTimeout("window.status=unescape('" + (b_clear
++	window.setTimeout("window.status=decodeURI('" + (b_clear
+ 		? ''
+ 		: (this.a_config[2] && this.a_config[2]['sb']
+-			? escape(this.a_config[2]['sb'])
+-			: escape(this.a_config[0]) + (this.a_config[1]
+-				? ' ('+ escape(this.a_config[1]) + ')'
++			? encodeURI(this.a_config[2]['sb'])
++			: encodeURI(this.a_config[0]) + (this.a_config[1]
++				? ' ('+ encodeURI(this.a_config[1]) + ')'
+ 				: ''))) + "')", 10);
+ }
+ 

@@ -1,0 +1,96 @@
+diff -uNrp zabbix-1.6.4.orig/src/libs/zbxsysinfo/linux/swap.c zabbix-1.6.4/src/libs/zbxsysinfo/linux/swap.c
+--- zabbix-1.6.4.orig/src/libs/zbxsysinfo/linux/swap.c	2009-08-12 20:52:37.000000000 +0900
++++ zabbix-1.6.4/src/libs/zbxsysinfo/linux/swap.c	2009-08-14 15:30:02.000000000 +0900
+@@ -255,55 +255,65 @@ struct swap_stat_s {
+ 
+ #if defined(KERNEL_2_4)
+ #	define INFO_FILE_NAME	"/proc/partitions"
+-#	define PARSE(line)	if(sscanf(line,"%*d %*d %*d %s " \
++#	define PARSE(line)	if(sscanf(line,ZBX_FS_UI64 ZBX_FS_UI64 " %*d %s " \
+ 					ZBX_FS_UI64 " %*d " ZBX_FS_UI64 " %*d " \
+ 					ZBX_FS_UI64 " %*d " ZBX_FS_UI64 " %*d %*d %*d %*d", \
++				&rdev_major, 			/* major */ \
++				&rdev_minor, 			/* minor */ \
+ 				name, 			/* name */ \
+ 				&(result->rio), 	/* rio */ \
+ 				&(result->rsect),	/* rsect */ \
+ 				&(result->wio), 	/* rio */ \
+ 				&(result->wsect)	/* wsect */ \
+-				) != 5) continue
++				) != 7) continue
+ #else
+ #	define INFO_FILE_NAME	"/proc/diskstats"
+-#	define PARSE(line)	if(sscanf(line, "%*d %*d %s " \
++#	define PARSE(line)	if(sscanf(line, ZBX_FS_UI64 ZBX_FS_UI64 " %s " \
+ 					ZBX_FS_UI64 " %*d " ZBX_FS_UI64 " %*d " \
+ 					ZBX_FS_UI64 " %*d " ZBX_FS_UI64 " %*d %*d %*d %*d", \
++				&rdev_major, 			/* major */ \
++				&rdev_minor, 			/* minor */ \
+ 				name, 			/* name */ \
+ 				&(result->rio), 	/* rio */ \
+ 				&(result->rsect),	/* rsect */ \
+ 				&(result->wio), 	/* wio */ \
+ 				&(result->wsect)	/* wsect */ \
+-				) != 5)  \
+-					if(sscanf(line,"%*d %*d %s " \
++				) != 7)  \
++					if(sscanf(line,ZBX_FS_UI64 ZBX_FS_UI64 " %s " \
+ 						ZBX_FS_UI64 " " ZBX_FS_UI64 " " \
+ 						ZBX_FS_UI64 " " ZBX_FS_UI64, \
++					&rdev_major, 			/* major */ \
++					&rdev_minor, 			/* minor */ \
+ 					name, 			/* name */ \
+ 					&(result->rio), 	/* rio */ \
+ 					&(result->rsect),	/* rsect */ \
+ 					&(result->wio), 	/* wio */ \
+ 					&(result->wsect)	/* wsect */ \
+-					) != 5) continue
++					) != 7) continue
+ #endif
+ 
+ static int get_swap_dev_stat(const char *interface, struct swap_stat_s *result)
+ {
+ 	int ret = SYSINFO_RET_FAIL;
+ 	char line[MAX_STRING_LEN];
+-
+ 	char name[MAX_STRING_LEN];
++	char interface_path[MAX_STRING_LEN] = "/dev/";
++	zbx_uint64_t rdev_major;
++	zbx_uint64_t rdev_minor;
++	struct stat dev_st;
+ 
+ 	FILE *f;
+ 
+ 	assert(result);
+ 
+-	if(NULL != (f = fopen(INFO_FILE_NAME,"r")))
++	strncat(interface_path, interface, MAX_STRING_LEN - 6);
++	if(stat(interface_path, &dev_st) >= 0 && NULL != (f = fopen(INFO_FILE_NAME,"r")))
+ 	{
+ 		while(fgets(line,MAX_STRING_LEN,f) != NULL)
+ 		{
+ 			PARSE(line);
+ 		
+-			if(strncmp(name, interface, MAX_STRING_LEN) == 0)
++			if(major(dev_st.st_rdev) == rdev_major && minor(dev_st.st_rdev) == rdev_minor)
+ 			{
+ 				ret = SYSINFO_RET_OK;
+ 				break;
+@@ -415,7 +425,7 @@ static int 	get_swap_stat(const char *in
+ int	SYSTEM_SWAP_IN(const char *cmd, const char *param, unsigned flags, AGENT_RESULT *result)
+ {
+ 	int		ret = SYSINFO_RET_FAIL;
+-	char    	swapdev[10];
++	char    	swapdev[MAX_STRING_LEN];
+ 	char    	mode[20];
+ 
+ 	struct swap_stat_s	ss;
+@@ -482,7 +492,7 @@ int	SYSTEM_SWAP_IN(const char *cmd, cons
+ int	SYSTEM_SWAP_OUT(const char *cmd, const char *param, unsigned flags, AGENT_RESULT *result)
+ {
+ 	int		ret = SYSINFO_RET_FAIL;
+-	char    	swapdev[10];
++	char    	swapdev[MAX_STRING_LEN];
+ 	char    	mode[20];
+ 
+ 	struct swap_stat_s	ss;
