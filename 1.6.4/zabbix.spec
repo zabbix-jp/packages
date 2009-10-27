@@ -22,7 +22,7 @@ Patch6:         zabbix-1.6.4-trigger_cond_multibyte_param.patch
 Patch7:         zabbix-1.6.4-eventlog_acp_to_utf8.patch
 Patch8:         zabbix-1.6.4-freeaddrinfo.patch
 Patch9:         zabbix-1.6.4-pdb_parse_counter_path.patch
-Patch10:         zabbix-1.6.4-dm_swap.patch
+Patch10:        zabbix-1.6.4-dm_swap.patch
 Patch11:        zabbix-1.6.4-eventlog_formatmessage_crash.patch
 Patch12:        zabbix-1.6.4-datasql.patch
 Patch13:        zabbix-1.6.4-powered_by_zabbixjp.patch
@@ -75,6 +75,7 @@ Requires:	 zabbix = %{version}-%{release}
 Requires:        zabbix-server-implementation = %{version}-%{release}
 Requires:        fping
 Requires:	 net-snmp-libs
+Requires:        unixODBC
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
@@ -87,6 +88,7 @@ Summary:         Zabbix server compiled to use MySQL
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
 Requires:	 zabbix-server = %{version}-%{release}
+Requires:        mysql
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Obsoletes:       zabbix <= 1.5.3-0.1
 Conflicts:       zabbix-server-pgsql
@@ -100,6 +102,7 @@ Summary:         Zabbix server compiled to use PostgresSQL
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
 Requires:	 zabbix-server = %{version}-%{release}
+Requires:        postgresql
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Conflicts:       zabbix-server-mysql
 Conflicts:       zabbix-server-sqlite3
@@ -112,6 +115,7 @@ Summary:         Zabbix server compiled to use SQLite
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
 Requires:	 zabbix-server = %{version}-%{release}
+Requires:        sqlite
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Conflicts:       zabbix-server-mysql
 Conflicts:	 zabbix-server-pgsql
@@ -147,6 +151,7 @@ The Zabbix proxy
 Summary:         Zabbix proxy compiled to use MySQL
 Group:           Applications/Internet
 Requires:	 zabbix-proxy = %{version}-%{release}
+Requires:        mysql
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
 
 %description proxy-mysql
@@ -156,6 +161,7 @@ The Zabbix proxy compiled to use MySQL
 Summary:         Zabbix proxy compiled to use PostgreSQL
 Group:           Applications/Internet
 Requires:	 zabbix-proxy = %{version}-%{release}
+Requires:        postgresql
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
 
 %description proxy-pgsql
@@ -165,6 +171,7 @@ The Zabbix proxy compiled to use PostgreSQL
 Summary:         Zabbix proxy compiled to use SQLite
 Group:           Applications/Internet
 Requires:	 zabbix-proxy = %{version}-%{release}
+Requires:        sqlite
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
 
 %description proxy-sqlite3
@@ -173,6 +180,7 @@ The Zabbix proxy compiled to use SQLite
 %package web
 Summary:         Zabbix Web Frontend
 Group:           Applications/Internet
+Requires:        httpd
 Requires:        php
 Requires:	 php-gd
 Requires:	 php-bcmath
@@ -208,6 +216,7 @@ Zabbix web frontend for PostgreSQL
 Summary:         Zabbix web frontend for SQLite
 Group:           Applications/Internet
 Requires:	 zabbix-web = %{version}-%{release}
+Requires:        sqlite
 Provides:	 zabbix-web-database = %{version}-%{release}
 
 %description web-sqlite3
@@ -304,6 +313,9 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/alertscripts
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/externalscripts
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
 mkdir -p $RPM_BUILD_ROOT%{_datadir}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
@@ -316,11 +328,16 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
 #pushd %{name}-%{version}-mysql
 # php frontend
 find ./frontends/php -name '*.orig'|xargs rm -f
+find ./create -name '*.orig'|xargs rm -f
 cp -a frontends/php $RPM_BUILD_ROOT%{_datadir}/%{name}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/include/db.inc.php \
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/include/defines.inc.php \
     $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
-ln -s ../../../..%{_sysconfdir}/%{name}/db.inc.php \
-    $RPM_BUILD_ROOT%{_datadir}/%{name}/include/db.inc.php
+ln -s ../../../..%{_sysconfdir}/%{name}/defines.inc.php \
+    $RPM_BUILD_ROOT%{_datadir}/%{name}/include/defines.inc.php
+mv $RPM_BUILD_ROOT%{_datadir}/%{name}/conf/maintenance.inc.php \
+    $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
+ln -s ../../../..%{_sysconfdir}/%{name}/maintenance.inc.php \
+    $RPM_BUILD_ROOT%{_datadir}/%{name}/conf/maintenance.inc.php
 touch $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix.conf.php
 ln -s ../../../..%{_sysconfdir}/%{name}/zabbix.conf.php \
     $RPM_BUILD_ROOT%{_datadir}/%{name}/conf/zabbix.conf.php
@@ -334,12 +351,13 @@ cat misc/conf/zabbix_agentd.conf | sed \
     -e 's|PidFile=.*|PidFile=%{_localstatedir}/run/zabbix/zabbix_agentd.pid|g' \
     -e 's|LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_agentd.log|g' \
     -e 's|#LogFileSize=.*|LogFileSize=0|g' \
+    -e '/####### USER-DEFINED MONITORED PARAMETERS #######/i # Configuration include directory\nInclude=/etc/zabbix/zabbix_agentd.d\n' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
 cat misc/conf/zabbix_server.conf | sed \
     -e 's|PidFile=.*|PidFile=%{_localstatedir}/run/zabbix/zabbix.pid|g' \
     -e 's|LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
     -e 's|#LogFileSize=.*|LogFileSize=0|g' \
-    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_localstatedir}/lib/zabbix/|g' \
+    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_sysconfdir}/zabbix/alertscripts/|g' \
     -e 's|DBUser=root|DBUser=zabbix|g' \
     -e 's|DBSocket=/tmp/mysql.sock|DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
@@ -352,8 +370,7 @@ cat misc/conf/zabbix_proxy.conf | sed \
     -e 's|DBSocket=/tmp/mysql.sock|DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
 # modified by Asianux(AXBug#4525)
-#install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
-cat %{SOURCE1} | sed 's/^/#/' > $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 # log rotation
 cat %{SOURCE5} | sed -e 's|COMPONENT|server|g' > \
@@ -447,8 +464,10 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
 %doc docs/*.pdf upgrades/dbpatches create/data create/schema
-%config(noreplace) %{_sysconfdir}/zabbix/zabbix_server.conf
+%config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_server.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
+%dir %{_sysconfdir}/zabbix/alertscripts
+%dir %{_sysconfdir}/zabbix/externalscripts
 %{_sysconfdir}/init.d/zabbix-server
 
 %files server-mysql
@@ -472,6 +491,7 @@ fi
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agent.conf
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
+%dir %{_sysconfdir}/zabbix/zabbix_agentd.d
 %{_sysconfdir}/init.d/zabbix-agent
 %{_sbindir}/zabbix_agent
 %{_sbindir}/zabbix_agentd
@@ -481,7 +501,7 @@ fi
 %files proxy
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
-%config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
+%config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_proxy.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
 %{_sysconfdir}/init.d/zabbix-proxy
 
@@ -503,8 +523,9 @@ fi
 %files web
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
-%config(noreplace) %{_sysconfdir}/zabbix/zabbix.conf.php
-%config(noreplace) %{_sysconfdir}/zabbix/db.inc.php
+%config(noreplace) %attr(600,apache,apache) %{_sysconfdir}/zabbix/zabbix.conf.php
+%config(noreplace) %{_sysconfdir}/zabbix/defines.inc.php
+%config(noreplace) %{_sysconfdir}/zabbix/maintenance.inc.php
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/zabbix.conf
 %{_datadir}/zabbix
 
