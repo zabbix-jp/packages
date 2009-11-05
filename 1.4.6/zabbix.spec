@@ -28,6 +28,9 @@ Patch11:        zabbix-1.4.6-trevent_memory_exhaustedfix.patch
 Patch12:        zabbix-1.4.6-trigger_cond_multibyte_param.patch
 Patch13:        zabbix-1.4.6-powered_by_zabbixjp.patch
 Patch14:        zabbix-1.4.6-trigger_multibyte_expression.patch
+Patch15:        zabbix-1.4.6-display_events.patch
+Patch16:        zabbix-1.4.6-ignore_nodata_event.patch
+
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define database mysql
@@ -134,6 +137,8 @@ cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
 %patch12 -p1 -b .trigger_cond_multibyte_param.orig
 %patch13 -p1 -b .powered_by_zabbixjp.orig
 %patch14 -p1 -b .trigger_multibyte_expression.orig
+%patch15 -p1 -b .display_events.orig
+%patch16 -p1 -b .ignore_nodata_event.orig
 
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
@@ -303,6 +308,10 @@ fi
 %{_datadir}/%{name}/js/*
 
 %changelog
+* Fri Nov 6 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-3
+- Add a patch to improve slow query to show events screen (Patch15)
+- fix wrong event when start zabbix server if use nodata expression in trigger (Patch16)
+
 * Sun Sep 27 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
 - Add a patch to allow multibyte trigger expression (Patch14)
 

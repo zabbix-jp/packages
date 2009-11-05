@@ -1,0 +1,11 @@
+diff -Nur zabbix-1.4.6.org/frontends/php/include/events.inc.php zabbix-1.4.6/frontends/php/include/events.inc.php
+--- zabbix-1.4.6.org/frontends/php/include/events.inc.php	2008-07-23 20:47:31.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/events.inc.php	2009-10-17 13:49:48.000000000 +0900
+@@ -51,7 +51,6 @@
+ 		}
+ 		else
+ 		{
+-			$sql_from = ", hosts_groups hg ";
+ 			$sql_cond = " and h.hostid in (".$availiable_hosts.") ";
+ 		}
+ 	
