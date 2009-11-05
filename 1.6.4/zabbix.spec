@@ -29,6 +29,8 @@ Patch13:        zabbix-1.6.4-powered_by_zabbixjp.patch
 Patch14:        zabbix-1.6.4-trigger_multibyte_expression.patch
 Patch15:        zabbix-1.6.4-display_events.patch
 Patch16:        zabbix-1.6.4-proc_info_sum.patch
+Patch17:        zabbix-1.6.4-fix_to_compile_visualstudio_proj.patch
+Patch18:        zabbix-1.6.4-remove_broken_char.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -241,6 +243,8 @@ Zabbix web frontend for SQLite
 %patch14 -p1 -b .trigger_multibyte_expression.orig
 %patch15 -p1 -b .display_events.orig
 %patch16 -p1 -b .proc_info_sum.orig
+%patch17 -p1 -b .fix_to_compile_visualstudio_proj.orig
+%patch18 -p1 -b remove_broken_char.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -557,7 +561,9 @@ fi
 - Add link to ZABBIX-JP in header and footer (Patch13)
 - Add a patch to allow multibyte trigger expression (Patch14)
 - Add a patch to improve slow query to show events screen (Patch15)
-- Add a patch to fix sum parameter on proc_info item (Patch16) 
+- Add a patch to fix sum parameter on proc_info item (Patch16)
+- Add a patch to fix LDAP library probrem when complie on Windows (Patch17)
+- Add a patch to fix broken character probrem when compile on Windows (Patch18)
 
 * Fri Jan 23 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.6.2-2
 - Rebuild for MySQL 5.1.X
