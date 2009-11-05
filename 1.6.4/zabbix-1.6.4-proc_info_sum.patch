@@ -1,0 +1,16 @@
+diff -Nur zabbix-1.6.4.org/src/libs/zbxsysinfo/win32/proc.c zabbix-1.6.4/src/libs/zbxsysinfo/win32/proc.c
+--- zabbix-1.6.4.org/src/libs/zbxsysinfo/win32/proc.c	2009-04-03 23:44:04.000000000 +0900
++++ zabbix-1.6.4/src/libs/zbxsysinfo/win32/proc.c	2009-11-04 16:30:00.000000000 +0900
+@@ -255,7 +255,11 @@
+    /* Recalculate final value according to selected type */
+    if (count==1)     /* First instance */
+    {
+-      *lastValue = value;
++      if(type==0){
++        *lastValue = value;
++      }else{
++        *lastValue = 0;
++      }
+    }
+ 
+    switch(type)
