@@ -363,7 +363,7 @@ cat misc/conf/zabbix_server.conf | sed \
     -e 's|PidFile=.*|PidFile=%{_localstatedir}/run/zabbix/zabbix.pid|g' \
     -e 's|LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
     -e 's|#LogFileSize=.*|LogFileSize=0|g' \
-    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_sysconfdir}/zabbix/alertscripts/|g' \
+    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_sysconfdir}/zabbix/alertscripts|g' \
     -e 's|DBUser=root|DBUser=zabbix|g' \
     -e 's|DBSocket=/tmp/mysql.sock|DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
