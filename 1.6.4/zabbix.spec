@@ -34,19 +34,21 @@ Patch18:        zabbix-1.6.4-remove_broken_char.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%define is_el3 %(grep -i "release 3" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 %define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 %define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
 
 BuildRequires:   mysql-devel
 BuildRequires:   postgresql-devel
-BuildRequires:   net-snmp-devel
+BuildRequires:   sqlite-devel
 BuildRequires:   openldap-devel
+BuildRequires:   net-snmp-devel
 BuildRequires:   gnutls-devel
 BuildRequires:   iksemel-devel
-BuildRequires:   curl-devel
-BuildRequires:   sqlite-devel
 BuildRequires:   unixODBC-devel
+
+%if %is_el5
+BuildRequires:   curl-devel
+%endif
 
 Requires:        logrotate
 Requires(pre):   /usr/sbin/useradd
@@ -74,10 +76,10 @@ companies with a multitude of servers.
 %package server
 Summary:         Zabbix server common files
 Group:           Applications/Internet
-Requires:	 zabbix = %{version}-%{release}
+Requires:	     zabbix = %{version}-%{release}
 Requires:        zabbix-server-implementation = %{version}-%{release}
 Requires:        fping
-Requires:	 net-snmp-libs
+Requires:	     net-snmp-libs
 Requires:        unixODBC
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
@@ -90,7 +92,7 @@ Zabbix server common files
 Summary:         Zabbix server compiled to use MySQL
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
-Requires:	 zabbix-server = %{version}-%{release}
+Requires:	     zabbix-server = %{version}-%{release}
 Requires:        mysql
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Obsoletes:       zabbix <= 1.5.3-0.1
@@ -104,7 +106,7 @@ Zabbix server compiled to use MySQL
 Summary:         Zabbix server compiled to use PostgresSQL
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
-Requires:	 zabbix-server = %{version}-%{release}
+Requires:	     zabbix-server = %{version}-%{release}
 Requires:        postgresql
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Conflicts:       zabbix-server-mysql
@@ -117,11 +119,11 @@ Zabbix server compiled to use PostgresSQL
 Summary:         Zabbix server compiled to use SQLite
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
-Requires:	 zabbix-server = %{version}-%{release}
+Requires:	     zabbix-server = %{version}-%{release}
 Requires:        sqlite
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Conflicts:       zabbix-server-mysql
-Conflicts:	 zabbix-server-pgsql
+Conflicts:	     zabbix-server-pgsql
 
 %description server-sqlite3
 Zabbix server compiled to use SQLite
@@ -268,9 +270,14 @@ chmod -R a+rX .
     --with-mysql \
     --with-net-snmp \
     --with-ldap \
-    --with-libcurl \
+    --with-unixodbc \
+  %if %is_el4
+    --with-jabber
+  %endif
+  %if %is_el5
     --with-jabber \
-    --with-unixodbc
+    --with-libcurl
+  %endif
 
 make %{?_smp_mflags}
 
@@ -285,9 +292,15 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
     --with-pgsql \
     --with-net-snmp \
     --with-ldap \
-    --with-libcurl \
+    --with-unixodbc \
+  %if %is_el4
+    --with-jabber
+  %endif
+  %if %is_el5
     --with-jabber \
-    --with-unixodbc
+    --with-libcurl
+  %endif
+
 
 make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
@@ -301,9 +314,15 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
     --with-sqlite3 \
     --with-net-snmp \
     --with-ldap \
-    --with-libcurl \
+    --with-unixodbc \
+  %if %is_el4
+    --with-jabber
+  %endif
+  %if %is_el5
     --with-jabber \
-    --with-unixodbc
+    --with-libcurl
+  %endif
+
 
 make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_sqlite3
