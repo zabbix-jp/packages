@@ -28,10 +28,12 @@ Patch12:        zabbix-1.6.4-datasql.patch
 Patch13:        zabbix-1.6.5-powered_by_zabbixjp.patch
 Patch14:        zabbix-1.6.4-trigger_multibyte_expression.patch
 Patch15:        zabbix-1.6.4-display_events.patch
+Patch16:        zabbix-1.6.4-proc_info_sum.patch
+Patch17:        zabbix-1.6.4-fix_to_compile_visualstudio_proj.patch
+Patch18:        zabbix-1.6.4-remove_broken_char.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%define is_el3 %(grep -i "release 3" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 %define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 %define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
 
@@ -41,9 +43,12 @@ BuildRequires:   net-snmp-devel
 BuildRequires:   openldap-devel
 BuildRequires:   gnutls-devel
 BuildRequires:   iksemel-devel
-BuildRequires:   curl-devel
 BuildRequires:   sqlite-devel
 BuildRequires:   unixODBC-devel
+
+%if %is_el5
+BuildRequires:   curl-devel
+%endif
 
 Requires:        logrotate
 Requires(pre):   /usr/sbin/useradd
@@ -239,6 +244,9 @@ Zabbix web frontend for SQLite
 %patch13 -p1 -b .powered_by_zabbixjp.orig
 %patch14 -p1 -b .trigger_multibyte_expression.orig
 %patch15 -p1 -b .display_events.orig
+%patch16 -p1 -b .proc_info_sum.orig
+%patch17 -p1 -b .fix_to_compile_visualstudio_proj.orig
+%patch18 -p1 -b remove_broken_char.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -262,9 +270,14 @@ chmod -R a+rX .
     --with-mysql \
     --with-net-snmp \
     --with-ldap \
-    --with-libcurl \
+    --with-unixodbc \
+  %if %is_el4
+    --with-jabber
+  %endif
+  %if %is_el5
     --with-jabber \
-    --with-unixodbc
+    --with-libcurl
+  %endif
 
 make %{?_smp_mflags}
 
@@ -279,9 +292,14 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
     --with-pgsql \
     --with-net-snmp \
     --with-ldap \
-    --with-libcurl \
+    --with-unixodbc \
+  %if %is_el4
+    --with-jabber
+  %endif
+  %if %is_el5
     --with-jabber \
-    --with-unixodbc
+    --with-libcurl
+  %endif
 
 make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
@@ -295,9 +313,14 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
     --with-sqlite3 \
     --with-net-snmp \
     --with-ldap \
-    --with-libcurl \
+    --with-unixodbc \
+  %if %is_el4
+    --with-jabber
+  %endif
+  %if %is_el5
     --with-jabber \
-    --with-unixodbc
+    --with-libcurl
+  %endif
 
 make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_sqlite3
@@ -357,7 +380,7 @@ cat misc/conf/zabbix_server.conf | sed \
     -e 's|PidFile=.*|PidFile=%{_localstatedir}/run/zabbix/zabbix.pid|g' \
     -e 's|LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
     -e 's|#LogFileSize=.*|LogFileSize=0|g' \
-    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_sysconfdir}/zabbix/alertscripts/|g' \
+    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_sysconfdir}/zabbix/alertscripts|g' \
     -e 's|DBUser=root|DBUser=zabbix|g' \
     -e 's|DBSocket=/tmp/mysql.sock|DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
@@ -561,6 +584,9 @@ fi
 - Add link to ZABBIX-JP in header and footer (Patch13)
 - Add a patch to allow multibyte trigger expression (Patch14)
 - Add a patch to improve slow query to show events screen (Patch15)
+- Add a patch to fix sum parameter on proc_info item (Patch16)
+- Add a patch to fix LDAP library probrem when complie on Windows (Patch17)
+- Add a patch to fix broken character probrem when compile on Windows (Patch18)
 
 * Fri Jan 23 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.6.2-2
 - Rebuild for MySQL 5.1.X
