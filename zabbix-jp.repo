@@ -1,20 +1,41 @@
 [zabbix-jp]
 name=ZABBIX-JP - $basearch
-baseurl=http://www.zabbix.jp/binaries/{zbxver}/rhel$releasever/$basearch/
+baseurl=http://www.zabbix.jp/binaries/zabbix/{zbxver}/rhel$releasever/$basearch/
 enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-JP
 
 [zabbix-jp-debuginfo]
 name=ZABBIX-JP - $basearch - Debug
-baseurl=http://www.zabbix.jp/binaries/{zbxver}/rhel$releasever/$basearch/debug
+baseurl=http://www.zabbix.jp/binaries/zabbix/{zbxver}/rhel$releasever/$basearch/debug/
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-JP
 gpgcheck=1
 
 [zabbix-jp-source]
 name=ZABBIX-JP - $basearch - Source
-baseurl=http://www.zabbix.jp/binaries/{zbxver}/rhel$releasever/SRPMS
+baseurl=http://www.zabbix.jp/binaries/zabbix/{zbxver}/rhel$releasever/SRPMS/
 enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-JP
 gpgcheck=1
+
+[zabbix-jp-fping]
+name=ZABBIX-JP iksemel - $basearch 
+baseurl=http://www.zabbix.jp/binaries/fping/rhel$releasever/$basearch/
+enable=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-JP
+
+[zabbix-jp-iksemel]
+name=ZABBIX-JP iksemel - $basearch
+baseurl=http://www.zabbix.jp/binaries/iksemel/rhel$releasever/$basearch/
+enable=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-JP
+
+[zabbix-jp-release]
+name=ZABBIX-JP iksemel - $basearch
+baseurl=http://www.zabbix.jp/binaries/zabbix-jp-release/rhel$releasever/noarch/
+enable=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-JP
