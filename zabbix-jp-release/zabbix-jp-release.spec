@@ -56,6 +56,7 @@ cat %{SOURCE2} |sed \
     -e 's/{zbxver}/zabbix-1.6/g' \
     > $RPM_BUILD_ROOT%{_datadir}/%{name}/zabbix-jp-1.6.repo
 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -73,12 +74,13 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc GPL
 /etc/pki/rpm-gpg/RPM-GPG-KEY-ZABBIX-JP
-%{_datadir}/%{name}
+%config(noreplace) %{_datadir}/%{name}
 
 %changelog
 * Wed Nov 11 2009 Kodai Terashima <kodai74@gmail.com> - 5-2
 - Marge RHEL5/CentOS5 and RHEL4/CentOS4 spec file
 - Add support for several zabbix version
+- Change repository directory
 
 * Tue Jun 16 2009 Kodai Terashima <kodai74@gmail.com> - 5-1
 - Initial Package for RHEL5
