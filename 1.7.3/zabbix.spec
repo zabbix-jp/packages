@@ -1,5 +1,5 @@
 Name:           zabbix
-Version:        1.7.3
+Version:        1.7.4
 Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
@@ -13,7 +13,6 @@ Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
 Source5:        zabbix-logrotate.in
 Source6:        zabbix-1.7.2-ja_jp.inc.php
-Patch1:         zabbix-1.7-checks_db_few_argument.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -213,7 +212,6 @@ Zabbix web frontend for SQLite
 
 %prep
 %setup0 -q
-%patch1 -p1 -b .checks_db_few_argument.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -537,7 +535,11 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> -1.7.3-1
+* Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
+- Update to 1.7.4
+- Delete zabbix-1.7-checks_db_few_argument.patch
+
+* Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.3-1
 - Update to 1.7.3
 - Replace manual pdf file by README 
 
