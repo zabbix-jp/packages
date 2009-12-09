@@ -1,0 +1,11 @@
+--- zabbix-1.7.orig/src/zabbix_server/poller/checks_db.c	2009-09-06 06:00:07.000000000 +0900
++++ zabbix-1.7/src/zabbix_server/poller/checks_db.c	2009-09-06 17:33:00.000000000 +0900
+@@ -159,7 +159,7 @@
+ 		{
+ 			if( NULL != (row = odbc_DBfetch(odbc_DBselect(&dbh, db_sql))) )
+ 			{
+-				if (SUCCEED == set_result_type(result, item->value_type, row[0]))
++				if (SUCCEED == set_result_type(result, item->value_type, item->data_type, row[0]))
+ 					ret = SUCCEED;
+ 			}
+ 			else
