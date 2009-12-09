@@ -537,8 +537,9 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Sun Dec 6 2009 Kodai Terashima <kodai74@gmail.com> -1.7.3-1
+* Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> -1.7.3-1
 - Update to 1.7.3
+- Replace manual pdf file by README 
 
 * Mon Nov 11 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.2-1
 - Update to 1.7.2
