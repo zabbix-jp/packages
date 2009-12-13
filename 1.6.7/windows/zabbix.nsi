@@ -167,14 +167,24 @@ Section "Zabbix Sender (optional)" SEC02
   SetOutPath "$INSTDIR"
   ; ADD FILES
   DetailPrint "ZABBIX Senderをインストールしています..."
-  File ".\Installer\win32\zabbix_sender.exe"
+  strcmp $OS64B '0' 0 x64Bitinst
+    File ".\Installer\win32\zabbix_sender.exe"
+    goto s1
+  x64Bitinst:
+    File ".\Installer\win64\zabbix_sender.exe"
+  s1:
 SectionEnd
 
 Section "Zabbix get (optional)" SEC03
   SetOutPath "$INSTDIR"  
   ; ADD FILES
   DetailPrint "ZABBIX getをインストールしています..."
-  File ".\Installer\win32\zabbix_get.exe"
+  strcmp $OS64B '0' 0 x64Bitinst
+    File ".\Installer\win32\zabbix_get.exe"
+    goto s1
+  x64Bitinst:
+    File ".\Installer\win64\zabbix_get.exe"
+  s1:
 SectionEnd
 
 ;--------------------------------
