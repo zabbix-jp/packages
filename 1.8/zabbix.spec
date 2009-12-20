@@ -12,7 +12,15 @@ Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
 Source5:        zabbix-logrotate.in
-Source6:        zabbix-1.7.2-ja_jp.inc.php
+Source6:        ipagui.ttf
+Source7:        enduser_license.txt
+Source8:        zabbix-1.8-ja_jp.inc.php
+Patch1:         zabbix-1.8-datasql.patch
+Patch2:         zabbix-1.8-powered_by_zabbixjp.patch
+Patch3:         zabbix-1.8-fix_to_compile_visualstudio_proj.patch
+Patch4:         zabbix-1.8-graph_font.patch
+Patch5:         zabbix-1.8-parentservice_translate.patch
+Patch6:         zabbix-1.8-chart4_use_imagetext.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -212,9 +220,17 @@ Zabbix web frontend for SQLite
 
 %prep
 %setup0 -q
+%patch1 -p1 -b .datasql.orig
+%patch2 -p1 -b .powered_by_zabbixjp.orig
+%patch3 -p1 -b .fix_to_compile_visualstudio_proj.orig
+%patch4 -p1 -b .graph_font.orig
+%patch5 -p1 -b .parentservice_translate.orig
+%patch6 -p1 -b .chart4_use_imagestring.orig
 
+rm frontends/php/fonts/DejaVuSans.ttf
+cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
 rm frontends/php/include/locales/ja_jp.inc.php
-cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
+cp %{SOURCE8} frontends/php/include/locales/ja_jp.inc.php
 
 chmod -R a+rX .
 
@@ -311,12 +327,6 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
 
-#rm create/Makefile*
-#rm create/data/images_oracle.sql
-#rm create/schema/oracle.sql
-#rm -r upgrades/dbpatches/1.6/oracle
-
-#pushd %{name}-%{version}-mysql
 # php frontend
 find ./frontends/php -name '*.orig'|xargs rm -f
 find ./create -name '*.orig'|xargs rm -f
@@ -360,7 +370,6 @@ cat misc/conf/zabbix_proxy.conf | sed \
     -e 's|DBUser=root|DBUser=zabbix|g' \
     -e 's|DBSocket=/tmp/mysql.sock|DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
-# modified by Asianux(AXBug#4525)
 install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 # log rotation
@@ -537,6 +546,12 @@ fi
 %changelog
 * Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.8
 - Update to 1.8
+- Add patch to change default language to Japanese (Patch1)
+- Add patch to add link to ZABBIX-JP in header and footer (Patch2)
+- Add patch to fix compile windows agent (Patch3)
+- Add patch to use Japanese font in graph (Patch4)
+- Add patch to translate "Parent service" in IT Service screen (patch5)
+- Add patch to use imageText function in chart4.php (Patch6)
 
 * Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
 - Update to 1.7.4
