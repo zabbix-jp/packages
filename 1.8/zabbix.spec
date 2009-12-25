@@ -21,6 +21,8 @@ Patch3:         zabbix-1.8-fix_to_compile_visualstudio_proj.patch
 Patch4:         zabbix-1.8-graph_font.patch
 Patch5:         zabbix-1.8-parentservice_translate.patch
 Patch6:         zabbix-1.8-chart4_use_imagetext.patch
+Patch7:         zabbix-1.8-loginmenu_translate.patch
+Patch8:         zabbix-1.8-wrong_usergroup_permission.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -181,6 +183,7 @@ Requires:        php
 Requires:	 php-gd
 Requires:	 php-bcmath
 Requires:	 php-mbstring
+Requires:    php-xml
 Requires:        zabbix = %{version}-%{release}
 Requires:	 zabbix-web-database = %{version}-%{release}
 
@@ -226,6 +229,8 @@ Zabbix web frontend for SQLite
 %patch4 -p1 -b .graph_font.orig
 %patch5 -p1 -b .parentservice_translate.orig
 %patch6 -p1 -b .chart4_use_imagestring.orig
+%patch7 -p1 -b .loginmenu_translate.orig
+%patch8 -p1 -b .wrong_usergroup_permission.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
@@ -552,6 +557,8 @@ fi
 - Add patch to use Japanese font in graph (Patch4)
 - Add patch to translate "Parent service" in IT Service screen (patch5)
 - Add patch to use imageText function in chart4.php (Patch6)
+- Add patch to translate login menu (Patch7)
+- Add patch to wrong usergroup permission (Patch8)
 
 * Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
 - Update to 1.7.4
