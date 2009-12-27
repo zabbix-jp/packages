@@ -23,6 +23,7 @@ Patch5:         zabbix-1.8-parentservice_translate.patch
 Patch6:         zabbix-1.8-chart4_use_imagetext.patch
 Patch7:         zabbix-1.8-loginmenu_translate.patch
 Patch8:         zabbix-1.8-wrong_usergroup_permission.patch
+Patch9:         zabbix-1.8-chart5_use_imagetext.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -231,6 +232,7 @@ Zabbix web frontend for SQLite
 %patch6 -p1 -b .chart4_use_imagestring.orig
 %patch7 -p1 -b .loginmenu_translate.orig
 %patch8 -p1 -b .wrong_usergroup_permission.orig
+%patch9 -p1 -b .chart5_use_imagetext.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
@@ -559,6 +561,7 @@ fi
 - Add patch to use imageText function in chart4.php (Patch6)
 - Add patch to translate login menu (Patch7)
 - Add patch to wrong usergroup permission (Patch8)
+- Add patch to use imageText function in chart5.php (Patch9)
 
 * Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
 - Update to 1.7.4
