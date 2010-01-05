@@ -24,6 +24,9 @@ Patch6:         zabbix-1.8-chart4_use_imagetext.patch
 Patch7:         zabbix-1.8-loginmenu_translate.patch
 Patch8:         zabbix-1.8-wrong_usergroup_permission.patch
 Patch9:         zabbix-1.8-chart5_use_imagetext.patch
+Patch10:        zabbix-1.8-discoveryconf_seconds_translate.patch
+Patch11:        zabbix-1.8-itservice_popup_translate.patch
+Patch12:        zabbix-1.8-installer_require_wrong_phpversion.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -233,6 +236,9 @@ Zabbix web frontend for SQLite
 %patch7 -p1 -b .loginmenu_translate.orig
 %patch8 -p1 -b .wrong_usergroup_permission.orig
 %patch9 -p1 -b .chart5_use_imagetext.orig
+%patch10 -p1 -b .discoveryconf_seconds_translate.orig
+%patch11 -p1 -b .itservice_popup_translate.orig
+%patch12 -p1 -b .installer_require_wrong_phpversion.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
@@ -259,6 +265,7 @@ chmod -R a+rX .
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
+    --with-openipmi \
     --with-ssh2 \
   %if %is_el4
     --with-jabber
@@ -282,6 +289,7 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
+    --with-openipmi \
     --with-ssh2 \
   %if %is_el4
     --with-jabber
@@ -304,6 +312,7 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
+    --with-openipmi \
     --with-ssh2 \
   %if %is_el4
     --with-jabber
@@ -551,7 +560,7 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.8
+* Mon Jan 4 2010 Kodai Terashima <kodai74@gmail.com> - 1.8
 - Update to 1.8
 - Add patch to change default language to Japanese (Patch1)
 - Add patch to add link to ZABBIX-JP in header and footer (Patch2)
@@ -562,6 +571,9 @@ fi
 - Add patch to translate login menu (Patch7)
 - Add patch to wrong usergroup permission (Patch8)
 - Add patch to use imageText function in chart5.php (Patch9)
+- Add patch to translate "seconds" in discovery configuration screen (Patch10)
+- Add patch to translate popup menu in IT Service screen (Patch11)
+- Add patch to fix installer require wrong php version (Patch12)
 
 * Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
 - Update to 1.7.4
