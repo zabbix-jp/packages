@@ -14,9 +14,9 @@ Source4:        zabbix-proxy.init
 Source5:        zabbix-logrotate.in
 Source6:        zabbix-1.6.7-ja_jp.inc.php
 Patch1:         zabbix-1.6.6-locale-cn_zh.patch
-Patch2:         zabbix-1.6.4-frontend.patch
+#Patch2:         zabbix-1.6.4-frontend.patch
 Patch3:         zabbix-1.6.5-copyright_year.patch
-Patch4:         zabbix-1.6.5-graph_description.patch
+Patch4:         zabbix-1.6.8-graph_description.patch
 #Patch5:         zabbix-1.6.4-localized_colors.patch
 Patch6:         zabbix-1.6.4-trigger_cond_multibyte_param.patch
 Patch7:         zabbix-1.6.4-eventlog_acp_to_utf8.patch
@@ -32,6 +32,8 @@ Patch14:        zabbix-1.6.4-trigger_multibyte_expression.patch
 Patch17:        zabbix-1.6.4-fix_to_compile_visualstudio_proj.patch
 Patch18:        zabbix-1.6.4-remove_broken_char.patch
 Patch19:        zabbix-1.6.7-parentservice_translate.patch
+Patch20:        zabbix-1.6.8-lalatest_data.patch
+Patch21:        zabbix-1.6.8-get_dbid.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -231,7 +233,7 @@ Zabbix web frontend for SQLite
 %prep
 %setup0 -q
 %patch1 -p1 -b .locale-cn_zh.orig
-%patch2 -p1 -b .frontend.orig
+#%patch2 -p1 -b .frontend.orig
 %patch3 -p1 -b .copytight_year.orig
 %patch4 -p1 -b .graph_description.orig
 #%patch5 -p1 -b .localized_colors.orig
@@ -249,6 +251,8 @@ Zabbix web frontend for SQLite
 %patch17 -p1 -b .fix_to_compile_visualstudio_proj.orig
 %patch18 -p1 -b remove_broken_char.orig
 %patch19 -p1 -b parentservice_translate.orig
+%patch20 -p1 -b lalatest_data.orig
+%patch21 -p1 -b get_dbid.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -273,6 +277,7 @@ chmod -R a+rX .
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
+    --with-openipmi \
   %if %is_el4
     --with-jabber
   %endif
@@ -295,6 +300,7 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
+    --with-openipmi \
   %if %is_el4
     --with-jabber
   %endif
@@ -316,6 +322,7 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
+    --with-openipmi \
   %if %is_el4
     --with-jabber
   %endif
@@ -566,6 +573,11 @@ fi
 %changelog
 * Thu Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.6.8-1
 - Update to 1.6.8
+- Update graph_description.patch to localize available chart and pie chart (Patch4)
+- Merge frontend.patch into graph_description.patch (Patch2, Patch4)
+- Add patch to fix show active check data on Latest Data screen (Patch20)
+- Add patch to fix problem doesn't show screen (Patch21)
+- enable with-openipmi option in configure script
 
 * Sun Nov 22 2009 Kodai Terashima <kodai74@gmail.com> - 1.6.7-1
 - Update Japanese translation (Source6)

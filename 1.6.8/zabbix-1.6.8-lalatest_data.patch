@@ -1,0 +1,30 @@
+diff -Nur zabbix-1.6.6.org/frontends/php/latest.php zabbix-1.6.6/frontends/php/latest.php
+--- zabbix-1.6.6.org/frontends/php/latest.php	2009-08-26 22:16:26.000000000 +0900
++++ zabbix-1.6.6/frontends/php/latest.php	2009-12-04 13:59:16.000000000 +0900
+@@ -67,7 +67,7 @@
+ 	$_REQUEST['select'] = get_request('select',get_profile('web.latest.filter.select', ''));
+ 	update_profile('web.latest.filter.select', $_REQUEST['select'], PROFILE_TYPE_STR);
+ 
+-	$options = array('allow_all_hosts','monitored_hosts','with_historical_items');
++	$options = array('allow_all_hosts','monitored_hosts','with_historical_items','with_monitored_items');
+ 	if(!$ZBX_WITH_SUBNODES)	array_push($options,'only_current_node');
+ 	
+ //SDI($_REQUEST['groupid'].' : '.$_REQUEST['hostid']);
+@@ -342,7 +342,7 @@
+ 				$sql_where.
+ 				' AND h.hostid=i.hostid '.
+ 				' AND h.status='.HOST_STATUS_MONITORED.
+-				' AND i.status='.ITEM_STATUS_ACTIVE.
++				' AND (i.status='.ITEM_STATUS_ACTIVE.' OR i.status='.ITEM_STATUS_NOTSUPPORTED.')'.
+ 				' AND '.DBcondition('h.hostid',$available_hosts).
+ 			' ORDER BY h.host';
+ 
+@@ -363,7 +363,7 @@
+ 				$sql_where.
+ 				' AND h.hostid=i.hostid '.
+ 				' AND h.status='.HOST_STATUS_MONITORED.
+-				' AND i.status='.ITEM_STATUS_ACTIVE.
++				' AND (i.status='.ITEM_STATUS_ACTIVE.' OR i.status='.ITEM_STATUS_NOTSUPPORTED.')'.
+ 				' AND '.DBcondition('h.hostid',$db_hostids).
+ 			' ORDER BY i.description,i.itemid';
+ 	$db_items = DBselect($sql);
