@@ -47,10 +47,10 @@ BuildRequires:   openldap-devel
 BuildRequires:   gnutls-devel
 BuildRequires:   iksemel-devel
 BuildRequires:   sqlite-devel
-BuildRequires:   unixODBC-devel
 
 %if %is_el5
 BuildRequires:   curl-devel
+BuildRequires:   unixODBC-devel
 %endif
 
 Requires:        logrotate
@@ -277,11 +277,11 @@ chmod -R a+rX .
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
-    --with-openipmi \
   %if %is_el4
     --with-jabber
   %endif
   %if %is_el5
+    --with-openipmi \
     --with-jabber \
     --with-libcurl
   %endif
@@ -300,11 +300,11 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
-    --with-openipmi \
   %if %is_el4
     --with-jabber
   %endif
   %if %is_el5
+    --with-openipmi \
     --with-jabber \
     --with-libcurl
   %endif
@@ -322,11 +322,11 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
-    --with-openipmi \
   %if %is_el4
     --with-jabber
   %endif
   %if %is_el5
+    --with-openipmi \
     --with-jabber \
     --with-libcurl
   %endif
