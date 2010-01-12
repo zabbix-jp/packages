@@ -15,6 +15,8 @@ Source5:        zabbix-logrotate.in
 Source6:        ipagui.ttf
 Source7:        enduser_license.txt
 Source8:        zabbix-1.8-ja_jp.inc.php
+Source9:        eventlog.c
+Source10:       eventlog.h
 Patch1:         zabbix-1.8-datasql.patch
 Patch2:         zabbix-1.8-powered_by_zabbixjp.patch
 Patch3:         zabbix-1.8-fix_to_compile_visualstudio_proj.patch
@@ -244,6 +246,7 @@ rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE8} frontends/php/include/locales/ja_jp.inc.php
+cp %{SOURCE9} %{SOURCE10} src/zabbix_agent/
 
 chmod -R a+rX .
 
