@@ -250,9 +250,6 @@ cp %{SOURCE9} %{SOURCE10} src/zabbix_agent/
 
 chmod -R a+rX .
 
-# nuke erronious executable permissions
-#chmod -x src/zabbix_agent/eventlog.c
-
 # fix up some lib64 issues
 %{__perl} -pi.orig -e 's|_LIBDIR=/usr/lib|_LIBDIR=%{_libdir}|g' \
     configure
@@ -268,13 +265,13 @@ chmod -R a+rX .
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
-    --with-openipmi \
     --with-ssh2 \
   %if %is_el4
     --with-jabber
   %endif
   %if %is_el5
     --with-jabber \
+    --with-openipmi \
     --with-libcurl
   %endif
 
@@ -292,13 +289,13 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
-    --with-openipmi \
     --with-ssh2 \
   %if %is_el4
     --with-jabber
   %endif
   %if %is_el5
     --with-jabber \
+    --with-openipmi \
     --with-libcurl
   %endif
 
@@ -315,13 +312,13 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
-    --with-openipmi \
     --with-ssh2 \
   %if %is_el4
     --with-jabber
   %endif
   %if %is_el5
     --with-jabber \
+    --with-openipmi \
     --with-libcurl
   %endif
 
