@@ -31,6 +31,7 @@ Patch11:        zabbix-1.8-itservice_popup_translate.patch
 Patch12:        zabbix-1.8-installer_require_wrong_phpversion.patch
 Patch13:        zabbix-1.8-template_import.patch
 Patch14:        zabbix-1.8-popup_media_status_translate.patch
+Patch15:        zabbix-1.8-pie-chart.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -245,6 +246,7 @@ Zabbix web frontend for SQLite
 %patch12 -p1 -b .installer_require_wrong_phpversion.orig
 %patch13 -p1 -b .template_import.orig
 %patch14 -p1 -b .popup_media_status_translate.orig
+%patch15 -p1 -b .pie_chart.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
@@ -580,6 +582,7 @@ fi
 - Add patch to fix installer require wrong php version (Patch12)
 - Add patch to fix import template (Patch13)
 - Add patch to translate user media popup screen (Patch14)
+- Add patch to fix pie chart (Patch15)
 
 * Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
 - Update to 1.7.4
