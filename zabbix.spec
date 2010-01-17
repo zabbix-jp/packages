@@ -31,7 +31,7 @@ Patch11:        zabbix-1.8-itservice_popup_translate.patch
 Patch12:        zabbix-1.8-installer_require_wrong_phpversion.patch
 Patch13:        zabbix-1.8-template_import.patch
 Patch14:        zabbix-1.8-popup_media_status_translate.patch
-Patch15:        zabbix-1.8-pie-chart.patch
+Patch15:        zabbix-1.8-pie_chart.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
