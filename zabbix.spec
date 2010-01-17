@@ -29,6 +29,8 @@ Patch9:         zabbix-1.8-chart5_use_imagetext.patch
 Patch10:        zabbix-1.8-discoveryconf_seconds_translate.patch
 Patch11:        zabbix-1.8-itservice_popup_translate.patch
 Patch12:        zabbix-1.8-installer_require_wrong_phpversion.patch
+Patch13:        zabbix-1.8-template_import.patch
+Patch14:        zabbix-1.8-popup_media_status_translate.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -241,6 +243,8 @@ Zabbix web frontend for SQLite
 %patch10 -p1 -b .discoveryconf_seconds_translate.orig
 %patch11 -p1 -b .itservice_popup_translate.orig
 %patch12 -p1 -b .installer_require_wrong_phpversion.orig
+%patch13 -p1 -b .template_import.orig
+%patch14 -p1 -b .popup_media_status_translate.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
@@ -560,7 +564,7 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Mon Jan 4 2010 Kodai Terashima <kodai74@gmail.com> - 1.8
+* Sun Jan 17 2010 Kodai Terashima <kodai74@gmail.com> - 1.8
 - Update to 1.8
 - Add patch to change default language to Japanese (Patch1)
 - Add patch to add link to ZABBIX-JP in header and footer (Patch2)
@@ -574,6 +578,8 @@ fi
 - Add patch to translate "seconds" in discovery configuration screen (Patch10)
 - Add patch to translate popup menu in IT Service screen (Patch11)
 - Add patch to fix installer require wrong php version (Patch12)
+- Add patch to fix import template (Patch13)
+- Add patch to translate user media popup screen (Patch14)
 
 * Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
 - Update to 1.7.4
