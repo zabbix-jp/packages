@@ -50,6 +50,7 @@ BuildRequires:   libssh2-devel
 
 %if %is_el5
 BuildRequires:   curl-devel
+BuildRequires:   OpenIPMI-devel
 %endif
 
 Requires:        logrotate
@@ -81,8 +82,13 @@ Group:           Applications/Internet
 Requires:	 zabbix = %{version}-%{release}
 Requires:        zabbix-server-implementation = %{version}-%{release}
 Requires:        fping
+Requires:        iksemel
 Requires:	 net-snmp-libs
 Requires:        unixODBC
+%if %is_el5
+Requires:        curl
+Requires:        OpenIPMI-libs
+%endif
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
@@ -192,7 +198,7 @@ Requires:        php
 Requires:	 php-gd
 Requires:	 php-bcmath
 Requires:	 php-mbstring
-Requires:    php-xml
+Requires:        php-xml
 Requires:        zabbix = %{version}-%{release}
 Requires:	 zabbix-web-database = %{version}-%{release}
 
