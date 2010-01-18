@@ -66,13 +66,15 @@ rm -rf $RPM_BUILD_ROOT
 /usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.1.repo 10
 /usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.4.repo 20
 /usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo 40
-/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo 30
+/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.8.repo 30
 
 %preun
+if [ $1 = 0 ]; then
 /usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.1.repo
 /usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.4.repo
 /usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo
 /usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.8.repo
+fi
 
 %files
 %defattr(-,root,root,-)
