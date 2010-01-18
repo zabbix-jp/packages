@@ -8,7 +8,7 @@ Version:        4
 %if %is_el5
 Version:        5
 %endif
-Release:        2
+Release:        3
 Summary:        ZABBIX-JP repository configuration
 
 Group:          System Environment/Base
@@ -55,20 +55,24 @@ cat %{SOURCE2} |sed \
 cat %{SOURCE2} |sed \
     -e 's/{zbxver}/zabbix-1.6/g' \
     > $RPM_BUILD_ROOT%{_datadir}/%{name}/zabbix-jp-1.6.repo
-
+cat %{SOURCE2} |sed \
+    -e 's/{zbxver}/zabbix-1.8/g' \
+    > $RPM_BUILD_ROOT%{_datadir}/%{name}/zabbix-jp-1.8.repo
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.1.repo 10
-/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.4.repo 30
-/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo 20
+/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.4.repo 20
+/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo 40
+/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo 30
 
 %preun
 /usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.1.repo
 /usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.4.repo
 /usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo
+/usr/sbin/alternatives --remove %{name} %{_datadir}/%{name}/zabbix-jp-1.8.repo
 
 %files
 %defattr(-,root,root,-)
@@ -77,6 +81,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_datadir}/%{name}
 
 %changelog
+* Mon Jan 18 2010 Kodai Terashima <kodai74@gmail.com> - 5-3
+- Add zabbix 1.8 repository
+
 * Wed Nov 11 2009 Kodai Terashima <kodai74@gmail.com> - 5-2
 - Marge RHEL5/CentOS5 and RHEL4/CentOS4 spec file
 - Add support for several zabbix version
