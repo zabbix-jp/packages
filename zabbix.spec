@@ -12,11 +12,14 @@ Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
 Source5:        zabbix-logrotate.in
-Source6:        ipagui.ttf
-Source7:        enduser_license.txt
-Source8:        zabbix-1.8-ja_jp.inc.php
-Source9:        eventlog.c
-Source10:       eventlog.h
+Source6:        zabbix_agentd.conf
+Source7:        zabbix_server.conf
+Source8:        zabbix_proxy.conf
+Source9:        ipagui.ttf
+Source10:        enduser_license.txt
+Source11:        zabbix-1.8-ja_jp.inc.php
+Source12:        eventlog.c
+Source13:       eventlog.h
 Patch1:         zabbix-1.8-datasql.patch
 Patch2:         zabbix-1.8-powered_by_zabbixjp.patch
 Patch3:         zabbix-1.8-fix_to_compile_visualstudio_proj.patch
@@ -255,10 +258,10 @@ Zabbix web frontend for SQLite
 %patch15 -p1 -b .pie_chart.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
-cp %{SOURCE6} %{SOURCE7} frontends/php/fonts/
+cp %{SOURCE9} %{SOURCE10} frontends/php/fonts/
 rm frontends/php/include/locales/ja_jp.inc.php
-cp %{SOURCE8} frontends/php/include/locales/ja_jp.inc.php
-cp %{SOURCE9} %{SOURCE10} src/zabbix_agent/
+cp %{SOURCE11} frontends/php/include/locales/ja_jp.inc.php
+cp %{SOURCE12} %{SOURCE13} src/zabbix_agent/
 
 chmod -R a+rX .
 
@@ -374,31 +377,11 @@ ln -s ../../../..%{_sysconfdir}/%{name}/zabbix.conf.php \
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/.htaccess
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/classes/.htaccess
 # drop config files in place
+install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/zabbix.conf
 install -m 0644 -p misc/conf/zabbix_agent.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-cat misc/conf/zabbix_agentd.conf | sed \
-    -e 's|#ListenIP=.*|ListenIP=127.0.0.1|g' \
-    -e 's|PidFile=.*|PidFile=%{_localstatedir}/run/zabbix/zabbix_agentd.pid|g' \
-    -e 's|LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_agentd.log|g' \
-    -e 's|#LogFileSize=.*|LogFileSize=0|g' \
-    -e '/####### USER-DEFINED MONITORED PARAMETERS #######/i # Configuration include directory\nInclude=/etc/zabbix/zabbix_agentd.d\n' \
-    > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
-cat misc/conf/zabbix_server.conf | sed \
-    -e 's|PidFile=.*|PidFile=%{_localstatedir}/run/zabbix/zabbix.pid|g' \
-    -e 's|LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
-    -e 's|#LogFileSize=.*|LogFileSize=0|g' \
-    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_sysconfdir}/zabbix/alertscripts|g' \
-    -e 's|DBUser=root|DBUser=zabbix|g' \
-    -e 's|DBSocket=/tmp/mysql.sock|DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
-    > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
-cat misc/conf/zabbix_proxy.conf | sed \
-    -e 's|PidFile=.*|PidFile=%{_localstatedir}/run/zabbix/zabbix_proxy.pid|g' \
-    -e 's|LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_proxy.log|g' \
-    -e 's|#LogFileSize=.*|LogFileSize=0|g' \
-    -e 's|AlertScriptsPath=/home/zabbix/bin/|AlertScriptsPath=%{_localstatedir}/lib/zabbix/|g' \
-    -e 's|DBUser=root|DBUser=zabbix|g' \
-    -e 's|DBSocket=/tmp/mysql.sock|DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
-    > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
-install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
+install -m 0644 -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
+install -m 0644 -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
+install -m 0644 -p %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 # log rotation
 cat %{SOURCE5} | sed -e 's|COMPONENT|server|g' > \
