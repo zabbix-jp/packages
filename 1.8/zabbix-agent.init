@@ -17,7 +17,7 @@
 # zabbix details
 ZABBIX_AGENTD=/usr/sbin/zabbix_agentd
 CONF=/etc/zabbix/zabbix_agentd.conf
-PIDFILE=/var/run/zabbix-agent.pid
+PIDFILE=/var/run/zabbix/zabbix_agent.pid
 
 # Source function library.
 . /etc/rc.d/init.d/functions
