@@ -1,10 +1,10 @@
-# NSIS package for ZABBIX 1.6.8 Client for Windows
+# NSIS package for ZABBIX 1.8 Client for Windows
 # (C) 2009 - Kodai Terashima <kodai74@gmail.com>
 
 #          
 # Content / Purpose
 # -----------------
-To build an EXE install package for ZABBIX Agent 1.6.8, using NSIS.
+To build an EXE install package for ZABBIX Agent 1.8, using NSIS.
 .\img\		: logs and pics
 .\Include\	: nsh macros
 .\Installer\	: ZABBIX components to install. Includes from ZABBIX 1.6.5 original zabbix_agentd.exe for win32 and win64 distribution,
@@ -20,10 +20,10 @@ Comments/Suggestions/Bugs reports => www.zabbix.com/forum
 
 # How to use the resulting .exe install package for Windows
 # ---------------------------------------------------------
-To install Zabbix agent and sender, just run zabbix_agent-1.6.8-1.JP_installer.exe
+To install Zabbix agent and sender, just run zabbix_agent-1.8-1.JP_installer.exe
 
 To use silent install mode, use :
- zabbix_agent-1.6.8-1.JP_installer.exe [/server=ZabbixServerIPAddress] [/rmtcmd=1] [/S][/D=InstallPath]
+ zabbix_agent-1.8-1.JP_installer.exe [/server=ZabbixServerIPAddress] [/rmtcmd=1] [/S][/D=InstallPath]
  
 where:
  . ZabbixServerIPAddress is the IP address of the ZABBIX server
@@ -37,7 +37,7 @@ where:
  Note: If Zabbix agent was installed with the package zabbix_agent-1.1.x_installer.exe 
         the installation is uninstalled in silent mode and prompt for confiramtion in gui mode  
 
-#Since the the installer 1.6.8.1  
+#Since the the installer 1.8.0.1  
 #------------------------------
 If you have multiple Zabbix server monitoring by network you can create a file in the installer directory calling it zabbixlist.csv like :
 

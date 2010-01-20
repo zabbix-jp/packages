@@ -1,7 +1,7 @@
 ;  (C) 2006-2009 - Michel Manceron <michel.manceron@siemens.com>
 ;                - Vincent Besançon <elguapito@free.fr>
 ;                - Kodai Terashima <kodai74@gmail.com> (ZABBIX-JP)
-; Quick & (not so) Dirty package for ZABBIX 1.6.8 client for Windows
+; Quick & (not so) Dirty package for ZABBIX 1.8 client for Windows
 
 ;--------------------------------
 ;Includes
@@ -21,9 +21,9 @@
 ;--------------------------------
 ;General
 !define NAME  "ZABBIX Agent"
-!define VERSION "1.6.8"
-!define VER_PACK "1.6.8.1"
-!define DISPLAY_NAME "1.6.8-1.JP"
+!define VERSION "1.8"
+!define VER_PACK "1.8.0.1"
+!define DISPLAY_NAME "1.8-1.JP"
   ;Name and file
   Name "${NAME}"
   OutFile "zabbix_agent-${DISPLAY_NAME}_installer.exe"
