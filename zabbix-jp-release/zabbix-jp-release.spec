@@ -85,6 +85,7 @@ fi
 %changelog
 * Mon Jan 18 2010 Kodai Terashima <kodai74@gmail.com> - 5-3
 - Add zabbix 1.8 repository
+- Add check update or erase in preun script
 
 * Wed Nov 11 2009 Kodai Terashima <kodai74@gmail.com> - 5-2
 - Marge RHEL5/CentOS5 and RHEL4/CentOS4 spec file
