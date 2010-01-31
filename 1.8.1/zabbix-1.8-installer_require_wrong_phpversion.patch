@@ -1,0 +1,14 @@
+diff -Nru zabbix-1.8.orig/frontends/php/include/locales.inc.php zabbix-1.8/frontends/php/include/locales.inc.php
+--- zabbix-1.8.orig/frontends/php/include/locales.inc.php	2009-12-08 04:43:57.000000000 +0900
++++ zabbix-1.8/frontends/php/include/locales.inc.php	2010-01-04 19:24:27.000000000 +0900
+@@ -41,9 +41,7 @@
+ 		function_exists('mb_strlen') &&
+ 		function_exists('mb_strtoupper') &&
+ 		function_exists('mb_strpos') &&
+-		function_exists('mb_substr') &&
+-		function_exists('mb_stristr') &&
+-		function_exists('mb_strstr');
++		function_exists('mb_substr');
+ 
+ return $mbstrings_fnc_exist;
+ }

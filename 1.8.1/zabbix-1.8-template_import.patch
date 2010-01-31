@@ -1,0 +1,12 @@
+diff -Nru zabbix-1.8.orig/frontends/php/include/export.inc.php zabbix-1.8/frontends/php/include/export.inc.php
+--- zabbix-1.8.orig/frontends/php/include/export.inc.php	2009-12-08 04:43:57.000000000 +0900
++++ zabbix-1.8/frontends/php/include/export.inc.php	2010-01-17 21:39:03.000000000 +0900
+@@ -582,7 +582,7 @@
+ 				if(!$current_host && isset($rules['host']['missed'])){
+ 					$host_db['groups'] = $host_groups;
+ 					if($host_db['status'] == HOST_STATUS_TEMPLATE){
+-						$current_host = CTemplate::add($host_db);
++						$current_host = CTemplate::create($host_db);
+ 					}
+ 					else{
+ 						$current_host = CHost::create($host_db);

@@ -1,0 +1,12 @@
+diff -Nru zabbix-1.8.orig/frontends/php/include/forms.inc.php zabbix-1.8/frontends/php/include/forms.inc.php
+--- zabbix-1.8.orig/frontends/php/include/forms.inc.php	2009-12-08 04:43:57.000000000 +0900
++++ zabbix-1.8/frontends/php/include/forms.inc.php	2010-01-03 04:58:06.000000000 +0900
+@@ -232,7 +232,7 @@
+ 		$form->addRow(S_DISCOVERY_BY_PROXY,$cmbProxy);
+ //----------
+ 		$form->addRow(S_IP_RANGE, new CTextBox('iprange', $iprange, 27));
+-		$form->addRow(S_DELAY.' (seconds)', new CNumericBox('delay', $delay, 8));
++		$form->addRow(S_DELAY, new CNumericBox('delay', $delay, 8));
+ 
+ 		$form->addVar('dchecks', $dchecks);
+ 		$form->addVar('dchecks_deleted', $dchecks_deleted);

@@ -1,0 +1,18 @@
+diff -Nru zabbix-1.8.orig/frontends/php/index.php zabbix-1.8/frontends/php/index.php
+--- zabbix-1.8.orig/frontends/php/index.php	2009-12-08 04:43:57.000000000 +0900
++++ zabbix-1.8/frontends/php/index.php	2009-12-23 21:39:37.000000000 +0900
+@@ -99,11 +99,11 @@
+ 			case ZBX_AUTH_INTERNAL:
+ 			default:
+ //	konqueror bug #138024; adding useless param(login=1) to the form's action path to avoid bug!!
+-				$frmLogin = new CFormTable('Login','index.php?login=1','post','multipart/form-data');
++				$frmLogin = new CFormTable(S_LOGIN,'index.php?login=1','post','multipart/form-data');
+ 				$frmLogin->setHelp('web.index.login');
+ 				$frmLogin->addVar('request', $request);
+-				$frmLogin->addRow('Login name', new CTextBox('name'));
+-				$frmLogin->addRow('Password', new CPassBox('password'));
++				$frmLogin->addRow(S_ALIAS, new CTextBox('name'));
++				$frmLogin->addRow(S_PASSWORD, new CPassBox('password'));
+ 				$frmLogin->addItemToBottomRow(new CButton('enter','Enter'));
+ 				$frmLogin->show(false);
+ 

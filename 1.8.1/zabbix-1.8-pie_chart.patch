@@ -1,0 +1,12 @@
+diff -Nru zabbix-1.8.orig/frontends/php/chart6.php zabbix-1.8/frontends/php/chart6.php
+--- zabbix-1.8.orig/frontends/php/chart6.php	2009-12-08 04:43:57.000000000 +0900
++++ zabbix-1.8/frontends/php/chart6.php	2010-01-17 23:43:47.000000000 +0900
+@@ -49,6 +49,8 @@
+ 		show_error_message(S_NO_GRAPH_DEFINED);
+ 	}
+ 
++	$options = array('graphids'=>$_REQUEST['graphid'], 'extendoutput'=>1, 'editable'=>1, 'nopermissions'=>1); 
++
+ 	$db_data = CGraph::get($options);
+ 	if(empty($db_data)) access_deny();
+ 	else $db_data = reset($db_data);
