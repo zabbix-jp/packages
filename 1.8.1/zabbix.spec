@@ -17,7 +17,7 @@ Source7:        zabbix_server.conf
 Source8:        zabbix_proxy.conf
 Source9:        ipagui.ttf
 Source10:        enduser_license.txt
-Source11:        zabbix-1.8-ja_jp.inc.php
+Source11:        zabbix-1.8.1-ja_jp.inc.php
 Source12:        eventlog.c
 Source13:       eventlog.h
 Patch1:         zabbix-1.8-datasql.patch
@@ -555,8 +555,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Sun Jan 31 2010 Kodai Terashima <kodai74@gmail.com> -1.8.1-1
+* Mon Feb 2 2010 Kodai Terashima <kodai74@gmail.com> -1.8.1-1
 - Update to 1.8.1
+- Update Japanese translation for zabbix 1.8.1
+- Update zabbix_agentd.conf, zabbix_server.conf, zabbix_proxy.conf
 
 * Sun Jan 17 2010 Kodai Terashima <kodai74@gmail.com> - 1.8
 - Update to 1.8
