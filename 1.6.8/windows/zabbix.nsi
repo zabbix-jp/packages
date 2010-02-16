@@ -22,8 +22,8 @@
 ;General
 !define NAME  "ZABBIX Agent"
 !define VERSION "1.8"
-!define VER_PACK "1.8.0.1"
-!define DISPLAY_NAME "1.8-1.JP"
+!define VER_PACK "1.8.0.3"
+!define DISPLAY_NAME "1.8-3.ML"
   ;Name and file
   Name "${NAME}"
   OutFile "zabbix_agent-${DISPLAY_NAME}_installer.exe"
