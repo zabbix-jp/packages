@@ -1,0 +1,159 @@
+diff -Nru zabbix-1.6.8.orig/upgrades/dbpatches/1.6/mysql/patch.sql zabbix-1.6.8/upgrades/dbpatches/1.6/mysql/patch.sql
+--- zabbix-1.6.8.orig/upgrades/dbpatches/1.6/mysql/patch.sql	2009-12-07 22:07:25.000000000 +0900
++++ zabbix-1.6.8/upgrades/dbpatches/1.6/mysql/patch.sql	2010-02-14 21:30:03.000000000 +0900
+@@ -76,6 +76,18 @@
+ update graphs_items set color='000000' where color='Black';
+ update graphs_items set color='969696' where color='Gray';
+ update graphs_items set color='FFFFFF' where color='White';
++update graphs_items set color='FF0000' where color='赤';
++update graphs_items set color='960000' where color='濃い赤';
++update graphs_items set color='00FF00' where color='緑';
++update graphs_items set color='009600' where color='濃い緑';
++update graphs_items set color='0000FF' where color='青';
++update graphs_items set color='000096' where color='濃い青';
++update graphs_items set color='FFFF00' where color='黄';
++update graphs_items set color='969600' where color='濃い黄';
++update graphs_items set color='00FFFF' where color='シアン';
++update graphs_items set color='000000' where color='黒';
++update graphs_items set color='969696' where color='グレイ';
++update graphs_items set color='FFFFFF' where color='白';
+ alter table graphs_items change color color varchar(6) DEFAULT '009600' NOT NULL;
+ CREATE INDEX graphs_items_1 on graphs_items (itemid);
+ CREATE INDEX graphs_items_2 on graphs_items (graphid);
+@@ -312,6 +324,30 @@
+ update sysmaps_links set color_off='000000' where color_off='Black';
+ update sysmaps_links set color_off='969696' where color_off='Gray';
+ update sysmaps_links set color_off='FFFFFF' where color_off='White';
++update sysmaps_links set color_on='FF0000' where color_on='赤';
++update sysmaps_links set color_on='960000' where color_on='濃い赤';
++update sysmaps_links set color_on='00FF00' where color_on='緑';
++update sysmaps_links set color_on='009600' where color_on='濃い緑';
++update sysmaps_links set color_on='0000FF' where color_on='青';
++update sysmaps_links set color_on='000096' where color_on='濃い青';
++update sysmaps_links set color_on='FFFF00' where color_on='黄';
++update sysmaps_links set color_on='969600' where color_on='濃い黄';
++update sysmaps_links set color_on='00FFFF' where color_on='シアン';
++update sysmaps_links set color_on='000000' where color_on='黒';
++update sysmaps_links set color_on='969696' where color_on='グレイ';
++update sysmaps_links set color_on='FFFFFF' where color_on='白';
++update sysmaps_links set color_off='FF0000' where color_off='赤';
++update sysmaps_links set color_off='960000' where color_off='濃い赤';
++update sysmaps_links set color_off='00FF00' where color_off='緑';
++update sysmaps_links set color_off='009600' where color_off='濃い緑';
++update sysmaps_links set color_off='0000FF' where color_off='青';
++update sysmaps_links set color_off='000096' where color_off='濃い青';
++update sysmaps_links set color_off='FFFF00' where color_off='黄';
++update sysmaps_links set color_off='969600' where color_off='濃い黄';
++update sysmaps_links set color_off='00FFFF' where color_off='シアン';
++update sysmaps_links set color_off='000000' where color_off='黒';
++update sysmaps_links set color_off='969696' where color_off='グレイ';
++update sysmaps_links set color_off='FFFFFF' where color_off='白';
+ insert into sysmaps_link_triggers (linktriggerid,linkid,triggerid,drawtype,color) select linkid,linkid,triggerid,drawtype_on,color_on from sysmaps_links;
+ alter table sysmaps_links drop triggerid;
+ alter table sysmaps_links change drawtype_off drawtype integer DEFAULT '0' NOT NULL;
+diff -Nru zabbix-1.6.8.orig/upgrades/dbpatches/1.6/oracle/patch.sql zabbix-1.6.8/upgrades/dbpatches/1.6/oracle/patch.sql
+--- zabbix-1.6.8.orig/upgrades/dbpatches/1.6/oracle/patch.sql	2009-12-07 22:07:26.000000000 +0900
++++ zabbix-1.6.8/upgrades/dbpatches/1.6/oracle/patch.sql	2010-02-14 21:37:02.000000000 +0900
+@@ -109,6 +109,18 @@
+ update graphs_items set color='000000' where color='Black';
+ update graphs_items set color='969696' where color='Gray';
+ update graphs_items set color='FFFFFF' where color='White';
++update graphs_items set color='FF0000' where color='赤';
++update graphs_items set color='960000' where color='濃い赤';
++update graphs_items set color='00FF00' where color='緑';
++update graphs_items set color='009600' where color='濃い緑';
++update graphs_items set color='0000FF' where color='青';
++update graphs_items set color='000096' where color='濃い青';
++update graphs_items set color='FFFF00' where color='黄';
++update graphs_items set color='969600' where color='濃い黄';
++update graphs_items set color='00FFFF' where color='シアン';
++update graphs_items set color='000000' where color='黒';
++update graphs_items set color='969696' where color='グレイ';
++update graphs_items set color='FFFFFF' where color='白';
+ alter table graphs_items modify color varchar2(6) DEFAULT '009600';
+ 
+ CREATE INDEX graphs_items_1 on graphs_items (itemid);
+@@ -355,6 +367,30 @@
+ update sysmaps_links set color_off='000000' where color_off='Black';
+ update sysmaps_links set color_off='969696' where color_off='Gray';
+ update sysmaps_links set color_off='FFFFFF' where color_off='White';
++update sysmaps_links set color_on='FF0000' where color_on='赤';
++update sysmaps_links set color_on='960000' where color_on='濃い赤';
++update sysmaps_links set color_on='00FF00' where color_on='緑';
++update sysmaps_links set color_on='009600' where color_on='濃い緑';
++update sysmaps_links set color_on='0000FF' where color_on='青';
++update sysmaps_links set color_on='000096' where color_on='濃い青';
++update sysmaps_links set color_on='FFFF00' where color_on='黄';
++update sysmaps_links set color_on='969600' where color_on='濃い黄';
++update sysmaps_links set color_on='00FFFF' where color_on='シアン';
++update sysmaps_links set color_on='000000' where color_on='黒';
++update sysmaps_links set color_on='969696' where color_on='グレイ';
++update sysmaps_links set color_on='FFFFFF' where color_on='白';
++update sysmaps_links set color_off='FF0000' where color_off='赤';
++update sysmaps_links set color_off='960000' where color_off='濃い赤';
++update sysmaps_links set color_off='00FF00' where color_off='緑';
++update sysmaps_links set color_off='009600' where color_off='濃い緑';
++update sysmaps_links set color_off='0000FF' where color_off='青';
++update sysmaps_links set color_off='000096' where color_off='濃い青';
++update sysmaps_links set color_off='FFFF00' where color_off='黄';
++update sysmaps_links set color_off='969600' where color_off='濃い黄';
++update sysmaps_links set color_off='00FFFF' where color_off='シアン';
++update sysmaps_links set color_off='000000' where color_off='黒';
++update sysmaps_links set color_off='969696' where color_off='グレイ';
++update sysmaps_links set color_off='FFFFFF' where color_off='白';
+ insert into sysmaps_link_triggers select linkid,linkid,triggerid,drawtype_on,color_on from sysmaps_links;
+ alter table sysmaps_links drop column triggerid;
+ alter table sysmaps_links rename column drawtype_off to drawtype;
+diff -Nru zabbix-1.6.8.orig/upgrades/dbpatches/1.6/postgresql/patch.sql zabbix-1.6.8/upgrades/dbpatches/1.6/postgresql/patch.sql
+--- zabbix-1.6.8.orig/upgrades/dbpatches/1.6/postgresql/patch.sql	2009-12-07 22:07:26.000000000 +0900
++++ zabbix-1.6.8/upgrades/dbpatches/1.6/postgresql/patch.sql	2010-02-14 21:35:46.000000000 +0900
+@@ -115,6 +115,18 @@
+ update graphs_items set color='000000' where color='Black';
+ update graphs_items set color='969696' where color='Gray';
+ update graphs_items set color='FFFFFF' where color='White';
++update graphs_items set color='FF0000' where color='赤';
++update graphs_items set color='960000' where color='濃い赤';
++update graphs_items set color='00FF00' where color='緑';
++update graphs_items set color='009600' where color='濃い緑';
++update graphs_items set color='0000FF' where color='青';
++update graphs_items set color='000096' where color='濃い青';
++update graphs_items set color='FFFF00' where color='黄';
++update graphs_items set color='969600' where color='濃い黄';
++update graphs_items set color='00FFFF' where color='シアン';
++update graphs_items set color='000000' where color='黒';
++update graphs_items set color='969696' where color='グレイ';
++update graphs_items set color='FFFFFF' where color='白';
+ alter table graphs_items change color color varchar(6) DEFAULT '009600' NOT NULL;
+ CREATE INDEX graphs_items_1 on graphs_items (itemid);
+ CREATE INDEX graphs_items_2 on graphs_items (graphid);alter table graphs add show_legend integer NOT NULL default '0';
+@@ -423,6 +435,30 @@
+ update sysmaps_links set color_off='000000' where color_off='Black';
+ update sysmaps_links set color_off='969696' where color_off='Gray';
+ update sysmaps_links set color_off='FFFFFF' where color_off='White';
++update sysmaps_links set color_on='FF0000' where color_on='赤';
++update sysmaps_links set color_on='960000' where color_on='濃い赤';
++update sysmaps_links set color_on='00FF00' where color_on='緑';
++update sysmaps_links set color_on='009600' where color_on='濃い緑';
++update sysmaps_links set color_on='0000FF' where color_on='青';
++update sysmaps_links set color_on='000096' where color_on='濃い青';
++update sysmaps_links set color_on='FFFF00' where color_on='黄';
++update sysmaps_links set color_on='969600' where color_on='濃い黄';
++update sysmaps_links set color_on='00FFFF' where color_on='シアン';
++update sysmaps_links set color_on='000000' where color_on='黒';
++update sysmaps_links set color_on='969696' where color_on='グレイ';
++update sysmaps_links set color_on='FFFFFF' where color_on='白';
++update sysmaps_links set color_off='FF0000' where color_off='赤';
++update sysmaps_links set color_off='960000' where color_off='濃い赤';
++update sysmaps_links set color_off='00FF00' where color_off='緑';
++update sysmaps_links set color_off='009600' where color_off='濃い緑';
++update sysmaps_links set color_off='0000FF' where color_off='青';
++update sysmaps_links set color_off='000096' where color_off='濃い青';
++update sysmaps_links set color_off='FFFF00' where color_off='黄';
++update sysmaps_links set color_off='969600' where color_off='濃い黄';
++update sysmaps_links set color_off='00FFFF' where color_off='シアン';
++update sysmaps_links set color_off='000000' where color_off='黒';
++update sysmaps_links set color_off='969696' where color_off='グレイ';
++update sysmaps_links set color_off='FFFFFF' where color_off='白';
+ insert into sysmaps_link_triggers (linktriggerid,linkid,triggerid,drawtype,color) select linkid,linkid,triggerid,drawtype_on,color_on from sysmaps_links;
+ alter table sysmaps_links add drawtype integer DEFAULT '0' NOT NULL;
+ alter table sysmaps_links add color varchar(6) DEFAULT '000000' NOT NULL;

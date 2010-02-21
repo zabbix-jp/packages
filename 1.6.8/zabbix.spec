@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.6.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -34,6 +34,9 @@ Patch18:        zabbix-1.6.4-remove_broken_char.patch
 Patch19:        zabbix-1.6.7-parentservice_translate.patch
 Patch20:        zabbix-1.6.8-lalatest_data.patch
 Patch21:        zabbix-1.6.8-get_dbid.patch
+Patch22:        zabbix-1.6.8-map_color_frame.patch
+Patch23:        zabbix-1.6.8-dbupgrade.patch
+Patch24:        zabbix-1.6.8-map_label_location.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -253,6 +256,9 @@ Zabbix web frontend for SQLite
 %patch19 -p1 -b parentservice_translate.orig
 %patch20 -p1 -b lalatest_data.orig
 %patch21 -p1 -b get_dbid.orig
+%patch22 -p1 -b map_color_frame.orig
+%patch23 -p1 -b dbupgrade.orig
+%patch24 -p1 -b map_label_location.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -361,6 +367,7 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
 # php frontend
 find ./frontends/php -name '*.orig'|xargs rm -f
 find ./create -name '*.orig'|xargs rm -f
+find ./upgrades -name '*.orig'|xargs rm -f
 cp -a frontends/php $RPM_BUILD_ROOT%{_datadir}/%{name}
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/include/defines.inc.php \
     $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
@@ -571,6 +578,12 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Sun Feb 14 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.8-2
+- Fix label text is not in the right place on map (Patch4)
+- Fix color selection frame is not appeared (Patch22)
+- Fix color configuration is not upgraded correctly from 1.4 to 1.6  when use Japanese (Patch23)
+- Fix map icon label is not used map default label location setting (Patch24)
+
 * Thu Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.6.8-1
 - Update to 1.6.8
 - Update graph_description.patch to localize available chart and pie chart (Patch4)
