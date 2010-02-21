@@ -184,13 +184,13 @@ diff -Nru zabbix-1.6.8.orig/frontends/php/map.php zabbix-1.6.8/frontends/php/map
  				$white);
 -			imagestring($im, 2, $x_label, $y_label, $label_line,$label_color);
 +			if ($USER_DETAILS["lang"] == "ja_jp"){
-+				ImageTTFText($im, 9, 0, $x_label+2, $y_label+10, $label_color, ZBX_GRAPH_FONT, $label_line);
++				ImageTTFText($im, 9, 0, $x_label, $y_label+10, $label_color, ZBX_GRAPH_FONT, $label_line);
 +				}
 +			elseif ($USER_DETAILS["lang"] == "cn_zh"){
-+				ImageTTFText($im, 9, 0, $x_label+2, $y_label+10, $label_color, "/usr/share/fonts/chinese/TrueType/fireflysung.ttf", $label_line); 
++				ImageTTFText($im, 9, 0, $x_label, $y_label+10, $label_color, "/usr/share/fonts/chinese/TrueType/fireflysung.ttf", $label_line); 
 +				}
 +			elseif ($USER_DETAILS["lang"] == "ko_kr"){
-+				ImageTTFText($im, 9, 0, $x_label+2, $y_label+10, $label_color, "/usr/share/fonts/korean/TrueType/gulim.ttf", $label_line);
++				ImageTTFText($im, 9, 0, $x_label, $y_label+10, $label_color, "/usr/share/fonts/korean/TrueType/gulim.ttf", $label_line);
 +                                }
 +			else {
 +				imagestring($im, 2, $x_label, $y_label, $label_line, $label_color);
@@ -204,13 +204,13 @@ diff -Nru zabbix-1.6.8.orig/frontends/php/map.php zabbix-1.6.8/frontends/php/map
  				$white);
 -			imagestring($im, 2, $x_info, $y_info, $info_line,$color);
 +			if ($USER_DETAILS["lang"] == "ja_jp"){
-+				ImageTTFText($im, 8, 0, $x_info+9, $y_info+10, $color, "/usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf", $info_line);
++				ImageTTFText($im, 9, 0, $x_info, $y_info+10, $color, "/usr/share/fonts/japanese/TrueType/sazanami-gothic.ttf", $info_line);
 +			}
 +			elseif ($USER_DETAILS["lang"] == "cn_zh"){
-+				ImageTTFText($im, 8, 0, $x_info+9, $y_info+10, $color, "/usr/share/fonts/chinese/TrueType/fireflysung.ttf", $info_line);
++				ImageTTFText($im, 9, 0, $x_info, $y_info+10, $color, "/usr/share/fonts/chinese/TrueType/fireflysung.ttf", $info_line);
 +			}
 +			elseif ($USER_DETAILS["lang"] == "ko_kr"){
-+				ImageTTFText($im, 8, 0, $x_info+9, $y_info+10, $color, "/usr/share/fonts/korean/TrueType/gulim.ttf", $info_line);
++				ImageTTFText($im, 9, 0, $x_info, $y_info+10, $color, "/usr/share/fonts/korean/TrueType/gulim.ttf", $info_line);
 +			}
 +			else {
 +				imagestring($im, 2, $x_info, $y_info, $info_line,$color);
