@@ -580,7 +580,7 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Sun Feb 14 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.8-2
+* Sun Mar 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.8-2
 - Fix label text is not in the right place on map (Patch4)
 - Fix color selection frame is not appeared (Patch22)
 - Fix color configuration is not upgraded correctly from 1.4 to 1.6  when use Japanese (Patch23)
