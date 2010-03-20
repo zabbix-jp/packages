@@ -37,6 +37,7 @@ Patch21:        zabbix-1.6.8-get_dbid.patch
 Patch22:        zabbix-1.6.8-map_color_frame.patch
 Patch23:        zabbix-1.6.8-dbupgrade.patch
 Patch24:        zabbix-1.6.8-map_label_location.patch
+Patch25:        zabbix-1.6.8-fix_count_str_function.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -259,6 +260,7 @@ Zabbix web frontend for SQLite
 %patch22 -p1 -b map_color_frame.orig
 %patch23 -p1 -b dbupgrade.orig
 %patch24 -p1 -b map_label_location.orig
+%patch25 -p1 -b fix_count_str_function.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -583,6 +585,7 @@ fi
 - Fix color selection frame is not appeared (Patch22)
 - Fix color configuration is not upgraded correctly from 1.4 to 1.6  when use Japanese (Patch23)
 - Fix map icon label is not used map default label location setting (Patch24)
+- Fix counting string function in trigger (Patch25)
 
 * Thu Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.6.8-1
 - Update to 1.6.8
