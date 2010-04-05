@@ -1,0 +1,14 @@
+diff -Nru zabbix-1.6.8.orig/frontends/php/map.php zabbix-1.6.8/frontends/php/map.php
+--- zabbix-1.6.8.orig/frontends/php/map.php	2009-12-07 21:49:46.000000000 +0900
++++ zabbix-1.6.8/frontends/php/map.php	2010-02-15 00:05:02.000000000 +0900
+@@ -163,7 +163,9 @@
+ 		$label_color	= $black;
+ 		$info_line	= '';
+ 		$label_location = $db_element['label_location'];
+-		if(is_null($label_location))	$map['label_location'];
++		if(is_null($label_location)){
++			$label_location = $map['label_location'];
++		}
+ 
+ 		$label_line = $db_element['label'];
+ 

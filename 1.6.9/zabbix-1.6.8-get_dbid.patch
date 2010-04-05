@@ -1,0 +1,19 @@
+diff -Nur zabbix-1.6.6.org/frontends/php/include/profiles.inc.php zabbix-1.6.6/frontends/php/include/profiles.inc.php
+--- zabbix-1.6.6.org/frontends/php/include/profiles.inc.php	2009-08-26 22:16:26.000000000 +0900
++++ zabbix-1.6.6/frontends/php/include/profiles.inc.php	2009-12-09 16:45:13.000000000 +0900
+@@ -139,6 +139,7 @@
+ 					' AND idx='.zbx_dbstr($idx).
+ 					$sql_cond;
+ 
++		DBstart();
+ 		$row = DBfetch(DBselect($sql));
+ 
+ 		if(!$row){
+@@ -175,6 +176,7 @@
+ 
+ 			$result = DBexecute($sql);
+ 		}
++		$result = DBend();
+ 	}
+ 
+ 
