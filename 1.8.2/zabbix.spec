@@ -199,11 +199,14 @@ Group:           Applications/Internet
 Requires:        httpd
 Requires:        php
 Requires:	 php-gd
-Requires:	 php-bcmath
 Requires:	 php-mbstring
 Requires:        php-xml
 Requires:        zabbix = %{version}-%{release}
 Requires:	 zabbix-web-database = %{version}-%{release}
+
+%if %is_el5
+Requires:	 php-bcmath
+%endif
 
 %description web
 The php frontend to display the zabbix web interface.
