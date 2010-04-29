@@ -38,6 +38,7 @@ Patch22:        zabbix-1.6.8-map_color_frame.patch
 Patch23:        zabbix-1.6.8-dbupgrade.patch
 Patch24:        zabbix-1.6.8-map_label_location.patch
 Patch25:        zabbix-1.6.8-fix_count_str_function.patch
+Patch26:        zabbix-1.6.9-setup_from_empty_conf.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -264,6 +265,7 @@ Zabbix web frontend for SQLite
 %patch23 -p1 -b dbupgrade.orig
 %patch24 -p1 -b map_label_location.orig
 %patch25 -p1 -b fix_count_str_function.orig
+%patch26 -p1 -b setup_from_empty_conf.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -586,6 +588,10 @@ fi
 * Sun Apr 5 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-1
 - Update 1.6.9
 - Add mbstring.func_overload in zabbix-web.conf (Comentted out)
+- Add BuildRequires unixODBC-devel for CentOS4
+- Add BuildRequires OpenIPMI-devel for CentOS5
+- Delete BuildRequires php-bcmath for CentOS4
+- Add parch to redirect web installer if db parameter is empty in zabbix.conf.php
 
 * Sun Mar 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.8-2
 - Fix label text is not in the right place on map (Patch4)
