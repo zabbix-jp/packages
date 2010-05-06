@@ -17,13 +17,13 @@ Source7:        zabbix_server.conf
 Source8:        zabbix_proxy.conf
 Source9:        ipagui.ttf
 Source10:        enduser_license.txt
-Source11:        zabbix-1.8.1-ja_jp.inc.php
-Source12:        eventlog.c
-Source13:       eventlog.h
+Source11:        zabbix-1.8.2-ja_jp.inc.php
+#Source12:        eventlog.c
+#Source13:       eventlog.h
 Patch1:         zabbix-1.8-datasql.patch
-Patch2:         zabbix-1.8-powered_by_zabbixjp.patch
-Patch3:         zabbix-1.8-fix_to_compile_visualstudio_proj.patch
-Patch4:         zabbix-1.8.1-graph_font.patch
+Patch2:         zabbix-1.8.2-powered_by_zabbixjp.patch
+Patch3:         zabbix-1.8.2-fix_to_compile_visualstudio_proj.patch
+Patch4:         zabbix-1.8.2-graph_font.patch
 #Patch5:         zabbix-1.8-parentservice_translate.patch
 #Patch6:         zabbix-1.8-chart4_use_imagetext.patch
 #Patch7:         zabbix-1.8-loginmenu_translate.patch
@@ -35,6 +35,7 @@ Patch11:        zabbix-1.8-itservice_popup_translate.patch
 #Patch13:        zabbix-1.8-template_import.patch
 #Patch14:        zabbix-1.8-popup_media_status_translate.patch
 #Patch15:        zabbix-1.8-pie_chart.patch
+Patch16:         zabbix-1.8.2-setup_from_empty_conf.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -259,12 +260,13 @@ Zabbix web frontend for SQLite
 #%patch13 -p1 -b .template_import.orig
 #%patch14 -p1 -b .popup_media_status_translate.orig
 #%patch15 -p1 -b .pie_chart.orig
+%patch16 -p1 -b .setup_from_empty_conf.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE9} %{SOURCE10} frontends/php/fonts/
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE11} frontends/php/include/locales/ja_jp.inc.php
-cp %{SOURCE12} %{SOURCE13} src/zabbix_agent/
+#cp %{SOURCE12} %{SOURCE13} src/zabbix_agent/
 
 chmod -R a+rX .
 
@@ -558,9 +560,15 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Mon Apr 5 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
+* Thu May 6 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
 - Update to 1.8.2
 - Change mbstring.func_overload to 6 in zabbix-web.conf
+- Add parch to redirect web installer if db parameter is empty in zabbix.conf.php (Patch16)
+- Update Japanese translation (Source11)
+- Update parch for windows VisualStudio project file (Patch3)
+- Update zabbix_server.conf and zabbix_agentd.conf to merge 1.8.2 default config file (Source6, Source7)
+- Add upload_max_filesize and max_input_time in zabbix-web.conf (Source1)
+- Delete eventlog.c and eventlog.h (Source12, Source13)
 
 * Mon Feb 2 2010 Kodai Terashima <kodai74@gmail.com> -1.8.1-1
 - Update to 1.8.1
