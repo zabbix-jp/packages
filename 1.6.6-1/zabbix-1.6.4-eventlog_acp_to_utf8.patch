@@ -1,0 +1,131 @@
+diff -uNr zabbix-1.6.4.orig/src/zabbix_agent/eventlog.c zabbix-1.6.4/src/zabbix_agent/eventlog.c
+--- zabbix-1.6.4.orig/src/zabbix_agent/eventlog.c	2009-04-09 13:21:38.000000000 +0900
++++ zabbix-1.6.4/src/zabbix_agent/eventlog.c	2009-04-09 13:43:55.000000000 +0900
+@@ -21,6 +21,7 @@
+ 
+ #include "log.h"
+ #include "eventlog.h"
++#include "zbxconf.h"
+ 
+ #if defined (_WINDOWS)
+ 
+@@ -86,7 +87,54 @@
+ 
+ 	return(0);
+ }
++#define UNICODE
++#define _UNICODE
++/* convert from acp to unicode */
++int zbx_acp_to_unicode(LPTSTR *acp_string, LPTSTR *unicode_string)
++{
++	int result, acp_size;
++
++	result = MultiByteToWideChar(CP_ACP, 0, (LPCSTR)*acp_string, -1, NULL, 0);
++	if(result <= 0) {
++		zabbix_log(LOG_LEVEL_WARNING, "acp_string size error (%lu)", GetLastError());
++		return FAIL;
++	}
++	acp_size = result;
++	if((*unicode_string = (LPTSTR)zbx_malloc(*unicode_string,(size_t)(acp_size + 1) * sizeof(WCHAR))) == NULL){
++		zabbix_log(LOG_LEVEL_WARNING, "memory exhausted");
++		return FAIL;
++	};
++	/* convert from acp_string to unicode_string */
++	result = MultiByteToWideChar(CP_ACP, 0, (LPCSTR)*acp_string, -1, (LPWSTR)*unicode_string, acp_size);
++	if(result <= 0) {
++		zabbix_log(LOG_LEVEL_WARNING, "error in converting from acp to unicode (%lu)", GetLastError());
++		return FAIL;
++	}
++	return SUCCEED;
++}
++/* convert from unicode to utf8 */
++int zbx_unicode_to_utf8(LPTSTR *unicode_string, LPTSTR *utf8_string)
++{
++	int result, utf8_size;
+ 
++	result = WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)*unicode_string, -1, NULL, 0, NULL, NULL);
++	if(result <= 0) {
++		zabbix_log(LOG_LEVEL_WARNING, "utf8_string size error (%lu)", GetLastError());
++		return FAIL;
++	}
++	utf8_size = result;
++	if((*utf8_string = (LPTSTR)zbx_malloc(*utf8_string, (size_t)utf8_size + 1)) == NULL){
++		zabbix_log(LOG_LEVEL_WARNING, "memory exhausted");
++		return FAIL;
++	}
++	/* convert from unicode_string to utf8_string */
++	result = WideCharToMultiByte(CP_UTF8, 0, (LPCWSTR)*unicode_string, -1, *utf8_string, utf8_size, NULL, NULL);
++	if(result <= 0) {
++		zabbix_log(LOG_LEVEL_WARNING, "error in converting from unicode to utf8 (%lu)", GetLastError());
++		return FAIL;
++	}
++	return SUCCEED;
++}
+ /* get Nth error from event log. 1 is the first. */
+ static long    zbx_get_eventlog_message(
+ 	const char	*source,
+@@ -220,12 +268,22 @@
+ 
+ 					if(msgBuf)
+ 					{
+-						*out_message = strdup(msgBuf);		/* copy message */
+-
++						if(CONFIG_ENCODING && !strcmp(CONFIG_ENCODING, "utf8")){
++							/* convert from acp to uft8 through unicode */
++							WCHAR *unicode_message = NULL;
++							err = FAIL;
++							if(SUCCEED == zbx_acp_to_unicode(&msgBuf, (LPTSTR *)&unicode_message) &&
++								SUCCEED == zbx_unicode_to_utf8((LPTSTR *)&unicode_message, out_message)){
++									err = SUCCEED;
++							}
++							zbx_free(unicode_message);
++						}else{
++							*out_message = strdup(msgBuf);		/* copy message */
++							err = SUCCEED;
++						}
+ 						/* Free the buffer that FormatMessage allocated for us. */
+ 						LocalFree((HLOCAL) msgBuf);
+ 
+-						err = SUCCEED;
+ 					}
+ 					FreeLibrary(hLib);
+ 				}
+@@ -247,6 +305,8 @@
+ 
+ 	return 0;
+ } 
++#undef UNICODE
++#undef _UNICODE
+ #endif /* _WINDOWS */
+ 
+ int process_eventlog(
+diff -uNr zabbix-1.6.4.orig/src/zabbix_agent/zbxconf.c zabbix-1.6.4/src/zabbix_agent/zbxconf.c
+--- zabbix-1.6.4.orig/src/zabbix_agent/zbxconf.c	2009-04-09 13:21:38.000000000 +0900
++++ zabbix-1.6.4/src/zabbix_agent/zbxconf.c	2009-04-09 13:45:32.000000000 +0900
+@@ -52,6 +52,7 @@
+ int	CONFIG_SERVER_PORT	= 10051;
+ int	CONFIG_REFRESH_ACTIVE_CHECKS	= 120;
+ char	*CONFIG_LISTEN_IP		= NULL;
++char	*CONFIG_ENCODING		= NULL;
+ char	*CONFIG_SOURCE_IP		= NULL;
+ int	CONFIG_LOG_LEVEL		= LOG_LEVEL_INFORMATION;
+ char	CONFIG_LOG_UNRES_SYMB		= 0;
+@@ -82,6 +83,7 @@
+ 		{"ListenPort",		&CONFIG_LISTEN_PORT,	0,TYPE_INT,	PARM_OPT,	1024,32767},
+ 		{"ServerPort",		&CONFIG_SERVER_PORT,	0,TYPE_INT,	PARM_OPT,	1024,32767},
+ 		{"ListenIP",		&CONFIG_LISTEN_IP,	0,TYPE_STRING,	PARM_OPT,	0,0},
++		{"Encoding",		&CONFIG_ENCODING,	0,TYPE_STRING,	PARM_OPT,	0,0},
+ 		{"SourceIP",		&CONFIG_SOURCE_IP,	0,TYPE_STRING,	PARM_OPT,	0,0},
+ 
+ 		{"DebugLevel",		&CONFIG_LOG_LEVEL,	0,TYPE_INT,	PARM_OPT,	0,5},
+diff -uNr zabbix-1.6.4.orig/src/zabbix_agent/zbxconf.h zabbix-1.6.4/src/zabbix_agent/zbxconf.h
+--- zabbix-1.6.4.orig/src/zabbix_agent/zbxconf.h	2009-04-09 13:21:38.000000000 +0900
++++ zabbix-1.6.4/src/zabbix_agent/zbxconf.h	2009-04-09 13:43:55.000000000 +0900
+@@ -30,6 +30,7 @@
+ extern int	CONFIG_SERVER_PORT;
+ extern int	CONFIG_REFRESH_ACTIVE_CHECKS;
+ extern char	*CONFIG_LISTEN_IP;
++extern char	*CONFIG_ENCODING;
+ extern int	CONFIG_LOG_LEVEL;
+ extern char	CONFIG_LOG_UNRES_SYMB;
+ 

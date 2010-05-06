@@ -1,0 +1,57 @@
+#! /bin/sh
+#
+# chkconfig: - 85 15
+# description: zabbix server daemon
+#
+
+# zabbix details
+ZABBIX=/usr/sbin/zabbix_server
+CONF=/etc/zabbix/zabbix_server.conf
+PIDFILE=/var/run/zabbix.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -x $ZABBIX ] || exit 0
+[ -e $CONF ] || exit 0
+
+RETVAL=0
+
+case "$1" in
+    start)
+        echo -n "Starting zabbix server: "
+        daemon $ZABBIX -c $CONF
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && touch /var/lock/subsys/zabbix
+        ;;
+    stop)
+        echo -n "Shutting down zabbix server: "
+        killproc zabbix_server
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/zabbix
+        ;;
+    restart|reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+    status)
+        status zabbix_server
+        RETVAL=$?
+        ;;
+    *)
+	echo "Usage: $0 {start|stop|restart|reload|status}"
+	exit 1
+	;;
+esac
+
+exit $RETVAL
+

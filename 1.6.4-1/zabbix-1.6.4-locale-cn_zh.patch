@@ -1,0 +1,19 @@
+diff -uNr zabbix-1.6.4.orig/frontends/php/include/locales/cn_zh.inc.php zabbix-1.6.4/frontends/php/include/locales/cn_zh.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/locales/cn_zh.inc.php	2009-04-07 20:41:04.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/locales/cn_zh.inc.php	2009-04-07 20:51:33.000000000 +0900
+@@ -653,7 +653,7 @@
+ 	'S_LATVIAN_LV'=>			'Latvian (LV)',
+ 	'S_RUSSIAN_RU'=>			'Russian (RU)',
+ 	'S_SPANISH_SP'=>			'Spanish (SP)',
+-	'S_JAPANESE_JP'=>			'Chinese (CN)',
++	'S_JAPANESE_JP'=>			'Japanese (JP)',
+ 	'S_ZABBIX_BIG'=>			'ZABBIX',
+ 	'S_HOST_PROFILES'=>			'Host profiles',
+ 	'S_HOST_PROFILES_BIG'=>			'请选择主机所在位置=>',
+@@ -671,4 +671,4 @@
+ 	'S_LATEST_DATA'=>			'最新数据',
+ 	
+ 	);
+-?>
+\ ファイル末尾に改行がありません
++?>

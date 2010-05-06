@@ -1,0 +1,33 @@
+diff -uNrp zabbix-1.4.6.org/frontends/php/tr_events.php zabbix-1.4.6/frontends/php/tr_events.php
+--- zabbix-1.4.6.org/frontends/php/tr_events.php	2008-07-23 20:47:31.000000000 +0900
++++ zabbix-1.4.6/frontends/php/tr_events.php	2009-03-30 17:54:57.000000000 +0900
+@@ -96,22 +96,20 @@ include_once "include/page_header.php";
+ 	$table->ShowStart();
+ 
+ 	$rows = array();
+-	$count = 0;
+-	while($row=DBfetch($result)){
+-		if(!empty($rows) && $rows[$count]['value'] != $row['value']){
+-			$count++;
+-		}
+-		$rows[$count] = $row;
+-	}
+ 
+ 	$truesum=0;
+ 	$falsesum=0;
+ 	$dissum=0;
+ 	$clock=time();
++	$row_pre=null;
++	while($row=DBfetch($result)){
++		if (!empty($row_pre) && $row_pre['value'] == $row['value']){
++			$row_pre = $row;
++			continue;
++		}
++		$row_pre = $row;
+ 	
+ //	while($row=DBfetch($result))
+-	foreach($rows as $id => $row)
+-	{
+ 		$lclock=$clock;
+ 		$clock=$row["clock"];
+ 		$leng=$lclock-$row["clock"];

@@ -1,0 +1,12 @@
+diff -uNrp zabbix-1.6.4.orig/src/zabbix_agent/eventlog.c zabbix-1.6.4/src/zabbix_agent/eventlog.c
+--- zabbix-1.6.4.orig/src/zabbix_agent/eventlog.c	2009-09-10 12:06:17.000000000 +0900
++++ zabbix-1.6.4/src/zabbix_agent/eventlog.c	2009-09-10 12:07:51.000000000 +0900
+@@ -25,7 +25,7 @@
+ 
+ #if defined (_WINDOWS)
+ 
+-#define MAX_INSERT_STRS 64
++#define MAX_INSERT_STRS 100
+ #define MAX_MSG_LENGTH 1024
+ 
+ #define EVENTLOG_REG_PATH "SYSTEM\\CurrentControlSet\\Services\\EventLog"

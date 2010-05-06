@@ -1,0 +1,12 @@
+diff -Nru zabbix-1.4.6.orig/frontends/php/include/defines.inc.php zabbix-1.4.6/frontends/php/include/defines.inc.php
+--- zabbix-1.4.6.orig/frontends/php/include/defines.inc.php	2008-07-23 20:47:31.000000000 +0900
++++ zabbix-1.4.6/frontends/php/include/defines.inc.php	2009-09-16 03:21:52.000000000 +0900
+@@ -418,7 +418,7 @@
+ 	define('ZBX_SIMPLE_EXPRESSION_FUNCTION_NAME_ID', 8);
+ 	define('ZBX_SIMPLE_EXPRESSION_FUNCTION_PARAM_ID', 10);
+ 
+-	define('ZBX_EREG_EXPRESSION_TOKEN_FORMAT', '^([[:print:]]*)('.ZBX_EREG_SIMPLE_EXPRESSION_FORMAT.'|'.ZBX_EREG_MACRO_NAME_FORMAT.')([[:print:]]*)$');
++	define('ZBX_EREG_EXPRESSION_TOKEN_FORMAT', '^([^[:cntrl:]]*)('.ZBX_EREG_SIMPLE_EXPRESSION_FORMAT.'|'.ZBX_EREG_MACRO_NAME_FORMAT.')([^[:cntrl:]]*)$');
+ 
+ 	define('ZBX_EXPRESSION_LEFT_ID', 1);
+ 	define('ZBX_EXPRESSION_SIMPLE_EXPRESSION_ID', 2);

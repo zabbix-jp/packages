@@ -1,0 +1,11 @@
+diff -Nru zabbix-1.6.4.orig/frontends/php/include/events.inc.php zabbix-1.6.4/frontends/php/include/events.inc.php
+--- zabbix-1.6.4.orig/frontends/php/include/events.inc.php	2009-04-03 23:44:07.000000000 +0900
++++ zabbix-1.6.4/frontends/php/include/events.inc.php	2009-10-17 17:36:43.000000000 +0900
+@@ -357,7 +357,7 @@
+ 		$sql_cond = ' AND h.hostid=hg.hostid AND hg.groupid='.$groupid;
+ 	}
+ 	else{
+-		$sql_from = ', hosts_groups hg ';
++		$sql_from = "";
+ 		$sql_cond = ' AND '.DBcondition('h.hostid',$available_hosts);
+ 	}

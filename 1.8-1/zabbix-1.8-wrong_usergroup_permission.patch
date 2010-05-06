@@ -1,0 +1,14 @@
+diff -Nru zabbix-1.8.orig/create/data/data.sql zabbix-1.8/create/data/data.sql
+--- zabbix-1.8.orig/create/data/data.sql	2009-12-08 04:43:58.000000000 +0900
++++ zabbix-1.8/create/data/data.sql	2009-12-25 13:32:57.000000000 +0900
+@@ -49,8 +49,8 @@
+ INSERT INTO usrgrp VALUES (6,'Head of IT department',0,0,0,0);
+ INSERT INTO usrgrp VALUES (7,'Zabbix administrators',0,0,0,0);
+ INSERT INTO usrgrp VALUES (8,'Guests',0,0,0,0);
+-INSERT INTO usrgrp VALUES (9,'Disabled',0,0,1,0);
+-INSERT INTO usrgrp VALUES (10,'API access',0,1,0,0);
++INSERT INTO usrgrp VALUES (9,'Disabled',0,1,0,0);
++INSERT INTO usrgrp VALUES (10,'API access',0,0,1,0);
+ --
+ -- Dumping data for table `users_groups`
+ --

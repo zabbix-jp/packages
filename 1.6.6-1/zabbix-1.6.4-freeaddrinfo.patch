@@ -1,0 +1,11 @@
+--- zabbix-1.6.4.orig/src/libs/zbxcomms/comms.c.orig	2009-06-16 19:12:14.000000000 +0900
++++ zabbix-1.6.4/src/libs/zbxcomms/comms.c	2009-06-16 19:05:32.000000000 +0900
+@@ -22,6 +22,8 @@
+ #include "log.h"
+ 
+ #if defined(_WINDOWS)
++#	include "Ws2tcpip.h"
++#	include "Wspiapi.h"
+ #	if defined(__INT_MAX__) && __INT_MAX__ == 2147483647
+ 		typedef int ssize_t;
+ #	else
