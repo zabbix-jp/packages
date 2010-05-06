@@ -1,0 +1,12 @@
+diff -uNrp zabbix-1.6.8.orig/src/libs/zbxserver/evalfunc.c zabbix-1.6.8/src/libs/zbxserver/evalfunc.c
+--- zabbix-1.6.8.orig/src/libs/zbxserver/evalfunc.c	2009-12-07 21:49:44.000000000 +0900
++++ zabbix-1.6.8/src/libs/zbxserver/evalfunc.c	2010-02-18 18:04:59.000000000 +0900
+@@ -264,7 +264,7 @@ static int	evaluate_COUNT(char *value, D
+ 				break;
+ 			default:
+ 				cmp_esc = DBdyn_escape_string(cmp);
+-				zbx_snprintf(tmp + offset, sizeof(tmp) - offset, " and clock>%d and value like '%s'",
++				zbx_snprintf(tmp + offset, sizeof(tmp) - offset, " and clock>%d and value like '%%%s%%'",
+ 						clock,
+ 						cmp_esc);
+ 				zbx_free(cmp_esc);
