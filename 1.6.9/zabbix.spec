@@ -585,13 +585,14 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Sun Apr 5 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-1
+* Thu May 6 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-1
 - Update 1.6.9
 - Add mbstring.func_overload in zabbix-web.conf (Comentted out)
 - Add BuildRequires unixODBC-devel for CentOS4
 - Add BuildRequires OpenIPMI-devel for CentOS5
 - Delete BuildRequires php-bcmath for CentOS4
 - Add parch to redirect web installer if db parameter is empty in zabbix.conf.php
+- Update windows agent installer script for win64
 
 * Sun Mar 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.8-2
 - Fix label text is not in the right place on map (Patch4)
