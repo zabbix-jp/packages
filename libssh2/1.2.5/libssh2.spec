@@ -50,13 +50,12 @@ done
 
 %build
 %configure \
-    --disable-static \
+    --enable-static \
     --enable-shared \
     --with-openssl \
     --with-libz
 
 make %{?_smp_mflags}
-
 
 %install
 rm -rf %{buildroot}
@@ -95,12 +94,14 @@ rm -rf %{buildroot}
 %doc COPYING 
 %{_includedir}/*
 %{_libdir}/*.so
+%{_libdir}/*.a
 %{_libdir}/pkgconfig
 
 %changelog
 * Mon May 5 2010 Kodai Terashima <kodai74@gmail.com> - 1.2.5-1
 - Update 1.2.5
 - Add configure option --with-openssl and --with-libz in spec file
+- Enable static libraries
 
 * Sun Feb 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.2.2-1
 - Update 1.2.2
