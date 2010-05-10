@@ -89,9 +89,10 @@ Requires:        fping
 Requires:        iksemel
 Requires:	 net-snmp-libs
 Requires:        unixODBC
+Requires:        libssh2 >= 1.0.0
 %if %is_el5
 Requires:        curl >= 7.13.1
-Requires:        OpenIPMI-libs
+Requires:        OpenIPMI-libs >= 2.0.0
 %endif
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
@@ -160,6 +161,13 @@ Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
 Requires:        fping
+Requires:	 net-snmp-libs
+Requires:        unixODBC
+Requires:        libssh2 >= 1.0.0
+%if %is_el5
+Requires:        curl >= 7.13.1
+Requires:        OpenIPMI-libs >= 2.0.0
+%endif
 
 %description proxy
 The Zabbix proxy
@@ -629,10 +637,12 @@ fi
 - Delete eventlog.c and eventlog.h (Source12, Source13)
 - Create symlink for zabbix_server_* and zabbix_proxy_* if first install
 - Add using binary filename "zabbix_server" and "zabbix_proxy" in init scripts
-- Add Require version for libssh, curl, OpenIPMI, php
-- Add Conflict proxy packages
+- Add require version for libssh, curl, OpenIPMI, php
+- Add conflict proxy packages
 - Add --without-libcurl and --without-openipmi compile options for CentOS4
 - Some improvements for spec file
+- Add require net-snmp-libs, unixODBC, libssh2, curl, OpenIPMI-libs for proxy package
+- Add require libssh2 for server package
 
 * Mon Feb 2 2010 Kodai Terashima <kodai74@gmail.com> -1.8.1-1
 - Update to 1.8.1
