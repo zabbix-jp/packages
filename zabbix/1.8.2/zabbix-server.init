@@ -15,7 +15,9 @@
 ### END INIT INFO
 
 # zabbix details
-if [ -x /usr/sbin/zabbix_server_mysql ]; then
+if [ -x /usr/sbin/zabbix_server ]; then
+    ZABBIX=zabbix_server
+elif [ -x /usr/sbin/zabbix_server_mysql ]; then
     ZABBIX=zabbix_server_mysql
 elif [ -x /usr/sbin/zabbix_server_pgsql ]; then
     ZABBIX=zabbix_server_pgsql
