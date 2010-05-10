@@ -50,11 +50,11 @@ BuildRequires:   gnutls-devel
 BuildRequires:   iksemel-devel
 BuildRequires:   sqlite-devel
 BuildRequires:   unixODBC-devel
-BuildRequires:   libssh2-devel
+BuildRequires:   libssh2-devel >= 1.0.0
 
 %if %is_el5
-BuildRequires:   curl-devel
-BuildRequires:   OpenIPMI-devel
+BuildRequires:   curl-devel >= 7.13.1
+BuildRequires:   OpenIPMI-devel >= 2.0.0
 %endif
 
 Requires:        logrotate
@@ -90,7 +90,7 @@ Requires:        iksemel
 Requires:	 net-snmp-libs
 Requires:        unixODBC
 %if %is_el5
-Requires:        curl
+Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs
 %endif
 Requires(post):  /sbin/chkconfig
@@ -170,6 +170,8 @@ Group:           Applications/Internet
 Requires:	 zabbix-proxy = %{version}-%{release}
 Requires:        mysql
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
+Conflicts:       zabbix-proxy-pgsql
+Conflicts:       zabbix-proxy-sqlite3
 
 %description proxy-mysql
 The Zabbix proxy compiled to use MySQL
@@ -180,6 +182,8 @@ Group:           Applications/Internet
 Requires:	 zabbix-proxy = %{version}-%{release}
 Requires:        postgresql
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
+Conflicts:       zabbix-proxy-mysql
+Conflicts:       zabbix-proxy-sqlite3
 
 %description proxy-pgsql
 The Zabbix proxy compiled to use PostgreSQL
@@ -190,6 +194,8 @@ Group:           Applications/Internet
 Requires:	 zabbix-proxy = %{version}-%{release}
 Requires:        sqlite
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
+Conflicts:       zabbix-proxy-mysql
+Conflicts:       zabbix-proxy-pgsql
 
 %description proxy-sqlite3
 The Zabbix proxy compiled to use SQLite
@@ -198,7 +204,7 @@ The Zabbix proxy compiled to use SQLite
 Summary:         Zabbix Web Frontend
 Group:           Applications/Internet
 Requires:        httpd
-Requires:        php
+Requires:        php >= 5.0
 Requires:	 php-gd
 Requires:	 php-mbstring
 Requires:        php-xml
@@ -276,72 +282,37 @@ chmod -R a+rX .
 
 %build
 
-%configure \
+common_flags="
     --enable-server \
     --enable-agent \
     --enable-proxy \
     --enable-ipv6 \
-    --with-mysql \
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
     --with-ssh2 \
   %if %is_el4
-    --with-jabber
+    --without-libcurl \
+    --without-openipmi \
   %endif
   %if %is_el5
-    --with-jabber \
     --with-openipmi \
-    --with-libcurl
+    --with-libcurl \
   %endif
+    --with-jabber
+"
 
+%configure $common_flags --with-mysql
 make %{?_smp_mflags}
-
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_mysql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
 
-%configure \
-    --enable-server \
-    --enable-agent \
-    --enable-proxy \
-    --enable-ipv6 \
-    --with-pgsql \
-    --with-net-snmp \
-    --with-ldap \
-    --with-unixodbc \
-    --with-ssh2 \
-  %if %is_el4
-    --with-jabber
-  %endif
-  %if %is_el5
-    --with-jabber \
-    --with-openipmi \
-    --with-libcurl
-  %endif
-
+%configure $common_flags --with-pgsql
 make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
 
-%configure \
-    --enable-server \
-    --enable-agent \
-    --enable-proxy \
-    --enable-ipv6 \
-    --with-sqlite3 \
-    --with-net-snmp \
-    --with-ldap \
-    --with-unixodbc \
-    --with-ssh2 \
-  %if %is_el4
-    --with-jabber
-  %endif
-  %if %is_el5
-    --with-jabber \
-    --with-openipmi \
-    --with-libcurl
-  %endif
-
+%configure $common_flags --with-sqlite3
 make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_sqlite3
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_sqlite3
@@ -423,50 +394,137 @@ rm -rf $RPM_BUILD_ROOT
         -s /sbin/nologin -r -d %{_localstatedir}/lib/%{name} zabbix 2> /dev/null || :
 
 %post server
-/sbin/chkconfig --add zabbix-server
+/sbin/chkconfig --add zabbix-server || :
+
+%post server-mysql
+if [ $1 -eq 1 ]; then
+    if [ ! -f %{_sbindir}/zabbix_server ]; then
+	cd %{_sbindir}
+	ln -s zabbix_server_mysql zabbix_server || :
+    fi
+fi
+
+%post server-pgsql
+if [ $1 -eq 1 ]; then
+    if [ ! -f %{_sbindir}/zabbix_server ]; then
+	cd %{_sbindir}
+	ln -s zabbix_server_pgsql zabbix_server || :
+    fi
+fi
+
+%post server-sqlite3
+if [ $1 -eq 1 ]; then
+    if [ ! -f %{_sbindir}/zabbix_server ]; then
+	cd %{_sbindir}
+	ln -s zabbix_server_sqlite3 zabbix_server || :
+    fi
+fi
 
 %post agent
-/sbin/chkconfig --add zabbix-agent
+/sbin/chkconfig --add zabbix-agent || :
 
 %post proxy
-/sbin/chkconfig --add zabbix-proxy
+/sbin/chkconfig --add zabbix-proxy || :
+
+%post proxy-mysql
+if [ $1 -eq 1 ]; then
+    if [ ! -f %{_sbindir}/zabbix_proxy ]; then
+	cd %{_sbindir}
+	ln -s zabbix_proxy_mysql zabbix_proxy || :
+    fi
+fi
+
+%post proxy-pgsql
+if [ $1 -eq 1 ]; then
+    if [ ! -f %{_sbindir}/zabbix_proxy ]; then
+	cd %{_sbindir}
+	ln -s zabbix_proxy_pgsql zabbix_proxy || :
+    fi
+fi
+
+%post proxy-sqlite3
+if [ $1 -eq 1 ]; then
+    if [ ! -f %{_sbindir}/zabbix_proxy ]; then
+	cd %{_sbindir}
+	ln -s zabbix_proxy_sqlite3 zabbix_proxy || :
+    fi
+fi
 
 %preun server
-if [ "$1" = 0 ]
+if [ $1 -eq 0 ]
 then
   /sbin/service zabbix-server stop >/dev/null 2>&1 || :
   /sbin/chkconfig --del zabbix-server
 fi
 
+%preun server-mysql
+if [ $1 -eq 0 ]; then
+    if [ -L %{_sbindir}/zabbix_server ]; then
+	rm -f %{_sbindir}/zabbix_server || :
+    fi
+fi
+
+%preun server-pgsql
+if [ $1 -eq 0 ]; then
+    if [ -L %{_sbindir}/zabbix_server ]; then
+	rm -f %{_sbindir}/zabbix_server || :
+    fi
+fi
+
+%preun server-sqlite3
+if [ $1 -eq 0 ]; then
+    if [ -L %{_sbindir}/zabbix_server ]; then
+	rm -f %{_sbindir}/zabbix_server || :
+    fi
+fi
+
 %preun agent
-if [ "$1" = 0 ]
+if [ $1 -eq 0 ]
 then
   /sbin/service zabbix-agent stop >/dev/null 2>&1 || :
   /sbin/chkconfig --del zabbix-agent
 fi
 
 %preun proxy
-if [ "$1" = 0 ]
+if [ $1 -eq 0 ]
 then
   /sbin/service zabbix-proxy stop >/dev/null 2>&1 || :
   /sbin/chkconfig --del zabbix-proxy
 fi
 
+%preun proxy-mysql 
+if [ $1 -eq 0 ]; then
+    if [ -L %{_sbindir}/zabbix_proxy ]; then
+	rm -f %{_sbindir}/zabbix_proxy || :
+    fi
+fi
+
+%preun proxy-pgsql
+if [ $1 -eq 0 ]; then
+    if [ -L %{_sbindir}/zabbix_proxy ]; then
+	rm -f %{_sbindir}/zabbix_proxy || :
+    fi
+fi
+
+%preun proxy-sqlite3
+if [ $1 -eq 0 ]; then
+    if [ -L %{_sbindir}/zabbix_proxy ]; then
+	rm -f %{_sbindir}/zabbix_proxy || :
+    fi
+fi
+
 %postun server
-if [ "$1" -gt 1 ]
-then
+if [ "$1" -gt 1 ]; then
   /sbin/service zabbix-server condrestart >/dev/null 2>&1 || :
 fi
 
 %postun agent
-if [ "$1" -gt 1 ]
-then
+if [ "$1" -gt 1 ]; then
   /sbin/service zabbix-agent condrestart >/dev/null 2>&1 || :
 fi
 
 %postun proxy
-if [ "$1" -gt 1 ]
-then
+if [ "$1" -gt 1 ]; then
   /sbin/service zabbix-proxy condrestart >/dev/null 2>&1 || :
 fi
 
@@ -480,7 +538,7 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
 %doc docs/README upgrades/dbpatches create/data create/schema
-%{_datadir}/man/man8/zabbix_server.8.gz
+%{_mandir}/man8/zabbix_server.8.gz
 %config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_server.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
 %dir %{_sysconfdir}/zabbix/alertscripts
@@ -505,9 +563,9 @@ fi
 %files agent
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
-%{_datadir}/man/man8/zabbix_agentd.8.gz
-%{_datadir}/man/man1/zabbix_get.1.gz
-%{_datadir}/man/man1/zabbix_sender.1.gz
+%{_mandir}/man8/zabbix_agentd.8.gz
+%{_mandir}/man1/zabbix_get.1.gz
+%{_mandir}/man1/zabbix_sender.1.gz
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agent.conf
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
@@ -521,7 +579,7 @@ fi
 %files proxy
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
-%{_datadir}/man/man8/zabbix_proxy.8.gz
+%{_mandir}/man8/zabbix_proxy.8.gz
 %config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_proxy.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
 %{_sysconfdir}/init.d/zabbix-proxy
@@ -569,6 +627,12 @@ fi
 - Update zabbix_server.conf and zabbix_agentd.conf to merge 1.8.2 default config file (Source6, Source7)
 - Add upload_max_filesize and max_input_time in zabbix-web.conf (Source1)
 - Delete eventlog.c and eventlog.h (Source12, Source13)
+- Create symlink for zabbix_server_* and zabbix_proxy_* if first install
+- Add using binary filename "zabbix_server" and "zabbix_proxy" in init scripts
+- Add Require version for libssh, curl, OpenIPMI, php
+- Add Conflict proxy packages
+- Add --without-libcurl and --without-openipmi compile options for CentOS4
+- Some improvements for spec file
 
 * Mon Feb 2 2010 Kodai Terashima <kodai74@gmail.com> -1.8.1-1
 - Update to 1.8.1
