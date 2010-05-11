@@ -233,6 +233,8 @@ Requires:	 zabbix-web = %{version}-%{release}
 Requires:	 php-mysql
 Provides:	 zabbix-web-database = %{version}-%{release}
 Obsoletes:	 zabbix-web <= 1.5.3-0.1
+Conflicts:       zabbix-web-pgsql
+Conflicts:       zabbix-web-sqlite3
 
 %description web-mysql
 Zabbix web frontend for MySQL
@@ -243,6 +245,8 @@ Group:           Applications/Internet
 Requires:	 zabbix-web = %{version}-%{release}
 Requires:	 php-pgsql
 Provides:	 zabbix-web-database = %{version}-%{release}
+Conflicts:       zabbix-web-mysql
+Conflicts:       zabbix-web-sqlite3
 
 %description web-pgsql
 Zabbix web frontend for PostgreSQL
@@ -253,6 +257,8 @@ Group:           Applications/Internet
 Requires:	 zabbix-web = %{version}-%{release}
 Requires:        sqlite
 Provides:	 zabbix-web-database = %{version}-%{release}
+Conflicts:       zabbix-web-mysql
+Conflicts:       zabbix-web-pgsql
 
 %description web-sqlite3
 Zabbix web frontend for SQLite
@@ -638,7 +644,7 @@ fi
 - Create symlink for zabbix_server_* and zabbix_proxy_* if first install
 - Add using binary filename "zabbix_server" and "zabbix_proxy" in init scripts
 - Add require version for libssh, curl, OpenIPMI, php
-- Add conflict proxy packages
+- Add conflict proxy and web packages
 - Add --without-libcurl and --without-openipmi compile options for CentOS4
 - Some improvements for spec file
 - Add require net-snmp-libs, unixODBC, libssh2, curl, OpenIPMI-libs for proxy package
