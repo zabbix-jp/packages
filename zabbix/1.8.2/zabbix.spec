@@ -54,7 +54,7 @@ BuildRequires:   libssh2-devel >= 1.0.0
 
 %if %is_el5
 BuildRequires:   curl-devel >= 7.13.1
-BuildRequires:   OpenIPMI-devel >= 2.0.0
+BuildRequires:   OpenIPMI-devel >= 2.0.14
 %endif
 
 Requires:        logrotate
@@ -83,16 +83,16 @@ companies with a multitude of servers.
 %package server
 Summary:         Zabbix server common files
 Group:           Applications/Internet
-Requires:	 zabbix = %{version}-%{release}
+Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-server-implementation = %{version}-%{release}
 Requires:        fping
 Requires:        iksemel
-Requires:	 net-snmp-libs
+Requires:        net-snmp-libs
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
 %if %is_el5
 Requires:        curl >= 7.13.1
-Requires:        OpenIPMI-libs >= 2.0.0
+Requires:        OpenIPMI-libs >= 2.0.14
 %endif
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
@@ -105,7 +105,7 @@ Zabbix server common files
 Summary:         Zabbix server compiled to use MySQL
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
-Requires:	 zabbix-server = %{version}-%{release}
+Requires:        zabbix-server = %{version}-%{release}
 Requires:        mysql
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Obsoletes:       zabbix <= 1.5.3-0.1
@@ -119,7 +119,7 @@ Zabbix server compiled to use MySQL
 Summary:         Zabbix server compiled to use PostgresSQL
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
-Requires:	 zabbix-server = %{version}-%{release}
+Requires:        zabbix-server = %{version}-%{release}
 Requires:        postgresql
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Conflicts:       zabbix-server-mysql
@@ -132,11 +132,11 @@ Zabbix server compiled to use PostgresSQL
 Summary:         Zabbix server compiled to use SQLite
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
-Requires:	 zabbix-server = %{version}-%{release}
+Requires:        zabbix-server = %{version}-%{release}
 Requires:        sqlite
 Provides:        zabbix-server-implementation = %{version}-%{release}
 Conflicts:       zabbix-server-mysql
-Conflicts:	 zabbix-server-pgsql
+Conflicts:       zabbix-server-pgsql
 
 %description server-sqlite3
 Zabbix server compiled to use SQLite
@@ -144,7 +144,7 @@ Zabbix server compiled to use SQLite
 %package agent
 Summary:         Zabbix Agent
 Group:           Applications/Internet
-Requires:	 zabbix = %{version}-%{release}
+Requires:        zabbix = %{version}-%{release}
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
@@ -155,18 +155,18 @@ The Zabbix client agent, to be installed on monitored systems.
 %package proxy
 Summary:         Zabbix Proxy
 Group:           Applications/Internet
-Requires:	 zabbix = %{version}-%{release}
+Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-proxy-implementation = %{version}-%{release}
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
 Requires:        fping
-Requires:	 net-snmp-libs
+Requires:        net-snmp-libs
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
 %if %is_el5
 Requires:        curl >= 7.13.1
-Requires:        OpenIPMI-libs >= 2.0.0
+Requires:        OpenIPMI-libs >= 2.0.14
 %endif
 
 %description proxy
@@ -175,7 +175,7 @@ The Zabbix proxy
 %package proxy-mysql
 Summary:         Zabbix proxy compiled to use MySQL
 Group:           Applications/Internet
-Requires:	 zabbix-proxy = %{version}-%{release}
+Requires:        zabbix-proxy = %{version}-%{release}
 Requires:        mysql
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
 Conflicts:       zabbix-proxy-pgsql
@@ -187,7 +187,7 @@ The Zabbix proxy compiled to use MySQL
 %package proxy-pgsql
 Summary:         Zabbix proxy compiled to use PostgreSQL
 Group:           Applications/Internet
-Requires:	 zabbix-proxy = %{version}-%{release}
+Requires:        zabbix-proxy = %{version}-%{release}
 Requires:        postgresql
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
 Conflicts:       zabbix-proxy-mysql
@@ -199,7 +199,7 @@ The Zabbix proxy compiled to use PostgreSQL
 %package proxy-sqlite3
 Summary:         Zabbix proxy compiled to use SQLite
 Group:           Applications/Internet
-Requires:	 zabbix-proxy = %{version}-%{release}
+Requires:        zabbix-proxy = %{version}-%{release}
 Requires:        sqlite
 Provides:        zabbix-proxy-implementation = %{version}-%{release}
 Conflicts:       zabbix-proxy-mysql
@@ -213,14 +213,14 @@ Summary:         Zabbix Web Frontend
 Group:           Applications/Internet
 Requires:        httpd
 Requires:        php >= 5.0
-Requires:	 php-gd
-Requires:	 php-mbstring
+Requires:        php-gd
+Requires:        php-mbstring
 Requires:        php-xml
 Requires:        zabbix = %{version}-%{release}
-Requires:	 zabbix-web-database = %{version}-%{release}
+Requires:        zabbix-web-database = %{version}-%{release}
 
 %if %is_el5
-Requires:	 php-bcmath
+Requires:        php-bcmath
 %endif
 
 %description web
@@ -229,10 +229,10 @@ The php frontend to display the zabbix web interface.
 %package web-mysql
 Summary:         Zabbix web frontend for MySQL
 Group:           Applications/Internet
-Requires:	 zabbix-web = %{version}-%{release}
-Requires:	 php-mysql
-Provides:	 zabbix-web-database = %{version}-%{release}
-Obsoletes:	 zabbix-web <= 1.5.3-0.1
+Requires:        zabbix-web = %{version}-%{release}
+Requires:        php-mysql
+Provides:        zabbix-web-database = %{version}-%{release}
+Obsoletes:       zabbix-web <= 1.5.3-0.1
 Conflicts:       zabbix-web-pgsql
 Conflicts:       zabbix-web-sqlite3
 
@@ -242,9 +242,9 @@ Zabbix web frontend for MySQL
 %package web-pgsql
 Summary:         Zabbix web frontend for PostgreSQL
 Group:           Applications/Internet
-Requires:	 zabbix-web = %{version}-%{release}
-Requires:	 php-pgsql
-Provides:	 zabbix-web-database = %{version}-%{release}
+Requires:        zabbix-web = %{version}-%{release}
+Requires:        php-pgsql
+Provides:        zabbix-web-database = %{version}-%{release}
 Conflicts:       zabbix-web-mysql
 Conflicts:       zabbix-web-sqlite3
 
@@ -254,9 +254,9 @@ Zabbix web frontend for PostgreSQL
 %package web-sqlite3
 Summary:         Zabbix web frontend for SQLite
 Group:           Applications/Internet
-Requires:	 zabbix-web = %{version}-%{release}
+Requires:        zabbix-web = %{version}-%{release}
 Requires:        sqlite
-Provides:	 zabbix-web-database = %{version}-%{release}
+Provides:        zabbix-web-database = %{version}-%{release}
 Conflicts:       zabbix-web-mysql
 Conflicts:       zabbix-web-pgsql
 
@@ -412,26 +412,26 @@ rm -rf $RPM_BUILD_ROOT
 
 %post server-mysql
 if [ $1 -eq 1 ]; then
-    if [ ! -f %{_sbindir}/zabbix_server ]; then
-	cd %{_sbindir}
-	ln -s zabbix_server_mysql zabbix_server || :
-    fi
+  if [ ! -f %{_sbindir}/zabbix_server ]; then
+     cd %{_sbindir}
+     ln -s zabbix_server_mysql zabbix_server || :
+  fi
 fi
 
 %post server-pgsql
 if [ $1 -eq 1 ]; then
-    if [ ! -f %{_sbindir}/zabbix_server ]; then
-	cd %{_sbindir}
-	ln -s zabbix_server_pgsql zabbix_server || :
-    fi
+  if [ ! -f %{_sbindir}/zabbix_server ]; then
+    cd %{_sbindir}
+    ln -s zabbix_server_pgsql zabbix_server || :
+  fi
 fi
 
 %post server-sqlite3
 if [ $1 -eq 1 ]; then
-    if [ ! -f %{_sbindir}/zabbix_server ]; then
-	cd %{_sbindir}
-	ln -s zabbix_server_sqlite3 zabbix_server || :
-    fi
+  if [ ! -f %{_sbindir}/zabbix_server ]; then
+    cd %{_sbindir}
+    ln -s zabbix_server_sqlite3 zabbix_server || :
+  fi
 fi
 
 %post agent
@@ -442,26 +442,26 @@ fi
 
 %post proxy-mysql
 if [ $1 -eq 1 ]; then
-    if [ ! -f %{_sbindir}/zabbix_proxy ]; then
-	cd %{_sbindir}
-	ln -s zabbix_proxy_mysql zabbix_proxy || :
-    fi
+  if [ ! -f %{_sbindir}/zabbix_proxy ]; then
+    cd %{_sbindir}
+    ln -s zabbix_proxy_mysql zabbix_proxy || :
+  fi
 fi
 
 %post proxy-pgsql
 if [ $1 -eq 1 ]; then
-    if [ ! -f %{_sbindir}/zabbix_proxy ]; then
-	cd %{_sbindir}
-	ln -s zabbix_proxy_pgsql zabbix_proxy || :
-    fi
+  if [ ! -f %{_sbindir}/zabbix_proxy ]; then
+    cd %{_sbindir}
+    ln -s zabbix_proxy_pgsql zabbix_proxy || :
+  fi
 fi
 
 %post proxy-sqlite3
 if [ $1 -eq 1 ]; then
-    if [ ! -f %{_sbindir}/zabbix_proxy ]; then
-	cd %{_sbindir}
-	ln -s zabbix_proxy_sqlite3 zabbix_proxy || :
-    fi
+  if [ ! -f %{_sbindir}/zabbix_proxy ]; then
+    cd %{_sbindir}
+    ln -s zabbix_proxy_sqlite3 zabbix_proxy || :
+  fi
 fi
 
 %preun server
@@ -473,23 +473,23 @@ fi
 
 %preun server-mysql
 if [ $1 -eq 0 ]; then
-    if [ -L %{_sbindir}/zabbix_server ]; then
-	rm -f %{_sbindir}/zabbix_server || :
-    fi
+  if [ -L %{_sbindir}/zabbix_server ]; then
+    rm -f %{_sbindir}/zabbix_server || :
+  fi
 fi
 
 %preun server-pgsql
 if [ $1 -eq 0 ]; then
-    if [ -L %{_sbindir}/zabbix_server ]; then
-	rm -f %{_sbindir}/zabbix_server || :
-    fi
+  if [ -L %{_sbindir}/zabbix_server ]; then
+    rm -f %{_sbindir}/zabbix_server || :
+  fi
 fi
 
 %preun server-sqlite3
 if [ $1 -eq 0 ]; then
-    if [ -L %{_sbindir}/zabbix_server ]; then
-	rm -f %{_sbindir}/zabbix_server || :
-    fi
+  if [ -L %{_sbindir}/zabbix_server ]; then
+    rm -f %{_sbindir}/zabbix_server || :
+  fi
 fi
 
 %preun agent
@@ -508,37 +508,37 @@ fi
 
 %preun proxy-mysql 
 if [ $1 -eq 0 ]; then
-    if [ -L %{_sbindir}/zabbix_proxy ]; then
-	rm -f %{_sbindir}/zabbix_proxy || :
-    fi
+  if [ -L %{_sbindir}/zabbix_proxy ]; then
+    rm -f %{_sbindir}/zabbix_proxy || :
+  fi
 fi
 
 %preun proxy-pgsql
 if [ $1 -eq 0 ]; then
-    if [ -L %{_sbindir}/zabbix_proxy ]; then
-	rm -f %{_sbindir}/zabbix_proxy || :
-    fi
+  if [ -L %{_sbindir}/zabbix_proxy ]; then
+    rm -f %{_sbindir}/zabbix_proxy || :
+  fi
 fi
 
 %preun proxy-sqlite3
 if [ $1 -eq 0 ]; then
-    if [ -L %{_sbindir}/zabbix_proxy ]; then
-	rm -f %{_sbindir}/zabbix_proxy || :
-    fi
+  if [ -L %{_sbindir}/zabbix_proxy ]; then
+    rm -f %{_sbindir}/zabbix_proxy || :
+  fi
 fi
 
 %postun server
-if [ "$1" -gt 1 ]; then
+if [ $1 -gt 1 ]; then
   /sbin/service zabbix-server condrestart >/dev/null 2>&1 || :
 fi
 
 %postun agent
-if [ "$1" -gt 1 ]; then
+if [ $1 -gt 1 ]; then
   /sbin/service zabbix-agent condrestart >/dev/null 2>&1 || :
 fi
 
 %postun proxy
-if [ "$1" -gt 1 ]; then
+if [ $1 -gt 1 ]; then
   /sbin/service zabbix-proxy condrestart >/dev/null 2>&1 || :
 fi
 
@@ -552,7 +552,7 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
 %doc docs/README upgrades/dbpatches create/data create/schema
-%{_mandir}/man8/zabbix_server.8.gz
+%{_mandir}/man8/zabbix_server.8.*
 %config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_server.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
 %dir %{_sysconfdir}/zabbix/alertscripts
@@ -577,9 +577,9 @@ fi
 %files agent
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
-%{_mandir}/man8/zabbix_agentd.8.gz
-%{_mandir}/man1/zabbix_get.1.gz
-%{_mandir}/man1/zabbix_sender.1.gz
+%{_mandir}/man8/zabbix_agentd.8.*
+%{_mandir}/man1/zabbix_get.1.*
+%{_mandir}/man1/zabbix_sender.1.*
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agent.conf
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
@@ -593,7 +593,7 @@ fi
 %files proxy
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING FAQ NEWS README
-%{_mandir}/man8/zabbix_proxy.8.gz
+%{_mandir}/man8/zabbix_proxy.8.*
 %config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_proxy.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
 %{_sysconfdir}/init.d/zabbix-proxy
