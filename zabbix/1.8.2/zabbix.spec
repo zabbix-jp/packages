@@ -170,7 +170,7 @@ Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
 Conflicts:       zabbix-web
-Contlicts:       zabbix-server
+Conflicts:       zabbix-server
 
 %description proxy
 The Zabbix proxy
