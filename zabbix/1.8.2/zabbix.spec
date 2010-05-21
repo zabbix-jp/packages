@@ -94,6 +94,7 @@ Requires:        libssh2 >= 1.0.0
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
+Conflicts:       zabbix-proxy
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
@@ -168,6 +169,8 @@ Requires:        libssh2 >= 1.0.0
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
+Conflicts:       zabbix-web
+Contlicts:       zabbix-server
 
 %description proxy
 The Zabbix proxy
@@ -218,10 +221,10 @@ Requires:        php-mbstring
 Requires:        php-xml
 Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-web-database = %{version}-%{release}
-
 %if %is_el5
 Requires:        php-bcmath
 %endif
+Conflicts:       zabbix-proxy
 
 %description web
 The php frontend to display the zabbix web interface.
