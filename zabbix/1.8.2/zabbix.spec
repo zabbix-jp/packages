@@ -635,7 +635,7 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Thu May 6 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
+* Fri May 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
 - Update to 1.8.2
 - Change mbstring.func_overload to 6 in zabbix-web.conf
 - Add parch to redirect web installer if db parameter is empty in zabbix.conf.php (Patch16)
@@ -652,6 +652,7 @@ fi
 - Some improvements for spec file
 - Add require net-snmp-libs, unixODBC, libssh2, curl, OpenIPMI-libs for proxy package
 - Add require libssh2 for server package
+- Add conflicts zabbix-proxy on zabbix-server/zabbix-web
 
 * Mon Feb 2 2010 Kodai Terashima <kodai74@gmail.com> -1.8.1-1
 - Update to 1.8.1
