@@ -1,0 +1,344 @@
+diff -uNrp zabbix-1.8.1.orig/build/win32/project/zabbix_agentd.vcproj zabbix-1.8.1/build/win32/project/zabbix_agentd.vcproj
+--- zabbix-1.8.1.orig/build/win32/project/zabbix_agentd.vcproj	2010-04-05 19:16:03.000000000 +0900
++++ zabbix-1.8.1/build/win32/project/zabbix_agentd.vcproj	2010-04-05 19:13:47.000000000 +0900
+@@ -49,7 +49,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;HAVE_IPV6"
++				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;HAVE_IPV6;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -74,7 +74,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCLinkerTool"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib IPHLPAPI.lib"
+ 				OutputFile="../../../bin/win32/zabbix_agentd.exe"
+ 				LinkIncremental="1"
+ 				SuppressStartupBanner="true"
+@@ -140,7 +140,7 @@
+ 				AdditionalOptions="/Wp64 "
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="_DEBUG;_WIN64;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS"
++				PreprocessorDefinitions="_DEBUG;_WIN64;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;UNICODE;_UNICODE"
+ 				RuntimeLibrary="1"
+ 				PrecompiledHeaderFile=".\Debug_AMD64/zabbix_agentd.pch"
+ 				AssemblerListingLocation=".\Debug_AMD64/"
+@@ -165,7 +165,7 @@
+ 			<Tool
+ 				Name="VCLinkerTool"
+ 				AdditionalOptions="/machine:AMD64"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib IPHLPAPI.lib"
+ 				OutputFile=".\Debug_AMD64/zabbix_agentd.exe"
+ 				LinkIncremental="2"
+ 				SuppressStartupBanner="true"
+@@ -233,7 +233,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS"
++				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -260,7 +260,7 @@
+ 			<Tool
+ 				Name="VCLinkerTool"
+ 				AdditionalOptions="/machine:AMD64"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib IPHLPAPI.lib"
+ 				OutputFile="../../../bin/win64/zabbix_agentd.exe"
+ 				LinkIncremental="1"
+ 				SuppressStartupBanner="true"
+@@ -325,7 +325,7 @@
+ 				Name="VCCLCompilerTool"
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;HAVE_IPV6"
++				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;HAVE_IPV6;UNICODE;_UNICODE"
+ 				MinimalRebuild="true"
+ 				BasicRuntimeChecks="3"
+ 				RuntimeLibrary="1"
+@@ -351,7 +351,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCLinkerTool"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib IPHLPAPI.lib"
+ 				OutputFile="../../../bin/win32/zabbix_agentd.exe"
+ 				LinkIncremental="2"
+ 				SuppressStartupBanner="true"
+@@ -419,7 +419,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS"
++				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -444,7 +444,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCLinkerTool"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib IPHLPAPI.lib"
+ 				OutputFile="../../../bin/win32/zabbix_agentd.exe"
+ 				LinkIncremental="1"
+ 				SuppressStartupBanner="true"
+@@ -512,7 +512,7 @@
+ 				AdditionalOptions="/Wp64 "
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="_DEBUG;_WIN64;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS"
++				PreprocessorDefinitions="_DEBUG;_WIN64;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;UNICODE;_UNICODE"
+ 				RuntimeLibrary="1"
+ 				PrecompiledHeaderFile=".\Debug_AMD64/zabbix_agentd.pch"
+ 				AssemblerListingLocation=".\Debug_AMD64/"
+@@ -537,7 +537,7 @@
+ 			<Tool
+ 				Name="VCLinkerTool"
+ 				AdditionalOptions="/machine:AMD64"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib IPHLPAPI.lib"
+ 				OutputFile=".\Debug_AMD64/zabbix_agentd.exe"
+ 				LinkIncremental="2"
+ 				SuppressStartupBanner="true"
+@@ -607,7 +607,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS"
++				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -634,7 +634,7 @@
+ 			<Tool
+ 				Name="VCLinkerTool"
+ 				AdditionalOptions="/machine:AMD64"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib bufferoverflowU.lib IPHLPAPI.lib"
+ 				OutputFile="../../../bin/win64/zabbix_agentd.exe"
+ 				LinkIncremental="1"
+ 				SuppressStartupBanner="true"
+@@ -701,7 +701,7 @@
+ 				Name="VCCLCompilerTool"
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_agent"
+-				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS"
++				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;ZABBIX_SERVICE;WITH_COMMON_METRICS;WITH_SPECIFIC_METRICS;WITH_SIMPLE_METRICS;UNICODE;_UNICODE"
+ 				MinimalRebuild="true"
+ 				BasicRuntimeChecks="3"
+ 				RuntimeLibrary="1"
+@@ -727,7 +727,7 @@
+ 			/>
+ 			<Tool
+ 				Name="VCLinkerTool"
+-				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib"
++				AdditionalDependencies="ws2_32.lib pdh.lib psapi.lib odbc32.lib odbccp32.lib Wldap32.lib IPHLPAPI.lib"
+ 				OutputFile=".\Debug/zabbix_agentd.exe"
+ 				LinkIncremental="2"
+ 				SuppressStartupBanner="true"
+@@ -1733,6 +1733,82 @@
+ 						</FileConfiguration>
+ 					</File>
+ 					<File
++						RelativePath="..\..\..\src\libs\zbxcommon\file.c"
++						>
++						<FileConfiguration
++							Name="Release|Win32"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug AMD64|Win32"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Release AMD64|Win32"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|Win32"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Release|x64"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug AMD64|x64"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Release AMD64|x64"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++						<FileConfiguration
++							Name="Debug|x64"
++							>
++							<Tool
++								Name="VCCLCompilerTool"
++								AdditionalIncludeDirectories=""
++								PreprocessorDefinitions=""
++							/>
++						</FileConfiguration>
++					</File>
++					<File
+ 						RelativePath="..\..\..\src\libs\zbxcommon\comms.c"
+ 						>
+ 						<FileConfiguration
+diff -uNrp zabbix-1.8.1.orig/build/win32/project/zabbix_get.vcproj zabbix-1.8.1/build/win32/project/zabbix_get.vcproj
+--- zabbix-1.8.1.orig/build/win32/project/zabbix_get.vcproj	2010-01-28 06:22:44.000000000 +0900
++++ zabbix-1.8.1/build/win32/project/zabbix_get.vcproj	2010-04-05 19:09:30.000000000 +0900
+@@ -49,7 +49,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./;../include/;../../../include/;../../../src/zabbix_get"
+-				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG;_CONSOLE;HAVE_IPV6"
++				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG;_CONSOLE;HAVE_IPV6;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -139,7 +139,7 @@
+ 				Name="VCCLCompilerTool"
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_get"
+-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_CONSOLE"
++				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_CONSOLE;UNICODE;_UNICODE"
+ 				MinimalRebuild="true"
+ 				BasicRuntimeChecks="3"
+ 				RuntimeLibrary="1"
+@@ -232,7 +232,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_get"
+-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_CONSOLE"
++				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_CONSOLE;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -324,7 +324,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_get"
+-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_CONSOLE"
++				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_CONSOLE;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -416,7 +416,7 @@
+ 				Name="VCCLCompilerTool"
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_get"
+-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_CONSOLE"
++				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_CONSOLE;UNICODE;_UNICODE"
+ 				MinimalRebuild="true"
+ 				BasicRuntimeChecks="3"
+ 				RuntimeLibrary="1"
+@@ -511,7 +511,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_get"
+-				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;_CONSOLE"
++				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;_CONSOLE;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+diff -uNrp zabbix-1.8.1.orig/build/win32/project/zabbix_sender.vcproj zabbix-1.8.1/build/win32/project/zabbix_sender.vcproj
+--- zabbix-1.8.1.orig/build/win32/project/zabbix_sender.vcproj	2010-04-05 19:16:51.000000000 +0900
++++ zabbix-1.8.1/build/win32/project/zabbix_sender.vcproj	2010-04-05 19:11:12.000000000 +0900
+@@ -49,7 +49,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/"
+-				PreprocessorDefinitions="_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;WIN32;NDEBUG;_CONSOLE;HAVE_IPV6"
++				PreprocessorDefinitions="_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;WIN32;NDEBUG;_CONSOLE;HAVE_IPV6;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -139,7 +139,7 @@
+ 				Name="VCCLCompilerTool"
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_sender"
+-				PreprocessorDefinitions="_DEBUG;WIN32;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;_WINDOWS"
++				PreprocessorDefinitions="_DEBUG;WIN32;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;_WINDOWS;UNICODE;_UNICODE"
+ 				MinimalRebuild="true"
+ 				BasicRuntimeChecks="3"
+ 				RuntimeLibrary="1"
+@@ -232,7 +232,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/"
+-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE"
++				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -324,7 +324,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/"
+-				PreprocessorDefinitions="_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;WIN32;NDEBUG;_CONSOLE"
++				PreprocessorDefinitions="_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;WIN32;NDEBUG;_CONSOLE;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
+@@ -416,7 +416,7 @@
+ 				Name="VCCLCompilerTool"
+ 				Optimization="0"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/,../../../src/zabbix_sender"
+-				PreprocessorDefinitions="_DEBUG;WIN32;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE;_WINDOWS"
++				PreprocessorDefinitions="_DEBUG;WIN32;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;_WINDOWS;UNICODE;_UNICODE"
+ 				MinimalRebuild="true"
+ 				BasicRuntimeChecks="3"
+ 				RuntimeLibrary="1"
+@@ -511,7 +511,7 @@
+ 				Optimization="2"
+ 				InlineFunctionExpansion="1"
+ 				AdditionalIncludeDirectories="./,../include/,../../../include/"
+-				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;HAVE_LDAP;HAVE_ASSERT_H;_CONSOLE"
++				PreprocessorDefinitions="NDEBUG;_WIN64;_WINDOWS;HAVE_WINLDAP_H;HAVE_ASSERT_H;_CONSOLE;UNICODE;_UNICODE"
+ 				StringPooling="true"
+ 				RuntimeLibrary="0"
+ 				EnableFunctionLevelLinking="true"
