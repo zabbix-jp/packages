@@ -1,7 +1,7 @@
 ;  (C) 2006-2009 - Michel Manceron <michel.manceron@siemens.com>
 ;                - Vincent Besan輟n <elguapito@free.fr>
 ;                - Kodai Terashima <kodai74@gmail.com> (ZABBIX-JP)
-; Quick & (not so) Dirty package for ZABBIX 1.8.1 client for Windows
+; Quick & (not so) Dirty package for ZABBIX 1.8.2 client for Windows
 
 ;--------------------------------
 ;Includes
@@ -21,15 +21,15 @@
 ;--------------------------------
 ;General
 !define NAME  "ZABBIX Agent"
-!define VERSION "1.8.1"
-!define VER_PACK "1.8.1.1"
-!define DISPLAY_NAME "1.8.1-1.JP"
+!define VERSION "1.8.2"
+!define VER_PACK "1.8.2.1"
+!define DISPLAY_NAME "1.8.2-1.JP"
   ;Name and file
   Name "${NAME}"
   OutFile "zabbix_agent-${DISPLAY_NAME}_installer.exe"
 
   ;Default installation folder
-  InstallDir "$PROGRAMFILES\${NAME}"
+  InstallDir "$PROGRAMFILES64\${NAME}"
   
   ; Product Information
   VIAddVersionKey "ProductName" "${NAME}"
@@ -112,16 +112,15 @@ Section "Zabbix Agent (required)" SEC01
   
   ; Zabbix binaries & config file
   SetOutPath "$INSTDIR"
-  strcmp $OS64B '0' 0 x64Bitinst
+  strcmp $OS64B '0' 0 x64Bitinst1
     File ".\Installer\win32\zabbix_agentd.exe"
-    goto s1
-  x64Bitinst:
+    goto x64s1
+  x64Bitinst1:
     File ".\Installer\win64\zabbix_agentd.exe"
-  s1:
+  x64s1:
   File ".\Installer\zabbix_agentd.conf"
   ; Zabbix docs & license
   File ".\Installer\docs\*"
-  copyfiles /SILENT "$EXEDIR\scripts\*.*" "$INSTDIR"
   ; Read user input options
   !insertmacro MUI_INSTALLOPTIONS_READ $SERVER "ihm.ini" "Field 2" "State"
   !insertmacro MUI_INSTALLOPTIONS_READ $HOST   "ihm.ini" "Field 6" "State"
@@ -133,7 +132,7 @@ Section "Zabbix Agent (required)" SEC01
   ${ConfigWrite} '$INSTDIR\zabbix_agentd.conf' 'EnableRemoteCommands=' '$RMTCMD' $OUT
   ${ConfigWrite} '$INSTDIR\zabbix_agentd.conf' 'LogFile=' '$INSTDIR\zabbix_agentd.log' $OUT
   ${ConfigWrite} '$INSTDIR\zabbix_agentd.conf' '#PidFile=' '$INSTDIR\zabbix_agentd.pid' $OUT
-  s32:
+  ;s32:
       
     DetailPrint "ZABBIXエージェントをサービスに登録しています..."
     nsExec::ExecTolog '"$INSTDIR\zabbix_agentd.exe" --config "$INSTDIR\zabbix_agentd.conf" --install'
@@ -146,11 +145,14 @@ Section "Zabbix Agent (required)" SEC01
     goto S3
     S2:
     DetailPrint "ZABBIXエージェントのインストールにエラーが発生しました"
-    strcmp $OS64B '0' S3 0
-    DetailPrint "Perhaps, Itanium system trying Sytem32 Agent"
+    DetailPrint "インストーラを使用せずに導入したZABBIXサービスが存在する場合、エラーになります"
+    DetailPrint "その場合は、一旦既存のZABBIXサービスを手動で削除してください"
+    DetailPrint "削除後、再度インストーラを実行してください"
     Delete "$INSTDIR\zabbix_agentd.exe"
-    File ".\Installer\win32\zabbix_agentd.exe"
-    goto s32
+    Delete "$INSTDIR\LICENSE.txt"
+    Delete "$INSTDIR\README.txt"
+    Delete "$INSTDIR\zabbix_agentd.conf"
+    Abort
     S3:
   ; Write the installation path into the registry
   WriteRegStr HKLM "SOFTWARE\${NAME}" "Install_Dir" "$INSTDIR"
@@ -167,14 +169,24 @@ Section "Zabbix Sender (optional)" SEC02
   SetOutPath "$INSTDIR"
   ; ADD FILES
   DetailPrint "ZABBIX Senderをインストールしています..."
-  File ".\Installer\win32\zabbix_sender.exe"
+  strcmp $OS64B '0' 0 x64Bitinst2
+    File ".\Installer\win32\zabbix_sender.exe"
+    goto x64s2
+  x64Bitinst2:
+    File ".\Installer\win64\zabbix_sender.exe"
+  x64s2:
 SectionEnd
 
 Section "Zabbix get (optional)" SEC03
   SetOutPath "$INSTDIR"  
   ; ADD FILES
   DetailPrint "ZABBIX getをインストールしています..."
-  File ".\Installer\win32\zabbix_get.exe"
+  strcmp $OS64B '0' 0 x64Bitinst3
+    File ".\Installer\win32\zabbix_get.exe"
+    goto x64s3
+  x64Bitinst3:
+    File ".\Installer\win64\zabbix_get.exe"
+  x64s3:
 SectionEnd
 
 ;--------------------------------
@@ -296,7 +308,7 @@ FunctionEnd
 ;--------------------------------
 ; Uninstaller
 
-UninstallText "This will uninstall ${NAME}. Hit next to continue."
+UninstallText "${NAME} をアンインストールします。続けるには [アンインストール] をクリックしてください。"
 
 Section "Uninstall"
   

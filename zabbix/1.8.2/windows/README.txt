@@ -1,9 +1,9 @@
-# package for ZABBIX 1.6.9-1 Agent for Windows
+# package for ZABBIX 1.8.2-1 Agent for Windows
 # (C) 2005-2010 - ZABBIX-JP
 
 # Content / Purpose
 # -----------------
-This package includes from 1.6.9-1 provided ZABBIX-JP
+This package includes from 1.8.2-1 provided ZABBIX-JP
  - zabbix_agent for W32 & w64
  - zabbix_sender.exe
  - zabbix_get.exe
@@ -11,33 +11,66 @@ This package includes from 1.6.9-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
-* Sun Apr 5 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-1
-- Update 1.6.9
-- Add mbstring.func_overload in zabbix-web.conf (Comentted out)
+* Fri May 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
+- Update to 1.8.2
+- Change mbstring.func_overload to 6 in zabbix-web.conf
+- Add parch to redirect web installer if db parameter is empty in zabbix.conf.php (Patch16)
+- Update Japanese translation (Source11)
+- Update parch for windows VisualStudio project file (Patch3)
+- Update zabbix_server.conf and zabbix_agentd.conf to merge 1.8.2 default config file (Source6, Source7)
+- Add upload_max_filesize and max_input_time in zabbix-web.conf (Source1)
+- Delete eventlog.c and eventlog.h (Source12, Source13)
+- Create symlink for zabbix_server_* and zabbix_proxy_* if first install
+- Add using binary filename "zabbix_server" and "zabbix_proxy" in init scripts
+- Add require version for libssh, curl, OpenIPMI, php
+- Add conflict proxy and web packages
+- Add --without-libcurl and --without-openipmi compile options for CentOS4
+- Some improvements for spec file
+- Add require net-snmp-libs, unixODBC, libssh2, curl, OpenIPMI-libs for proxy package
+- Add require libssh2 for server package
+- Add conflicts zabbix-proxy on zabbix-server/zabbix-web
 
-* Sun Mar 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.8-2
-- Fix label text is not in the right place on map (Patch4)
-- Fix color selection frame is not appeared (Patch22)
-- Fix color configuration is not upgraded correctly from 1.4 to 1.6  when use Japanese (Patch23)
-- Fix map icon label is not used map default label location setting (Patch24)
-- Fix counting string function in trigger (Patch25)
+* Mon Feb 2 2010 Kodai Terashima <kodai74@gmail.com> -1.8.1-1
+- Update to 1.8.1
+- Update Japanese translation for zabbix 1.8.1
+- Update zabbix_agentd.conf, zabbix_server.conf, zabbix_proxy.conf
 
-* Thu Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.6.8-1
-- Update to 1.6.8
-- Update graph_description.patch to localize available chart and pie chart (Patch4)
-- Merge frontend.patch into graph_description.patch (Patch2, Patch4)
-- Add patch to fix show active check data on Latest Data screen (Patch20)
-- Add patch to fix problem doesn't show screen (Patch21)
-- enable with-openipmi option in configure script
+* Sun Jan 17 2010 Kodai Terashima <kodai74@gmail.com> - 1.8
+- Update to 1.8
+- Add patch to change default language to Japanese (Patch1)
+- Add patch to add link to ZABBIX-JP in header and footer (Patch2)
+- Add patch to fix compile windows agent (Patch3)
+- Add patch to use Japanese font in graph (Patch4)
+- Add patch to translate "Parent service" in IT Service screen (patch5)
+- Add patch to use imageText function in chart4.php (Patch6)
+- Add patch to translate login menu (Patch7)
+- Add patch to wrong usergroup permission (Patch8)
+- Add patch to use imageText function in chart5.php (Patch9)
+- Add patch to translate "seconds" in discovery configuration screen (Patch10)
+- Add patch to translate popup menu in IT Service screen (Patch11)
+- Add patch to fix installer require wrong php version (Patch12)
+- Add patch to fix import template (Patch13)
+- Add patch to translate user media popup screen (Patch14)
+- Add patch to fix pie chart (Patch15)
 
-* Sun Nov 22 2009 Kodai Terashima <kodai74@gmail.com> - 1.6.7-1
-- Update Japanese translation (Source6)
-- Update zabbix-1.6.7-powered_by_zabbixjp.patch to use zabbix.com link except Japanese (Patch13)
-- Translation "Parent Service" on IT Service (Patch19) 
-- Delete zabbix-1.6.4-freeaddrinfo.patch (Patch8)
-- Delete zabbix-1.6.4-eventlog_formatmessage_crash.patch (Patch11)
-- Delete zabbix-1.6.4-proc_info_sum.patch (Patch16)
+* Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.4-1
+- Update to 1.7.4
+- Delete zabbix-1.7-checks_db_few_argument.patch
 
+* Wed Dec 10 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.3-1
+- Update to 1.7.3
+- Replace manual pdf file by README 
+
+* Mon Nov 11 2009 Kodai Terashima <kodai74@gmail.com> - 1.7.2-1
+- Update to 1.7.2
+- Add libssh compile option
+
+* Wed Nov 4 2009 Kodai Terashima <kodai74@gmail.com> -1.7.1-1
+- Update to 1.7.1
+
+* Tue Nov 3 2009 Kodai Terashima <kodai74@gmail.com> - 1.7-1
+- Update to 1.7
+- add patch checks_db_few_argument.patch
 * Tue Oct 27 2009 Kodai Terashima <kodai74@gmail.com> - 1.6.6-1
 - Updat zabbix-1.6.6-locale-cn_zh.patch (Patch1)
 - Delete zabbix-1.6.4-pdb_parse_counter_path.patch (Patch9)
