@@ -1,0 +1,24 @@
+diff -Nru zabbix-1.6.9.orig/include/db.h zabbix-1.6.9/include/db.h
+--- zabbix-1.6.9.orig/include/db.h	2010-03-25 23:53:19.000000000 +0900
++++ zabbix-1.6.9/include/db.h	2010-06-03 20:08:13.000000000 +0900
+@@ -133,7 +133,7 @@
+ #define HOST_IPMI_PASSWORD_LEN		128
+ #define HOST_IPMI_PASSWORD_LEN_MAX	HOST_IPMI_PASSWORD_LEN+1
+ 
+-#define ITEM_KEY_LEN			255
++#define ITEM_KEY_LEN			1020 /* VARCHAR(255) x4 for multibyte string */
+ #define ITEM_KEY_LEN_MAX		ITEM_KEY_LEN+1
+ #define ITEM_DESCRIPTION_LEN		255
+ #define ITEM_DESCRIPTION_LEN_MAX	ITEM_DESCRIPTION_LEN+1
+diff -Nru zabbix-1.6.9.orig/src/zabbix_server/trapper/trapper.c zabbix-1.6.9/src/zabbix_server/trapper/trapper.c
+--- zabbix-1.6.9.orig/src/zabbix_server/trapper/trapper.c	2010-03-25 23:53:19.000000000 +0900
++++ zabbix-1.6.9/src/zabbix_server/trapper/trapper.c	2010-06-03 20:09:00.000000000 +0900
+@@ -192,7 +192,7 @@
+ 	{
+ 		DBescape_string(values[i].host_name, host_esc, sizeof(host_esc));
+ 		DBescape_string(values[i].key, key_esc, sizeof(key_esc));
+-		zbx_snprintf_alloc(&sql, &sql_allocated, &sql_offset, 512,
++		zbx_snprintf_alloc(&sql, &sql_allocated, &sql_offset, HOST_HOST_LEN_MAX + ITEM_KEY_LEN_MAX + 64,
+ 				"(h.host='%s' and i.key_='%s') or ",
+ 				host_esc,
+ 				key_esc);

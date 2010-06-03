@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.6.9
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -39,6 +39,8 @@ Patch23:        zabbix-1.6.8-dbupgrade.patch
 Patch24:        zabbix-1.6.8-map_label_location.patch
 Patch25:        zabbix-1.6.8-fix_count_str_function.patch
 Patch26:        zabbix-1.6.9-setup_from_empty_conf.patch
+Patch27:        zabbix-1.6.9-item_key_len_max.patch
+Patch28:        zabbix-1.6.9-app_act_or_dis.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -257,15 +259,17 @@ Zabbix web frontend for SQLite
 #%patch15 -p1 -b .display_events.orig
 #%patch16 -p1 -b .proc_info_sum.orig
 %patch17 -p1 -b .fix_to_compile_visualstudio_proj.orig
-%patch18 -p1 -b remove_broken_char.orig
-%patch19 -p1 -b parentservice_translate.orig
-%patch20 -p1 -b lalatest_data.orig
-%patch21 -p1 -b get_dbid.orig
-%patch22 -p1 -b map_color_frame.orig
-%patch23 -p1 -b dbupgrade.orig
-%patch24 -p1 -b map_label_location.orig
-%patch25 -p1 -b fix_count_str_function.orig
-%patch26 -p1 -b setup_from_empty_conf.orig
+%patch18 -p1 -b .remove_broken_char.orig
+%patch19 -p1 -b .parentservice_translate.orig
+%patch20 -p1 -b .lalatest_data.orig
+%patch21 -p1 -b .get_dbid.orig
+%patch22 -p1 -b .map_color_frame.orig
+%patch23 -p1 -b .dbupgrade.orig
+%patch24 -p1 -b .map_label_location.orig
+%patch25 -p1 -b .fix_count_str_function.orig
+%patch26 -p1 -b .setup_from_empty_conf.orig
+%patch27 -p1 -b .item_key_len_max.orig
+%patch28 -p1 -b .app_act_or_dis.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -585,13 +589,17 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Thu Jun 3 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
+- Fix log is not collected when long log item key using multibyte string (Patch27)
+- Fix enable/disable item action does not work in application screen (Patch28)
+
 * Thu May 6 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-1
 - Update 1.6.9
 - Add mbstring.func_overload in zabbix-web.conf (Comentted out)
 - Add BuildRequires unixODBC-devel for CentOS4
 - Add BuildRequires OpenIPMI-devel for CentOS5
 - Delete BuildRequires php-bcmath for CentOS4
-- Add parch to redirect web installer if db parameter is empty in zabbix.conf.php
+- Add patch to redirect web installer if db parameter is empty in zabbix.conf.php
 - Update windows agent installer script for win64
 
 * Sun Mar 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.8-2
