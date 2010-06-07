@@ -41,6 +41,7 @@ Patch25:        zabbix-1.6.8-fix_count_str_function.patch
 Patch26:        zabbix-1.6.9-setup_from_empty_conf.patch
 Patch27:        zabbix-1.6.9-item_key_len_max.patch
 Patch28:        zabbix-1.6.9-app_act_or_dis.patch
+Patch29:        zabbix-1.6.9-graphview_over372day.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -270,6 +271,7 @@ Zabbix web frontend for SQLite
 %patch26 -p1 -b .setup_from_empty_conf.orig
 %patch27 -p1 -b .item_key_len_max.orig
 %patch28 -p1 -b .app_act_or_dis.orig
+%patch29 -p1 -b .graphview_over372day.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -589,9 +591,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Thu Jun 3 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
+* Mon Jun 7 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
 - Fix log is not collected when long log item key using multibyte string (Patch27)
 - Fix enable/disable item action does not work in application screen (Patch28)
+- Fix graph view when select over 372 day (Patch29)
 
 * Thu May 6 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-1
 - Update 1.6.9
