@@ -1,0 +1,25 @@
+diff -Nru zabbix-1.6.9.orig/frontends/php/js/sbinit.js zabbix-1.6.9/frontends/php/js/sbinit.js
+--- zabbix-1.6.9.orig/frontends/php/js/sbinit.js	2010-03-25 23:53:21.000000000 +0900
++++ zabbix-1.6.9/frontends/php/js/sbinit.js	2010-06-07 16:08:31.000000000 +0900
+@@ -243,7 +243,7 @@
+ 
+ function gmenuload(){
+ 	G_MENU.gmenuhide();
+-	graphload(SCROLL_BAR.dom_graphs, G_MENU.bstime, G_MENU.period, (SCROLL_BAR.dom_graphs.length > 0));		
++        graphload(SCROLL_BAR.dom_graphs, G_MENU.bstime, ((G_MENU.period > 372 * 24 * 3600) ? 372 * 24 * 3600 : G_MENU.period), (SCROLL_BAR.dom_graphs.length > 0));
+ }
+ 
+ 
+diff -Nru zabbix-1.6.9.orig/frontends/php/js/scrollbar.js zabbix-1.6.9/frontends/php/js/scrollbar.js
+--- zabbix-1.6.9.orig/frontends/php/js/scrollbar.js	2010-03-25 23:53:21.000000000 +0900
++++ zabbix-1.6.9/frontends/php/js/scrollbar.js	2010-06-07 16:07:57.000000000 +0900
+@@ -580,6 +580,9 @@
+ 
+ 
+ getPeriod: function(){
++        if(this.period > 372 * 24 * 3600){
++                this.period = 372 * 24 * 3600;
++        }
+ return this.period;
+ },
+ 

@@ -1,0 +1,14 @@
+diff -Nur zabbix-1.6.9.org/frontends/php/hosts.php zabbix-1.6.9/frontends/php/hosts.php
+--- zabbix-1.6.9.org/frontends/php/hosts.php	2010-03-25 23:53:21.000000000 +0900
++++ zabbix-1.6.9/frontends/php/hosts.php	2010-05-31 16:19:20.000000000 +0900
+@@ -845,8 +845,9 @@
+ 			$sql = 'SELECT ia.itemid,i.hostid,i.key_'.
+ 					' FROM items_applications ia '.
+ 					  ' LEFT JOIN items i ON ia.itemid=i.itemid '.
++					  ' LEFT JOIN applications a ON ia.applicationid=a.applicationid '.
++					  ' LEFT JOIN hosts h ON a.hostid=h.hostid '.
+ 					' WHERE ia.applicationid='.$appid.
+-					  ' AND i.hostid='.$_REQUEST['hostid'].
+ 					  ' AND '.DBin_node('ia.applicationid');
+ 
+ 			$res_items = DBselect($sql);
