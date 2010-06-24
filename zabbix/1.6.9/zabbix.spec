@@ -591,7 +591,7 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Mon Jun 7 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
+* Thu Jun 24 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
 - Fix log is not collected when long log item key using multibyte string (Patch27)
 - Fix enable/disable item action does not work in application screen (Patch28)
 - Fix graph view when select over 372 day (Patch29)

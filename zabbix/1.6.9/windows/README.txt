@@ -1,9 +1,9 @@
-# package for ZABBIX 1.6.9-1 Agent for Windows
+# package for ZABBIX 1.6.9-2 Agent for Windows
 # (C) 2005-2010 - ZABBIX-JP
 
 # Content / Purpose
 # -----------------
-This package includes from 1.6.9-1 provided ZABBIX-JP
+This package includes from 1.6.9-2 provided ZABBIX-JP
  - zabbix_agent for W32 & w64
  - zabbix_sender.exe
  - zabbix_get.exe
@@ -11,6 +11,11 @@ This package includes from 1.6.9-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
+* Thu Jun 24 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
+- Fix log is not collected when long log item key using multibyte string (Patch27)
+- Fix enable/disable item action does not work in application screen (Patch28)
+- Fix graph view when select over 372 day (Patch29)
+
 * Thu May 6 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-1
 - Update 1.6.9
 - Add mbstring.func_overload in zabbix-web.conf (Comentted out)
