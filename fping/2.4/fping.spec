@@ -45,8 +45,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/*
 
 %changelog
-* Sun Jul 4 2010 Kodai Terashima <kodai74@gmail.com> - 2.4b2-16
+* Thu Jul 6 2010 Kodai Terashima <kodai74@gmail.com> - 2.4b2-16
 - Add S and T option from Debian patch
+- Fix fping6 does not execute when use ipv4 address or can not resolve host name
 
 * Fri Jul 24 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.4b2-10
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
