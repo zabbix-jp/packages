@@ -1,0 +1,21 @@
+diff -Nru zabbix-1.8.3rc3.orig/frontends/php/include/defines.inc.php zabbix-1.8.3rc3/frontends/php/include/defines.inc.php
+--- zabbix-1.8.3rc3.orig/frontends/php/include/defines.inc.php	2010-08-03 03:07:12.000000000 +0900
++++ zabbix-1.8.3rc3/frontends/php/include/defines.inc.php	2010-08-07 16:04:26.000000000 +0900
+@@ -36,7 +36,7 @@
+ 	define('ZBX_WIDGET_ROWS',				20);
+ 
+ 	define('ZBX_FONTPATH',					realpath('fonts'));	// where to search for font (GD > 2.0.18)
+-	define('ZBX_GRAPH_FONT_NAME',			'DejaVuSans');		// font file name
++	define('ZBX_GRAPH_FONT_NAME',			'ipagui');		// font file name
+ 
+ 	define('ZBX_SCRIPT_TIMEOUT',			360); // in seconds
+ 	define('ZBX_SCRIPT_BYTES_LIMIT',		1073741824); // 1073741824 is 1MB in bytes
+@@ -69,7 +69,7 @@
+ 	define('EVENTS_OPTION_ALL', 2);
+ 	define('EVENTS_OPTION_NOT_ACK', 3);
+ 
+-	define('ZBX_FONT_NAME',			'DejaVuSans');
++	define('ZBX_FONT_NAME',			'ipagui');
+ 
+ 	define('ZBX_AUTH_INTERNAL',	0);
+ 	define('ZBX_AUTH_LDAP',		1);
