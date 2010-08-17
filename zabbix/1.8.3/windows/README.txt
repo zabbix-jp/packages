@@ -1,9 +1,9 @@
-# package for ZABBIX 1.8.2-1 Agent for Windows
+# package for ZABBIX 1.8.3-1 Agent for Windows
 # (C) 2005-2010 - ZABBIX-JP
 
 # Content / Purpose
 # -----------------
-This package includes from 1.8.2-1 provided ZABBIX-JP
+This package includes from 1.8.3-1 provided ZABBIX-JP
  - zabbix_agent for W32 & w64
  - zabbix_sender.exe
  - zabbix_get.exe
@@ -11,6 +11,11 @@ This package includes from 1.8.2-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
+* Fri Aug 13 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
+- Update to 1.8.3
+- Delete patch fix_to_compile_visualstudio_proj.patch (Patch3)
+- Update config files (Source6, Source7, Source8)
+
 * Fri May 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
 - Update to 1.8.2
 - Change mbstring.func_overload to 6 in zabbix-web.conf
