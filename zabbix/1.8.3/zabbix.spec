@@ -87,7 +87,7 @@ Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-server-implementation = %{version}-%{release}
 Requires:        fping
 Requires:        iksemel
-Requires:        net-snmp-libs
+Requires:        net-snmp
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
 %if %is_el5
@@ -162,7 +162,7 @@ Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
 Requires:        fping
-Requires:        net-snmp-libs
+Requires:        net-snmp
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
 %if %is_el5
@@ -640,6 +640,7 @@ fi
 - Update to 1.8.3
 - Delete patch fix_to_compile_visualstudio_proj.patch (Patch3)
 - Update config files (Source6, Source7, Source8)
+- Add require net-snmp package instead of net-snmp-libs for server and proxy
 
 * Fri May 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
 - Update to 1.8.2

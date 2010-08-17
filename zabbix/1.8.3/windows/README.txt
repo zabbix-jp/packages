@@ -15,6 +15,7 @@ This package includes from 1.8.3-1 provided ZABBIX-JP
 - Update to 1.8.3
 - Delete patch fix_to_compile_visualstudio_proj.patch (Patch3)
 - Update config files (Source6, Source7, Source8)
+- Add require net-snmp package instead of net-snmp-libs for server and proxy
 
 * Fri May 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
 - Update to 1.8.2
