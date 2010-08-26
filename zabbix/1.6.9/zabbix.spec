@@ -42,6 +42,8 @@ Patch26:        zabbix-1.6.9-setup_from_empty_conf.patch
 Patch27:        zabbix-1.6.9-item_key_len_max.patch
 Patch28:        zabbix-1.6.9-app_act_or_dis.patch
 Patch29:        zabbix-1.6.9-graphview_over372day.patch
+Patch30:        zabbix-1.6.9-sending_each_alert_for_logmonitoring.patch
+Patch31:        zabbix-1.6.9-default_period.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -272,6 +274,8 @@ Zabbix web frontend for SQLite
 %patch27 -p1 -b .item_key_len_max.orig
 %patch28 -p1 -b .app_act_or_dis.orig
 %patch29 -p1 -b .graphview_over372day.orig
+%patch30 -p1 -b .sending_each_alert_for_logmonitoring.orig
+%patch31 -p1 -b .default_period.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -591,6 +595,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-3
+- Fix not sending alert when receive error log or trap same time (Patch30)
+- Change default time period from 23:59 to 24:00 (Patch31)
+
 * Thu Jun 24 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
 - Fix log is not collected when long log item key using multibyte string (Patch27)
 - Fix enable/disable item action does not work in application screen (Patch28)

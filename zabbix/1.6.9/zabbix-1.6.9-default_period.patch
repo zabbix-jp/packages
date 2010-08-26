@@ -1,0 +1,136 @@
+diff -Nru zabbix-1.6.9.orig/create/schema/mysql.sql zabbix-1.6.9/create/schema/mysql.sql
+--- zabbix-1.6.9.orig/create/schema/mysql.sql	2010-03-25 23:53:46.000000000 +0900
++++ zabbix-1.6.9/create/schema/mysql.sql	2010-08-26 16:38:22.000000000 +0900
+@@ -667,7 +667,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,
+ 	active		integer		DEFAULT '0'	NOT NULL,
+ 	severity		integer		DEFAULT '63'	NOT NULL,
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,
+ 	PRIMARY KEY (mediaid)
+ ) type=InnoDB;
+ CREATE INDEX media_1 on media (userid);
+diff -Nru zabbix-1.6.9.orig/create/schema/oracle.sql zabbix-1.6.9/create/schema/oracle.sql
+--- zabbix-1.6.9.orig/create/schema/oracle.sql	2010-03-25 23:53:46.000000000 +0900
++++ zabbix-1.6.9/create/schema/oracle.sql	2010-08-26 16:38:37.000000000 +0900
+@@ -667,7 +667,7 @@
+ 	sendto		varchar2(100)		DEFAULT ''	,
+ 	active		number(10)		DEFAULT '0'	NOT NULL,
+ 	severity		number(10)		DEFAULT '63'	NOT NULL,
+-	period		varchar2(100)		DEFAULT '1-7,00:00-23:59'	,
++	period		varchar2(100)		DEFAULT '1-7,00:00-24:00'	,
+ 	PRIMARY KEY (mediaid)
+ );
+ CREATE INDEX media_1 on media (userid);
+diff -Nru zabbix-1.6.9.orig/create/schema/postgresql.sql zabbix-1.6.9/create/schema/postgresql.sql
+--- zabbix-1.6.9.orig/create/schema/postgresql.sql	2010-03-25 23:53:46.000000000 +0900
++++ zabbix-1.6.9/create/schema/postgresql.sql	2010-08-26 16:43:24.000000000 +0900
+@@ -667,7 +667,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,
+ 	active		integer		DEFAULT '0'	NOT NULL,
+ 	severity		integer		DEFAULT '63'	NOT NULL,
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,
+ 	PRIMARY KEY (mediaid)
+ ) with OIDS;
+ CREATE INDEX media_1 on media (userid);
+diff -Nru zabbix-1.6.9.orig/create/schema/sqlite.sql zabbix-1.6.9/create/schema/sqlite.sql
+--- zabbix-1.6.9.orig/create/schema/sqlite.sql	2010-03-25 23:53:46.000000000 +0900
++++ zabbix-1.6.9/create/schema/sqlite.sql	2010-08-26 16:43:42.000000000 +0900
+@@ -663,7 +663,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,
+ 	active		integer		DEFAULT '0'	NOT NULL,
+ 	severity		integer		DEFAULT '63'	NOT NULL,
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,
+ 	PRIMARY KEY (mediaid)
+ );
+ CREATE INDEX IF NOT EXISTS media_1 on media (userid);
+diff -Nru zabbix-1.6.9.orig/frontends/php/include/forms.inc.php zabbix-1.6.9/frontends/php/include/forms.inc.php
+--- zabbix-1.6.9.orig/frontends/php/include/forms.inc.php	2010-03-25 23:53:21.000000000 +0900
++++ zabbix-1.6.9/frontends/php/include/forms.inc.php	2010-08-26 16:44:08.000000000 +0900
+@@ -1689,7 +1689,7 @@
+ 					S_DELAY, SPACE,
+ 					new CNumericBox('new_delay_flex[delay]','50',5),
+ 					S_PERIOD, SPACE,
+-					new CTextBox('new_delay_flex[period]','1-7,00:00-23:59',27), BR(),
++					new CTextBox('new_delay_flex[period]','1-7,00:00-24:00',27), BR(),
+ 					new CButton('add_delay_flex',S_ADD)
+ 				),'new');
+ 		}
+@@ -1978,7 +1978,7 @@
+ 										S_DELAY, SPACE,
+ 										new CNumericBox("new_delay_flex[delay]","50",5),
+ 										S_PERIOD, SPACE,
+-										new CTextBox("new_delay_flex[period]","1-7,00:00-23:59",27), BR(),
++										new CTextBox("new_delay_flex[period]","1-7,00:00-24:00",27), BR(),
+ 										new CButton("add_delay_flex",S_ADD)
+ 									));
+ 		$new_delay_flex_el->AddOption('id', 'new_delay_flex_el');
+@@ -3163,7 +3163,7 @@
+ 				$rowCondition[] = $cmbCondVal;
+ 				break;
+ 			case CONDITION_TYPE_TIME_PERIOD:
+-				$rowCondition[] = new CTextBox('new_condition[value]', "1-7,00:00-23:59", 40);
++				$rowCondition[] = new CTextBox('new_condition[value]', "1-7,00:00-24:00", 40);
+ 				break;
+ 			case CONDITION_TYPE_TRIGGER_SEVERITY:
+ 				$cmbCondVal = new CComboBox('new_condition[value]');
+diff -Nru zabbix-1.6.9.orig/frontends/php/popup_media.php zabbix-1.6.9/frontends/php/popup_media.php
+--- zabbix-1.6.9.orig/frontends/php/popup_media.php	2010-03-25 23:53:21.000000000 +0900
++++ zabbix-1.6.9/frontends/php/popup_media.php	2010-08-26 16:44:35.000000000 +0900
+@@ -97,7 +97,7 @@
+ 	$sendto		= get_request('sendto','');
+ 	$mediatypeid	= get_request('mediatypeid',0);
+ 	$active		= get_request('active',0);
+-	$period		= get_request('period','1-7,00:00-23:59');
++	$period		= get_request('period','1-7,00:00-24:00');
+ 
+ 
+ 	$frmMedia = new CFormTable(S_NEW_MEDIA);
+@@ -150,4 +150,4 @@
+ 
+ 
+ include_once "include/page_footer.php";
+-?>
+\ No newline at end of file
++?>
+diff -Nru zabbix-1.6.9.orig/src/libs/zbxdbhigh/dbschema.c zabbix-1.6.9/src/libs/zbxdbhigh/dbschema.c
+--- zabbix-1.6.9.orig/src/libs/zbxdbhigh/dbschema.c	2010-03-25 23:53:47.000000000 +0900
++++ zabbix-1.6.9/src/libs/zbxdbhigh/dbschema.c	2010-08-26 16:45:01.000000000 +0900
+@@ -1645,7 +1645,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,\
+ 	active		integer		DEFAULT '0'	NOT NULL,\
+ 	severity		integer		DEFAULT '63'	NOT NULL,\
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,\
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,\
+ 	PRIMARY KEY (mediaid)\
+ ) type=InnoDB;\
+ CREATE INDEX media_1 on media (userid);\
+@@ -2530,7 +2530,7 @@
+  sendto varchar(100) DEFAULT '' NOT NULL,\
+  active integer DEFAULT '0' NOT NULL,\
+  severity integer DEFAULT '63' NOT NULL,\
+- period varchar(100) DEFAULT '1-7,00:00-23:59' NOT NULL,\
++ period varchar(100) DEFAULT '1-7,00:00-24:00' NOT NULL,\
+  PRIMARY KEY (mediaid)\
+ ) with OIDS;\
+ CREATE INDEX media_1 on media (userid);\
+@@ -3415,7 +3415,7 @@
+  sendto varchar2(100) DEFAULT '' ,\
+  active number(10) DEFAULT '0' NOT NULL,\
+  severity number(10) DEFAULT '63' NOT NULL,\
+- period varchar2(100) DEFAULT '1-7,00:00-23:59' ,\
++ period varchar2(100) DEFAULT '1-7,00:00-24:00' ,\
+  PRIMARY KEY (mediaid)\
+ );\
+ CREATE INDEX media_1 on media (userid);\
+@@ -4296,7 +4296,7 @@
+  sendto varchar(100) DEFAULT '' NOT NULL,\
+  active integer DEFAULT '0' NOT NULL,\
+  severity integer DEFAULT '63' NOT NULL,\
+- period varchar(100) DEFAULT '1-7,00:00-23:59' NOT NULL,\
++ period varchar(100) DEFAULT '1-7,00:00-24:00' NOT NULL,\
+  PRIMARY KEY (mediaid)\
+ );\
+ CREATE INDEX IF NOT EXISTS media_1 on media (userid);\
