@@ -36,6 +36,8 @@ Patch11:        zabbix-1.8-itservice_popup_translate.patch
 #Patch14:        zabbix-1.8-popup_media_status_translate.patch
 #Patch15:        zabbix-1.8-pie_chart.patch
 Patch16:         zabbix-1.8.2-setup_from_empty_conf.patch
+Patch17:         zabbix-1.8.3-default_period.patch
+Patch18:         zabbix-1.8.3-initial_datasql_status_and_error.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -284,6 +286,8 @@ Zabbix web frontend for SQLite
 #%patch14 -p1 -b .popup_media_status_translate.orig
 #%patch15 -p1 -b .pie_chart.orig
 %patch16 -p1 -b .setup_from_empty_conf.orig
+%patch17 -p1 -b .default_period.orig
+%patch18 -p1 -b .initial_datasql_status_and_error.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE9} %{SOURCE10} frontends/php/fonts/
@@ -636,11 +640,13 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Fri Aug 13 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
+* Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
 - Update to 1.8.3
 - Delete patch fix_to_compile_visualstudio_proj.patch (Patch3)
 - Update config files (Source6, Source7, Source8)
 - Add require net-snmp package instead of net-snmp-libs for server and proxy
+- Change default time period from 23:59 to 24:00 (Patch17)
+- Fix wrong status and remove error message from templates in data.sql
 
 * Fri May 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
 - Update to 1.8.2

@@ -11,11 +11,13 @@ This package includes from 1.8.3-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
-* Fri Aug 13 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
+* Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
 - Update to 1.8.3
 - Delete patch fix_to_compile_visualstudio_proj.patch (Patch3)
 - Update config files (Source6, Source7, Source8)
 - Add require net-snmp package instead of net-snmp-libs for server and proxy
+- Change default time period from 23:59 to 24:00 (Patch17)
+- Fix wrong status and remove error message from templates in data.sql
 
 * Fri May 21 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.2-1
 - Update to 1.8.2
