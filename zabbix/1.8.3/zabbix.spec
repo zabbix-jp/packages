@@ -1,5 +1,5 @@
 Name:           zabbix
-Version:        1.8.3rc3
+Version:        1.8.3
 Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
