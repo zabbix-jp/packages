@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.6.9
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -44,6 +44,7 @@ Patch28:        zabbix-1.6.9-app_act_or_dis.patch
 Patch29:        zabbix-1.6.9-graphview_over372day.patch
 Patch30:        zabbix-1.6.9-sending_each_alert_for_logmonitoring.patch
 Patch31:        zabbix-1.6.9-default_period.patch
+Patch32:        zabbix-1.6.9-fix_timer_process.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -276,6 +277,7 @@ Zabbix web frontend for SQLite
 %patch29 -p1 -b .graphview_over372day.orig
 %patch30 -p1 -b .sending_each_alert_for_logmonitoring.orig
 %patch31 -p1 -b .default_period.orig
+%patch32 -p1 -b .fix_timer_process.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -595,9 +597,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-3
+* Tue Aug 31 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-3
 - Fix not sending alert when receive error log or trap same time (Patch30)
 - Change default time period from 23:59 to 24:00 (Patch31)
+- Fix the timer process so that it does not recalculate extraneous triggers for an item (Patch32)
 
 * Thu Jun 24 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
 - Fix log is not collected when long log item key using multibyte string (Patch27)

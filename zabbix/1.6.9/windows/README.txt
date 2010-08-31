@@ -11,9 +11,10 @@ This package includes from 1.6.9-2 provided ZABBIX-JP
 
 # Changelog
 # -----------------
-* Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-3
+* Tue Aug 31 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-3
 - Fix not sending alert when receive error log or trap same time (Patch30)
 - Change default time period from 23:59 to 24:00 (Patch31)
+- Fix the timer process so that it does not recalculate extraneous triggers for an item (Patch32)
 
 * Thu Jun 24 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-2
 - Fix log is not collected when long log item key using multibyte string (Patch27)
