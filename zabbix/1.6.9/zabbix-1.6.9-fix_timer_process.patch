@@ -1,7 +1,7 @@
 diff -uNrp zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c zabbix-1.6.9/src/zabbix_server/timer/timer.c
---- zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c	2010-08-26 11:35:42.000000000 +0900
-+++ zabbix-1.6.9/src/zabbix_server/timer/timer.c	2010-08-27 13:16:41.000000000 +0900
-@@ -28,6 +28,146 @@
+--- zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c	2010-03-25 23:53:19.000000000 +0900
++++ zabbix-1.6.9/src/zabbix_server/timer/timer.c	2010-08-31 15:05:59.000000000 +0900
+@@ -28,6 +28,137 @@
  
  #include "timer.h"
  
@@ -86,7 +86,7 @@ diff -uNrp zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c zabbix-1.6.9/src/za
 +	zabbix_log( LOG_LEVEL_DEBUG, "End update_functions_by_triggerid()");
 +}
 +
-+void	update_triggers_by_triggerid(zbx_uint64_t triggerid, time_t now)
++void	update_triggers_by_triggerid(zbx_uint64_t triggerid)
 +{
 +	char	*exp;
 +	char	error[MAX_STRING_LEN];
@@ -127,16 +127,7 @@ diff -uNrp zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c zabbix-1.6.9/src/za
 +		}
 +		else
 +		{
-+			if(CONFIG_TRIGGER_TIMESTAMP_SYNC == 0)
-+			{
-+				/* use ITEM_VALUE_TYPE_FLOAT for NULL meaning here. FIXME */
-+				DBupdate_trigger_value(&trigger, exp_value, time(NULL), NULL, 0, ITEM_VALUE_TYPE_FLOAT);
-+			}
-+			else
-+			{
-+				/* use ITEM_VALUE_TYPE_FLOAT for NULL meaning here. FIXME */
-+				DBupdate_trigger_value(&trigger, exp_value, now, NULL, 0, ITEM_VALUE_TYPE_FLOAT);
-+			}
++			DBupdate_trigger_value(&trigger, exp_value, time(NULL), NULL);
 +		}
 +		zbx_free(exp);
 +	}
@@ -148,7 +139,7 @@ diff -uNrp zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c zabbix-1.6.9/src/za
  /******************************************************************************
   *                                                                            *
   * Function: main_timer_loop                                                  *
-@@ -46,53 +186,49 @@
+@@ -46,53 +177,49 @@
  void main_timer_loop()
  {
  	int	now;
@@ -214,10 +205,10 @@ diff -uNrp zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c zabbix-1.6.9/src/za
 -
 -			DBbegin();
 -			update_functions(&item, now);
--			update_triggers(item.itemid, now, 0, item.value_type);
+-			update_triggers(item.itemid);
 -			DBcommit();
 +			update_functions_by_triggerid(triggerid, now);
-+			update_triggers_by_triggerid(triggerid, now);
++			update_triggers_by_triggerid(triggerid);
  		}
 -
 +		DBcommit();
