@@ -1,0 +1,231 @@
+diff -uNrp zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c zabbix-1.6.9/src/zabbix_server/timer/timer.c
+--- zabbix-1.6.9.orig/src/zabbix_server/timer/timer.c	2010-08-26 11:35:42.000000000 +0900
++++ zabbix-1.6.9/src/zabbix_server/timer/timer.c	2010-08-27 13:16:41.000000000 +0900
+@@ -28,6 +28,146 @@
+ 
+ #include "timer.h"
+ 
++void	update_functions_by_triggerid(zbx_uint64_t triggerid, time_t now)
++{
++	DB_ITEM		item;
++	DB_FUNCTION	function;
++	DB_RESULT	result;
++	DB_RESULT	item_result;
++	DB_ROW		row;
++	DB_ROW		item_row;
++	char		value[MAX_STRING_LEN];
++	char		*value_esc, *function_esc, *parameter_esc;
++	char		*lastvalue;
++	int		ret=SUCCEED;
++
++	zabbix_log( LOG_LEVEL_DEBUG, "In update_functions_by_triggerid(" ZBX_FS_UI64 ")",
++		triggerid);
++	result = DBselect("select distinct function,parameter,itemid,lastvalue from functions where triggerid=" ZBX_FS_UI64,triggerid);
++
++	/* get function data(s) from triggerid */
++	while(NULL != (row = DBfetch(result)))
++	{
++		function.function=row[0];
++		function.parameter=row[1];
++		ZBX_STR2UINT64(function.itemid,row[2]);
++		lastvalue=row[3];
++
++		zabbix_log( LOG_LEVEL_DEBUG, "ItemId:" ZBX_FS_UI64 " Evaluating %s(%s)",
++			function.itemid,
++			function.function,
++			function.parameter);
++
++		/* get item data from function */
++		item_result = DBselect("select distinct %s, functions f where"
++				" h.hostid=i.hostid and i.itemid=f.itemid"
++				" and i.itemid=" ZBX_FS_UI64 DB_NODE,
++				ZBX_SQL_ITEM_SELECT,
++				function.itemid,
++				DBnode_local("h.hostid"));
++
++		if (NULL != (item_row = DBfetch(item_result))) {
++			DBget_item_from_db(&item,item_row);
++			ret = evaluate_function(value, &item, function.function, function.parameter, now);
++			if( FAIL == ret)	
++			{
++				zabbix_log( LOG_LEVEL_DEBUG, "Evaluation failed for function:%s",
++					function.function);
++				continue;
++			}
++			if (ret == SUCCEED)
++			{
++				/* Update only if lastvalue differs from new one */
++				if (DBis_null(lastvalue) == SUCCEED || 0 != strcmp(lastvalue, value))
++				{
++					value_esc = DBdyn_escape_string_len(value, FUNCTION_LASTVALUE_LEN);
++					function_esc = DBdyn_escape_string(function.function);
++					parameter_esc = DBdyn_escape_string(function.parameter);
++
++					DBexecute("update functions set lastvalue='%s' where itemid=" ZBX_FS_UI64 " and function='%s' and parameter='%s'",
++							value_esc,
++							function.itemid,
++							function_esc,
++							parameter_esc);
++
++					zbx_free(parameter_esc);
++					zbx_free(function_esc);
++					zbx_free(value_esc);
++				}
++				else
++					zabbix_log( LOG_LEVEL_DEBUG, "Do not update functions, same value");
++			}
++		}
++		else
++			zabbix_log( LOG_LEVEL_DEBUG, "There is no such item. Something is wrong.");
++		DBfree_result(item_result);
++
++	}
++
++	DBfree_result(result);
++
++	zabbix_log( LOG_LEVEL_DEBUG, "End update_functions_by_triggerid()");
++}
++
++void	update_triggers_by_triggerid(zbx_uint64_t triggerid, time_t now)
++{
++	char	*exp;
++	char	error[MAX_STRING_LEN];
++	int	exp_value;
++	DB_TRIGGER	trigger;
++	DB_RESULT	result;
++	DB_ROW		row;
++
++	zabbix_log( LOG_LEVEL_DEBUG, "In update_triggers_by_triggerid [triggerid:" ZBX_FS_UI64 "]",
++		triggerid);
++
++	result = DBselect("select distinct t.triggerid,t.expression,t.description,t.url,t.comments,t.status,t.value,t.priority,t.type from triggers t where t.triggerid=" ZBX_FS_UI64,
++		triggerid);
++
++	if((row=DBfetch(result)))
++	{
++		ZBX_STR2UINT64(trigger.triggerid,row[0]);
++		strscpy(trigger.expression,row[1]);
++		strscpy(trigger.description,row[2]);
++		trigger.url		= row[3];
++		trigger.comments	= row[4];
++		trigger.status		= atoi(row[5]);
++		trigger.value		= atoi(row[6]);
++		trigger.priority	= atoi(row[7]);
++		trigger.type		= atoi(row[8]);
++
++		exp = strdup(trigger.expression);
++		if( evaluate_expression(&exp_value, &exp, &trigger, error, sizeof(error)) != 0 )
++		{
++			zabbix_log(LOG_LEVEL_WARNING, "Expression [%s] for triggerid [" ZBX_FS_UI64 "] cannot be evaluated: %s",
++				trigger.expression,
++				triggerid,
++				error);
++			zabbix_syslog("Expression [%s] for triggerid [" ZBX_FS_UI64 "] cannot be evaluated: %s",
++				trigger.expression,
++				triggerid,
++				error);
++		}
++		else
++		{
++			if(CONFIG_TRIGGER_TIMESTAMP_SYNC == 0)
++			{
++				/* use ITEM_VALUE_TYPE_FLOAT for NULL meaning here. FIXME */
++				DBupdate_trigger_value(&trigger, exp_value, time(NULL), NULL, 0, ITEM_VALUE_TYPE_FLOAT);
++			}
++			else
++			{
++				/* use ITEM_VALUE_TYPE_FLOAT for NULL meaning here. FIXME */
++				DBupdate_trigger_value(&trigger, exp_value, now, NULL, 0, ITEM_VALUE_TYPE_FLOAT);
++			}
++		}
++		zbx_free(exp);
++	}
++	DBfree_result(result);
++	zabbix_log( LOG_LEVEL_DEBUG, "End update_triggers_by_triggerid [" ZBX_FS_UI64 "]",
++		triggerid);
++}
++
+ /******************************************************************************
+  *                                                                            *
+  * Function: main_timer_loop                                                  *
+@@ -46,53 +186,49 @@
+ void main_timer_loop()
+ {
+ 	int	now;
+-
+-/*	int	itemid,functionid;
+-	char	*function;
+-	char	*parameter;*/
+-
+-	DB_ITEM	item;
+-
+ 	DB_RESULT	result;
+ 	DB_ROW	row;
++	char		*exp;
++	zbx_uint64_t	triggerid;
++	int		trigger_type, trigger_value;
++	const char	*trigger_error;
+ 
+ 	for (;;) {
+ 		zbx_setproctitle("updating nodata() functions");
+ 
+ 		DBconnect(ZBX_DB_CONNECT_NORMAL);
++		result = DBselect("select distinct t.triggerid,t.type,t.value,t.error,t.expression"
++				" from triggers t,functions f,items i,hosts h"
++				" where t.status=%d"
++				" and t.triggerid=f.triggerid"
++				" and f.function in ('nodata','date','dayofweek','time','now')"
++				" and f.itemid=i.itemid"
++				" and i.status=%d"
++				" and i.hostid=h.hostid"
++				" and h.status=%d"
++				DB_NODE,
++			TRIGGER_STATUS_ENABLED,
++			ITEM_STATUS_ACTIVE,
++			HOST_STATUS_MONITORED,
++			DBnode_local("h.hostid"));
+ 
+-/*
+-#ifdef HAVE_POSTGRESQL
+-		zbx_snprintf(sql,sizeof(sql),"select distinct f.itemid,f.functionid,f.parameter from functions f, items i,hosts h where h.hostid=i.hostid and h.status=%d and i.itemid=f.itemid and f.function in ('nodata','date','dayofweek','time','now') and i.lastclock+f.parameter::text::integer<=%d and i.status=%d", HOST_STATUS_MONITORED, now, ITEM_STATUS_ACTIVE);
+-#else
+-		zbx_snprintf(sql,sizeof(sql),"select distinct f.itemid,f.functionid,f.parameter,f.function from functions f, items i,hosts h where h.hostid=i.hostid and h.status=%d and i.itemid=f.itemid and f.function in ('nodata','date','dayofweek','time','now') and i.lastclock+f.parameter<=%d and i.status=%d", HOST_STATUS_MONITORED, now, ITEM_STATUS_ACTIVE);
+-#endif
+-	*/
+-
+-		result = DBselect("select distinct %s, functions f where h.hostid=i.hostid and h.status=%d"
+-				" and i.status=%d and f.function in ('nodata','date','dayofweek','time','now')"
+-				" and i.itemid=f.itemid" DB_NODE,
+-				ZBX_SQL_ITEM_SELECT,
+-				HOST_STATUS_MONITORED,
+-				ITEM_STATUS_ACTIVE,
+-				DBnode_local("h.hostid"));
+-
++		DBbegin();
+ 		while (NULL != (row = DBfetch(result))) {
+-			DBget_item_from_db(&item,row);
++			ZBX_STR2UINT64(triggerid, row[0]);
++			trigger_type = atoi(row[1]);
++			trigger_value = atoi(row[2]);
++			trigger_error = row[3];
++			exp = strdup(row[4]);
+ 
+ 			now = (int)time(NULL);
+-
+-			DBbegin();
+-			update_functions(&item, now);
+-			update_triggers(item.itemid, now, 0, item.value_type);
+-			DBcommit();
++			update_functions_by_triggerid(triggerid, now);
++			update_triggers_by_triggerid(triggerid, now);
+ 		}
+-
++		DBcommit();
+ 		DBfree_result(result);
+ 		DBclose();
+ 
+ 		zbx_setproctitle("sleeping for 30 sec");
+-
+ 		sleep(30);
+ 	}
+ }
