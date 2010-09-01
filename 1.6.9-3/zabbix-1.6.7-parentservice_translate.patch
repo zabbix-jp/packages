@@ -1,0 +1,23 @@
+diff -Nru zabbix-1.6.7.orig/frontends/php/include/locales/en_gb.inc.php zabbix-1.6.7/frontends/php/include/locales/en_gb.inc.php
+--- zabbix-1.6.7.orig/frontends/php/include/locales/en_gb.inc.php	2009-11-13 16:51:36.000000000 +0900
++++ zabbix-1.6.7/frontends/php/include/locales/en_gb.inc.php	2009-11-22 20:31:57.000000000 +0900
+@@ -1130,6 +1130,7 @@
+ 	'S_CANNOT_ADD_SERVICE'=>		'Cannot add service',
+ 	'S_SERVICE_DELETED'=>			'Service deleted',
+ 	'S_CANNOT_DELETE_SERVICE'=>		'Cannot delete service',
++	'S_PARENT_SERVICE'=>			'Parent Service',
+ 	'S_STATUS_CALCULATION'=>		'Status calculation',
+ 	'S_STATUS_CALCULATION_ALGORITHM'=>	'Status calculation algorithm',
+ 	'S_NONE'=>				'None',
+diff -Nru zabbix-1.6.7.orig/frontends/php/services_form.php zabbix-1.6.7/frontends/php/services_form.php
+--- zabbix-1.6.7.orig/frontends/php/services_form.php	2009-11-13 16:51:37.000000000 +0900
++++ zabbix-1.6.7/frontends/php/services_form.php	2009-11-22 20:30:37.000000000 +0900
+@@ -473,7 +473,7 @@
+ 	$cb->SetType('button');
+ 	$cb->SetAction("javascript: openWinCentered('services_form.php?pservices=1".url_param('serviceid')."','ZBX_Services_List',740,420,'scrollbars=1, toolbar=0, menubar=0, resizable=1, dialog=0');");
+ 
+-	$frmService->AddRow('Parent Service',array($ctb,$cb));
++	$frmService->AddRow(S_PARENT_SERVICE,array($ctb,$cb));
+ //----------							
+ 							
+ //child links

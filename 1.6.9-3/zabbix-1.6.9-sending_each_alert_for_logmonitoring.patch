@@ -1,0 +1,66 @@
+diff -Nru zabbix-1.6.9.orig/src/libs/zbxdbhigh/db.c zabbix-1.6.9/src/libs/zbxdbhigh/db.c
+--- zabbix-1.6.9.orig/src/libs/zbxdbhigh/db.c	2010-03-25 23:53:19.000000000 +0900
++++ zabbix-1.6.9/src/libs/zbxdbhigh/db.c	2010-06-29 10:15:00.000000000 +0900
+@@ -1594,13 +1594,6 @@
+ {
+ 	zbx_uint64_t	escalationid;
+ 
+-	/* removing older active escalations */
+-	DBexecute("delete from escalations"
+-			" where actionid=" ZBX_FS_UI64
+-				" and triggerid=" ZBX_FS_UI64,
+-			actionid,
+-			triggerid);
+-
+ 	escalationid = DBget_maxid("escalations", "escalationid");
+ 
+ 	DBexecute("insert into escalations (escalationid,actionid,triggerid,eventid,status)"
+@@ -1645,6 +1638,15 @@
+ 				eventid,
+ 				ESCALATION_STATUS_RECOVERY,
+ 				escalationid);
++
++		/* removing older sleep escalations */
++		DBexecute("delete from escalations"
++				" where actionid=" ZBX_FS_UI64
++					" and triggerid=" ZBX_FS_UI64
++					" and status='%d'",
++				actionid,
++				triggerid,
++				ESCALATION_STATUS_SLEEP);
+ 	}
+ 	DBfree_result(result);
+ 
+diff -Nru zabbix-1.6.9.orig/src/zabbix_server/escalator/escalator.c zabbix-1.6.9/src/zabbix_server/escalator/escalator.c
+--- zabbix-1.6.9.orig/src/zabbix_server/escalator/escalator.c	2010-03-25 23:53:19.000000000 +0900
++++ zabbix-1.6.9/src/zabbix_server/escalator/escalator.c	2010-06-29 10:14:07.000000000 +0900
+@@ -29,6 +29,8 @@
+ #include "../events.h"
+ #include "../actions.h"
+ 
++static void execute_escalation(DB_ESCALATION *escalation);
++
+ #define CONFIG_ESCALATOR_FREQUENCY	3
+ 
+ #define ZBX_USER_MSG struct zxb_user_msg_t
+@@ -589,6 +591,20 @@
+ 	DB_ROW		row;
+ 	zbx_uint64_t	userid;
+ 
++	result = DBselect("select distinct userid from alerts where actionid=" ZBX_FS_UI64
++			" and eventid=" ZBX_FS_UI64 " and alerttype=%d",
++			action->actionid,
++			escalation->eventid,
++			ALERT_TYPE_MESSAGE);
++
++	if (NULL == (row = DBfetch(result)))
++	{
++		escalation->status = ESCALATION_STATUS_ACTIVE;
++		execute_escalation(escalation);
++		escalation->status = ESCALATION_STATUS_RECOVERY;
++	}
++	DBfree_result(result);
++
+ 	if (1 == action->recovery_msg)
+ 	{
+ 		result = DBselect("select distinct userid from alerts where actionid=" ZBX_FS_UI64

@@ -1,0 +1,12 @@
+diff -uNrp zabbix-1.6.6.orig/src/libs/zbxsys/threads.c zabbix-1.6.6/src/libs/zbxsys/threads.c
+--- zabbix-1.6.6.orig/src/libs/zbxsys/threads.c	2009-08-26 22:16:24.000000000 +0900
++++ zabbix-1.6.6/src/libs/zbxsys/threads.c	2009-11-04 14:24:17.000000000 +0900
+@@ -73,7 +73,7 @@ ZBX_THREAD_HANDLE zbx_thread_start(ZBX_T
+ 
+ 	unsigned thrdaddr;
+ 
+-	if(0 == (thread = (ZBX_THREAD_HANDLE)_beginthreadex(NULL,0,handler,args,0,&thrdaddr))) /* NOTE: _beginthreadex returns 0 on failure, rather than –1 */
++	if(0 == (thread = (ZBX_THREAD_HANDLE)_beginthreadex(NULL,0,handler,args,0,&thrdaddr))) /* NOTE: _beginthreadex returns 0 on failure, rather than 1 */
+ 	{
+ 		zbx_error("Error on thread creation. [%s]", strerror_from_system(GetLastError()));
+ 		thread = (ZBX_THREAD_HANDLE)(ZBX_THREAD_ERROR);
