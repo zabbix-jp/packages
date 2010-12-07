@@ -1135,7 +1135,7 @@
 	'S_TWO_ELEMENTS_SHOULD_BE_SELECTED'=>			'2つの要素を選択する必要があります',
 	'S_DELETE_SELECTED_ELEMENTS_Q'=>			'選択した要素を削除しますか？',
 	'S_PLEASE_SELECT_TWO_ELEMENTS'=>			'2つの要素を選択してください',
-	'S_DELETE_LINKS_BETWEEN_SELECTED_ELEMENTS_Q'=>			'選択した要素間のりんくを削除しますか？',
+	'S_DELETE_LINKS_BETWEEN_SELECTED_ELEMENTS_Q'=>			'選択した要素間のリンクを削除しますか？',
 	'S_NO_LINKS'=>			'リンクがありません',
 	'S_WRONG_TYPE_OF_ARGUMENTS_PASSED_TO_FUNCTION'=>			'間違った変数のタイプです',
 	'S_NEW_ELEMENT'=>			'新規要素',

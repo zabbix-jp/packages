@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.8.3
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -640,6 +640,9 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Tue Dec 7 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-2
+- Fix typos in Japanese translation
+
 * Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
 - Update to 1.8.3
 - Delete patch fix_to_compile_visualstudio_proj.patch (Patch3)
