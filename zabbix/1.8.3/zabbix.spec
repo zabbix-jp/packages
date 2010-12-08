@@ -642,6 +642,7 @@ fi
 %changelog
 * Tue Dec 7 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-2
 - Fix typos in Japanese translation
+- Change log file to not lotate by zabbix, use logrotate
 
 * Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
 - Update to 1.8.3
