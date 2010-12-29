@@ -206,8 +206,12 @@ Requires:	 php-gd
 Requires:	 php-mbstring
 Requires:        zabbix = %{version}-%{release}
 Requires:	 zabbix-web-database = %{version}-%{release}
+%if %is_el4
+Requires:	 ttfonts-ja
+%endif
 %if %is_el5
 Requires:	 php-bcmath
+Requires:	 fonts-japanese
 %endif
 
 %description web
@@ -597,6 +601,9 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed Dec 29 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-4
+- Add requires fonts-japanese and ttfonts-ja to zabbix-web package
+
 * Tue Aug 31 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-3
 - Fix not sending alert when receive error log or trap same time (Patch30)
 - Change default time period from 23:59 to 24:00 (Patch31)
