@@ -17,7 +17,7 @@ Source7:        zabbix_server.conf
 Source8:        zabbix_proxy.conf
 Source9:        ipagui.ttf
 Source10:        enduser_license.txt
-Source11:        zabbix-1.8.3-ja_jp.inc.php
+Source11:        zabbix-1.8.4-ja_jp.inc.php
 #Source12:        eventlog.c
 #Source13:       eventlog.h
 Patch1:         zabbix-1.8-datasql.patch
@@ -35,7 +35,7 @@ Patch11:        zabbix-1.8-itservice_popup_translate.patch
 #Patch13:        zabbix-1.8-template_import.patch
 #Patch14:        zabbix-1.8-popup_media_status_translate.patch
 #Patch15:        zabbix-1.8-pie_chart.patch
-#Patch16:         zabbix-1.8.2-setup_from_empty_conf.patch
+Patch16:         zabbix-1.8.4-setup_from_empty_conf.patch
 Patch17:         zabbix-1.8.4-default_period.patch
 Patch18:         zabbix-1.8.3-initial_datasql_status_and_error.patch
 
@@ -285,7 +285,7 @@ Zabbix web frontend for SQLite
 #%patch13 -p1 -b .template_import.orig
 #%patch14 -p1 -b .popup_media_status_translate.orig
 #%patch15 -p1 -b .pie_chart.orig
-#%patch16 -p1 -b .setup_from_empty_conf.orig
+%patch16 -p1 -b .setup_from_empty_conf.orig
 %patch17 -p1 -b .default_period.orig
 %patch18 -p1 -b .initial_datasql_status_and_error.orig
 
@@ -646,7 +646,7 @@ fi
 - Update config files (Source6, Source7, Source8)
 - Change log file rotation by logroate, not zabbix (Source7, Source8)
 - Update Japanese translation (Source11)
-- Delete unnecessary patch (Patch 16)
+- Update setup from empty patch (Patch 16)
 - Add initial sql files for zabbix-proxy
 
 * Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
