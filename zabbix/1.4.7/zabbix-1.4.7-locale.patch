@@ -1,0 +1,12 @@
+diff -Nur zabbix-1.4.7.org/frontends/php/include/locales/cn_zh.inc.php zabbix-1.4.7/frontends/php/include/locales/cn_zh.inc.php
+--- zabbix-1.4.7.org/frontends/php/include/locales/cn_zh.inc.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/include/locales/cn_zh.inc.php	2011-01-20 21:28:54.000000000 -0800
+@@ -743,7 +743,7 @@
+ 	"S_USER_PROFILE"=>			"User profile",
+ 	"S_LANGUAGE"=>				"Language",
+ 	"S_ENGLISH_GB"=>			"English (GB)",
+-	"S_JAPANESE_JP"=>			"Chinese (CN)",
++	"S_JAPANESE_JP"=>			"Japanese (JP)",
+ 	"S_FRENCH_FR"=>				"French (FR)",
+ 	"S_GERMAN_DE"=>				"German (DE)",
+ 	"S_ITALIAN_IT"=>			"Italian (IT)",

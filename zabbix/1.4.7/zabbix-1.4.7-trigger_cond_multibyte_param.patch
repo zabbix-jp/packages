@@ -1,0 +1,44 @@
+diff -Nur zabbix-1.4.7.org/frontends/php/include/defines.inc.php zabbix-1.4.7/frontends/php/include/defines.inc.php
+--- zabbix-1.4.7.org/frontends/php/include/defines.inc.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/include/defines.inc.php	2011-01-21 00:44:03.000000000 -0800
+@@ -393,7 +393,7 @@
+ 	define('ZBX_EREG_SPACES', '([[:space:]]+){0,1}');
+ 	define('ZBX_EREG_INTERNAL_NAMES', '([0-9a-zA-Z_.[:space:][.-.]$]+)');
+ 	define('ZBX_EREG_KEY_NAME', '([0-9a-zA-Z_.,[.:.][:space:][.-.]$]+)');
+-	define('ZBX_EREG_PARAMS', '([[:print:]]+){0,1}');
++	define('ZBX_EREG_PARAMS', '([^[:cntrl:]]+){0,1}');
+ 	define('ZBX_EREG_SIGN', '([&|><=+*/#[.-.]])');
+ 	define('ZBX_EREG_NUMBER', '([[.-.]+]*[0-9]+[.]{0,1}[0-9]*[A-Z]{0,1})');
+ 
+diff -Nur zabbix-1.4.7.org/frontends/php/include/forms.inc.php zabbix-1.4.7/frontends/php/include/forms.inc.php
+--- zabbix-1.4.7.org/frontends/php/include/forms.inc.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/include/forms.inc.php	2011-01-21 00:39:50.000000000 -0800
+@@ -2272,7 +2272,7 @@
+ 				($limited ? null : new CButton('insert',S_INSERT,
+ 					"return PopUp('popup_trexpr.php?dstfrm=".$frmTrig->GetName().
+ 					"&dstfld1=expression&srctbl=expression".
+-					"&srcfld1=expression&expression=' + escape(GetSelectedText(this.form.elements['expression'])),700,200);"))
++					"&srcfld1=expression&expression=' + encodeURI(GetSelectedText(this.form.elements['expression'])),700,200);"))
+ 			));
+ 
+ 	/* dependencies */
+diff -Nur zabbix-1.4.7.org/frontends/php/js/menu.js zabbix-1.4.7/frontends/php/js/menu.js
+--- zabbix-1.4.7.org/frontends/php/js/menu.js	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/js/menu.js	2011-01-21 00:45:45.000000000 -0800
+@@ -481,12 +481,12 @@
+ // updates status bar message of the browser
+ // ------------------------------------------------------------------------------------------
+ function mitem_upstatus (b_clear) {
+-	window.setTimeout("window.status=unescape('" + (b_clear
++	window.setTimeout("window.status=decodeURI('" + (b_clear
+ 		? ''
+ 		: (this.a_config[2] && this.a_config[2]['sb']
+-			? escape(this.a_config[2]['sb'])
+-			: escape(this.a_config[0]) + (this.a_config[1]
+-				? ' ('+ escape(this.a_config[1]) + ')'
++			? encodeURI(this.a_config[2]['sb'])
++			: encodeURI(this.a_config[0]) + (this.a_config[1]
++				? ' ('+ encodeURI(this.a_config[1]) + ')'
+ 				: ''))) + "')", 10);
+ }
+ 
