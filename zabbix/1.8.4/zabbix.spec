@@ -635,7 +635,7 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Fri Jan 7 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.4-1
+* Sun Jan 23 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.4-1
 - Update to 1.8.4
 - Add access control to api and config directory for web interface (Source1)
 - Update config files (Source6, Source7, Source8)

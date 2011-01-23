@@ -1,9 +1,9 @@
-# package for ZABBIX 1.8.3-1 Agent for Windows
+# package for ZABBIX 1.8.4-1 Agent for Windows
 # (C) 2005-2010 - ZABBIX-JP
 
 # Content / Purpose
 # -----------------
-This package includes from 1.8.3-1 provided ZABBIX-JP
+This package includes from 1.8.4-1 provided ZABBIX-JP
  - zabbix_agent for W32 & w64
  - zabbix_sender.exe
  - zabbix_get.exe
@@ -11,6 +11,16 @@ This package includes from 1.8.3-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
+* Sun Jan 23 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.4-1
+- Update to 1.8.4
+- Add access control to api and config directory for web interface (Source1)
+- Update config files (Source6, Source7, Source8)
+- Change log file rotation by logroate, not zabbix (Source7, Source8)
+- Update Japanese translation (Source11)
+- Update setup from empty patch (Patch 16)
+- Add initial sql files for zabbix-proxy
+- Delete /etc/zabbix/defines.inc.php
+
 * Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
 - Update to 1.8.3
 - Delete patch fix_to_compile_visualstudio_proj.patch (Patch3)
