@@ -359,10 +359,6 @@ mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
 find ./frontends/php -name '*.orig'|xargs rm -f
 find ./create -name '*.orig'|xargs rm -f
 cp -a frontends/php $RPM_BUILD_ROOT%{_datadir}/%{name}
-mv $RPM_BUILD_ROOT%{_datadir}/%{name}/include/defines.inc.php \
-    $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
-ln -s ../../../..%{_sysconfdir}/%{name}/defines.inc.php \
-    $RPM_BUILD_ROOT%{_datadir}/%{name}/include/defines.inc.php
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/conf/maintenance.inc.php \
     $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/
 ln -s ../../../..%{_sysconfdir}/%{name}/maintenance.inc.php \
@@ -625,7 +621,6 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %config(noreplace) %attr(600,apache,apache) %{_sysconfdir}/zabbix/zabbix.conf.php
-%config(noreplace) %{_sysconfdir}/zabbix/defines.inc.php
 %config(noreplace) %{_sysconfdir}/zabbix/maintenance.inc.php
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/zabbix.conf
 %{_datadir}/zabbix
@@ -648,6 +643,7 @@ fi
 - Update Japanese translation (Source11)
 - Update setup from empty patch (Patch 16)
 - Add initial sql files for zabbix-proxy
+- Delete /etc/zabbix/defines.inc.php
 
 * Thu Aug 26 2010 Kodai Terashima <kodai74@gmail.com> - 1.8.3-1
 - Update to 1.8.3
