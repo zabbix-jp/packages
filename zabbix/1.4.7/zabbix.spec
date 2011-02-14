@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.4.7
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet

@@ -32,17 +32,6 @@ diff -Nur zabbix-1.4.7.org/frontends/php/include/locales/en_gb.inc.php zabbix-1.
  	'S_GREEN'=>				'Green',
  	'S_RED'=>				'Red',
  	'S_WHITE'=>				'White',
-diff -Nur zabbix-1.4.7.org/frontends/php/include/locales/ja_jp.inc.php zabbix-1.4.7/frontends/php/include/locales/ja_jp.inc.php
---- zabbix-1.4.7.org/frontends/php/include/locales/ja_jp.inc.php	2011-01-03 08:11:03.000000000 -0800
-+++ zabbix-1.4.7/frontends/php/include/locales/ja_jp.inc.php	2011-01-20 23:34:44.000000000 -0800
-@@ -362,6 +362,7 @@
- 	'S_DARK_GREEN'=>			'濃い緑',
- 	'S_DARK_RED'=>				'濃い赤',
- 	'S_DARK_YELLOW'=>			'濃い黄',
-+	'S_GRAY'=>				'グレイ',
- 	'S_GREEN'=>				'緑',
- 	'S_RED'=>				'赤',
- 	'S_WHITE'=>				'白',
 diff -Nur zabbix-1.4.7.org/frontends/php/include/maps.inc.php zabbix-1.4.7/frontends/php/include/maps.inc.php
 --- zabbix-1.4.7.org/frontends/php/include/maps.inc.php	2011-01-03 08:11:03.000000000 -0800
 +++ zabbix-1.4.7/frontends/php/include/maps.inc.php	2011-01-20 23:23:00.000000000 -0800

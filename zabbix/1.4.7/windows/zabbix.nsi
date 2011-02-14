@@ -1,7 +1,7 @@
 ;  (C) 2006-2009 - Michel Manceron <michel.manceron@siemens.com>
 ;                - Vincent Besançon <elguapito@free.fr>
 ;                - Kodai Terashima <kodai74@gmail.com> (ZABBIX-JP)
-; Quick & (not so) Dirty package for ZABBIX 1.6.5 client for Windows
+; Quick & (not so) Dirty package for ZABBIX 1.4.7 client for Windows
 
 ;--------------------------------
 ;Includes

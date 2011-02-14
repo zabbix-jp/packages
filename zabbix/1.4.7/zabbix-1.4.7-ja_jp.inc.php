@@ -362,6 +362,7 @@
 	'S_DARK_GREEN'=>			'濃い緑',
 	'S_DARK_RED'=>				'濃い赤',
 	'S_DARK_YELLOW'=>			'濃い黄',
+	'S_GRAY'=>				'グレイ',
 	'S_GREEN'=>				'緑',
 	'S_RED'=>				'赤',
 	'S_WHITE'=>				'白',
