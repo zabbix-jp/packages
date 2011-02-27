@@ -290,7 +290,7 @@ fi
 %defattr(-,root,root,-)
 %doc README
 %dir %{_sysconfdir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}/zabbix.conf.php
+%config(noreplace) %attr(600,apache,apache) %{_sysconfdir}/%{name}/zabbix.conf.php
 %config(noreplace) %{_sysconfdir}/%{name}/db.inc.php
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/%{name}.conf
 %dir %{_datadir}/%{name}
