@@ -1,0 +1,110 @@
+diff -Nur zabbix-1.4.7.org/frontends/php/include/forms.inc.php zabbix-1.4.7/frontends/php/include/forms.inc.php
+--- zabbix-1.4.7.org/frontends/php/include/forms.inc.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/include/forms.inc.php	2011-01-20 23:24:24.000000000 -0800
+@@ -4770,7 +4770,7 @@
+ 		/*foreach(array('Black','Blue','Cyan','Dark Blue','Dark Green',
+ 			'Dark Red','Dark Yellow','Green','Red','White','Yellow') as $value) */
+ 		foreach(array(S_BLACK,S_BLUE,S_CYAN,S_DARK_BLUE,S_DARK_GREEN,
+-			S_DARK_RED,S_DARK_YELLOW,S_GREEN,S_RED,S_WHITE,S_YELLOW) as $value)
++			S_DARK_RED,S_DARK_YELLOW,S_GRAY,S_GREEN,S_RED,S_WHITE,S_YELLOW) as $value)
+ 		{
+ 			$cmbColor_off->AddItem($value, $value);
+ 			$cmbColor_on->AddItem($value, $value);
+diff -Nur zabbix-1.4.7.org/frontends/php/include/locales/cn_zh.inc.php zabbix-1.4.7/frontends/php/include/locales/cn_zh.inc.php
+--- zabbix-1.4.7.org/frontends/php/include/locales/cn_zh.inc.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/include/locales/cn_zh.inc.php	2011-01-20 23:32:42.000000000 -0800
+@@ -126,6 +126,7 @@
+ 	"S_DARK_GREEN"=>			"Dark green",
+ 	"S_DARK_RED"=>				"Dark red",
+ 	"S_DARK_YELLOW"=>			"Dark yellow",
++	"S_GRAY"=>				"Gray",
+ 	"S_GREEN"=>				"Green",
+ 	"S_RED"=>				"Red",
+ 	"S_WHITE"=>				"White",
+diff -Nur zabbix-1.4.7.org/frontends/php/include/locales/en_gb.inc.php zabbix-1.4.7/frontends/php/include/locales/en_gb.inc.php
+--- zabbix-1.4.7.org/frontends/php/include/locales/en_gb.inc.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/include/locales/en_gb.inc.php	2011-01-20 23:34:19.000000000 -0800
+@@ -362,6 +362,7 @@
+ 	'S_DARK_GREEN'=>			'Dark green',
+ 	'S_DARK_RED'=>				'Dark red',
+ 	'S_DARK_YELLOW'=>			'Dark yellow',
++	'S_GRAY'=>				'Gray',
+ 	'S_GREEN'=>				'Green',
+ 	'S_RED'=>				'Red',
+ 	'S_WHITE'=>				'White',
+diff -Nur zabbix-1.4.7.org/frontends/php/include/maps.inc.php zabbix-1.4.7/frontends/php/include/maps.inc.php
+--- zabbix-1.4.7.org/frontends/php/include/maps.inc.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/include/maps.inc.php	2011-01-20 23:23:00.000000000 -0800
+@@ -584,9 +584,9 @@
+ 				$out['info'] = $inf['info'];
+ 
+ 			if(isset($inf['priority']) && $inf['priority'] > 3)
+-				$out['color'] = $colors['Red'];
++				$out['color'] = $colors[S_RED];
+ 			else
+-				$out['color'] = $colors['Dark Red'];
++				$out['color'] = $colors[S_DARK_RED];
+ 
+ 			$out['iconid'] = $db_element['iconid_on'];
+ 		}
+@@ -597,7 +597,7 @@
+ 			$out['type'] = TRIGGER_VALUE_UNKNOWN;
+ 			$out['info'] = 'UNKNOWN';
+ 			
+-			$out['color'] = $colors['Gray'];
++			$out['color'] = $colors[S_GRAY];
+ 			$out['iconid'] = $db_element['iconid_unknown'];
+ 
+ 			if (isset($inf['info']))
+@@ -613,7 +613,7 @@
+ 			if(isset($inf['info']))
+ 				$out['info'] = 'OK';
+ 
+-			$out['color'] = $colors['Dark Green'];
++			$out['color'] = $colors[S_DARK_GREEN];
+ 			$out['iconid'] = $db_element['iconid_off'];
+ 		}
+ 
+diff -Nur zabbix-1.4.7.org/frontends/php/map.php zabbix-1.4.7/frontends/php/map.php
+--- zabbix-1.4.7.org/frontends/php/map.php	2011-01-03 08:11:03.000000000 -0800
++++ zabbix-1.4.7/frontends/php/map.php	2011-01-20 23:20:48.000000000 -0800
+@@ -77,18 +77,18 @@
+ 	$black		= ImageColorAllocate($im,0,0,0); 
+ 	$gray		= ImageColorAllocate($im,150,150,150);
+ 
+-	$colors["Red"]		= ImageColorAllocate($im,255,0,0); 
+-	$colors["Dark Red"]	= ImageColorAllocate($im,150,0,0); 
+-	$colors["Green"]	= ImageColorAllocate($im,0,255,0); 
+-	$colors["Dark Green"]	= ImageColorAllocate($im,0,150,0); 
+-	$colors["Blue"]		= ImageColorAllocate($im,0,0,255); 
+-	$colors["Dark Blue"]	= ImageColorAllocate($im,0,0,150); 
+-	$colors["Yellow"]	= ImageColorAllocate($im,255,255,0); 
+-	$colors["Dark Yellow"]	= ImageColorAllocate($im,150,150,0); 
+-	$colors["Cyan"]		= ImageColorAllocate($im,0,255,255); 
+-	$colors["Black"]	= ImageColorAllocate($im,0,0,0); 
+-	$colors["Gray"]		= ImageColorAllocate($im,150,150,150); 
+-	$colors["White"]	= ImageColorAllocate($im,255,255,255);
++	$colors[S_RED]          = ImageColorAllocate($im,255,0,0);
++	$colors[S_DARK_RED]     = ImageColorAllocate($im,150,0,0);
++	$colors[S_GREEN]        = ImageColorAllocate($im,0,255,0);
++	$colors[S_DARK_GREEN]   = ImageColorAllocate($im,0,150,0);
++	$colors[S_BLUE]         = ImageColorAllocate($im,0,0,255);
++	$colors[S_DARK_BLUE]    = ImageColorAllocate($im,0,0,150);
++	$colors[S_YELLOW]       = ImageColorAllocate($im,255,255,0);
++	$colors[S_DARK_YELLOW]  = ImageColorAllocate($im,150,150,0);
++	$colors[S_CYAN]         = ImageColorAllocate($im,0,255,255);
++	$colors[S_BLACK]        = ImageColorAllocate($im,0,0,0);
++	$colors[S_GRAY]         = ImageColorAllocate($im,150,150,150);
++	$colors[S_WHITE]        = ImageColorAllocate($im,255,255,255);
+ 
+ 	$x=imagesx($im); 
+ 	$y=imagesy($im);
+@@ -268,7 +268,7 @@
+ 
+ 	if(!isset($_REQUEST["border"]))
+ 	{
+-		ImageRectangle($im,0,0,$width-1,$height-1,$colors["Black"]);
++		ImageRectangle($im,0,0,$width-1,$height-1,$colors[S_BLACK]);
+ 	}
+ 
+ 	ImageOut($im);
