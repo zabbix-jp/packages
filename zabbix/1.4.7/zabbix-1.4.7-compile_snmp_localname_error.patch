@@ -1,0 +1,14 @@
+diff -Nru zabbix-1.4.7.orig/src/zabbix_server/poller/checks_snmp.c zabbix-1.4.7/src/zabbix_server/poller/checks_snmp.c
+--- zabbix-1.4.7.orig/src/zabbix_server/poller/checks_snmp.c	2011-01-04 01:11:02.000000000 +0900
++++ zabbix-1.4.7/src/zabbix_server/poller/checks_snmp.c	2011-02-28 22:04:05.000000000 +0900
+@@ -214,8 +214,10 @@
+ 	zabbix_log( LOG_LEVEL_DEBUG, "OID [%s]",
+ 		item->snmp_oid);
+ 
++#ifdef HAVE_SNMP_SESSION_LOCALNAME
+ 	if (NULL != CONFIG_SOURCE_IP)
+ 		session.localname = CONFIG_SOURCE_IP;
++#endif
+ 
+ 	SOCK_STARTUP;
+ 	ss = snmp_open(&session);

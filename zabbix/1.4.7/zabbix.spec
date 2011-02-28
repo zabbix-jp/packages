@@ -30,6 +30,7 @@ Patch13:        zabbix-1.4.7-powered_by_zabbixjp.patch
 Patch14:        zabbix-1.4.7-trigger_multibyte_expression.patch
 Patch15:        zabbix-1.4.7-display_events.patch
 #Patch16:        zabbix-1.4.7-ignore_nodata_event.patch
+Patch17:        zabbix-1.4.7-compile_snmp_localname_error.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -139,6 +140,7 @@ cp %{SOURCE5} frontends/php/include/locales/ja_jp.inc.php
 %patch14 -p1 -b .trigger_multibyte_expression.orig
 %patch15 -p1 -b .display_events.orig
 #%patch16 -p1 -b .ignore_nodata_event.orig
+%patch17 -p1 -b .compile_snmp_localname_error.orig
 
 # shuffle sql init files around to fix up install
 mkdir -p dbinit/{schema,data}
@@ -308,10 +310,11 @@ fi
 %{_datadir}/%{name}/js/*
 
 %changelog
-* Fri Jan 20 2011 Kazuo Ito <qyn02623@nifty.com> 1.4.7-1
+* Mon Feb 28 2011 Kazuo Ito <qyn02623@nifty.com> 1.4.7-1
 - Update to 1.4.7
 - Add a patch to improve slow query to show events screen (Patch15)
 - Change /etc/zabbix/zabbix.conf.php permission
+- Fix compile snmp localname error (patch17)
 
 * Sun Sep 27 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
 - Add a patch to allow multibyte trigger expression (Patch14)
