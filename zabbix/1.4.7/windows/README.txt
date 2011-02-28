@@ -11,10 +11,11 @@ This package includes from 1.4.7-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
-* Fri Jan 20 2011 Kazuo Ito <qyn02623@nifty.com> 1.4.7-1
+* Mon Feb 28 2011 Kazuo Ito <qyn02623@nifty.com> 1.4.7-1
 - Update to 1.4.7
 - Add a patch to improve slow query to show events screen (Patch15)
 - Change /etc/zabbix/zabbix.conf.php permission
+- Fix compile snmp localname error (patch17)
 
 * Sun Sep 27 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
 - Add a patch to allow multibyte trigger expression (Patch14)
