@@ -310,10 +310,8 @@ fi
 %changelog
 * Fri Jan 20 2011 Kazuo Ito <qyn02623@nifty.com> 1.4.7-1
 - Update to 1.4.7
-
-* Fri Nov 6 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-3
 - Add a patch to improve slow query to show events screen (Patch15)
-- fix wrong event when start zabbix server if use nodata expression in trigger (Patch16)
+- Change /etc/zabbix/zabbix.conf.php permission
 
 * Sun Sep 27 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
 - Add a patch to allow multibyte trigger expression (Patch14)

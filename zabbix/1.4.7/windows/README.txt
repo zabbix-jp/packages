@@ -1,75 +1,44 @@
-# NSIS package for ZABBIX 1.4.7 Client for Windows
-# (C) 2009 - Kodai Terashima <kodai74@gmail.com>
+# package for ZABBIX 1.4.7-1 Agent for Windows
+# (C) 2005-2011 - ZABBIX-JP
 
-#          
 # Content / Purpose
 # -----------------
-To build an EXE install package for ZABBIX Agent 1.4.7, using NSIS.
-.\img\		: logs and pics
-.\Include\	: nsh macros
-.\Installer\	: ZABBIX components to install. Includes from ZABBIX 1.6.5 original zabbix_agentd.exe for win32 and win64 distribution,
-		  zabbix_sender and zabbix_get precompiled exe.
-ihm.ini		: custom page for zabbix_agentd.conf configuration
-zabbix.nsi	: main NSIS script
+This package includes from 1.4.7-1 provided ZABBIX-JP
+ - zabbix_agent for W32 & w64
+ - zabbix_sender.exe
+ - zabbix_get.exe
+  
 
-How to use:
- . grab NSIS (rel 2.20 at least)
- . compile the zabbix.nsi with "makensis.exe"
+# Changelog
+# -----------------
+* Fri Jan 20 2011 Kazuo Ito <qyn02623@nifty.com> 1.4.7-1
+- Update to 1.4.7
+- Add a patch to improve slow query to show events screen (Patch15)
+- Change /etc/zabbix/zabbix.conf.php permission
 
-Comments/Suggestions/Bugs reports => www.zabbix.com/forum
+* Sun Sep 27 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-2
+- Add a patch to allow multibyte trigger expression (Patch14)
 
-# How to use the resulting .exe install package for Windows
-# ---------------------------------------------------------
-To install Zabbix agent and sender, just run zabbix_agent-1.4.7-1.JP_installer.exe
+* Fri Jul 3 2009 Kodai Terashima <kodai74@gmail.com> 1.4.6-1
+- Update to 1.4.6
+- Add a patch to fix copyright-year in locales file from MIRACLE LINUX (Patch6)
+- Add a patch from MIRACLE LINUX to converter from SJIS to UTF-8 for Windows Event Log (Patch7)
+- Add a patch from MIRACLE LINUX to support Japanese for Graph formula (Patch8)
+- Add a patch from MIRACLE LINUX to fix does not switch Enable/Disable on items/web screen when use Japanese language (Patch9)
+- Add a patch from MIRACLE LINUX to fix does not use color link on map when use Japanese language (Patch10)
+- Add a patch from MIRACLE LINUX to fix exhausted memory by using DB cursor (Patch11)
+- Add a patch from MIRACLE LINUX to allow item/trigger parameter to set multibyte character (Patch12)
+- Add a patch to add link to ZABBIX-JP in footer (Patch13)
+- Merge el5.spec with el4.spec
 
-To use silent install mode, use :
- zabbix_agent-1.4.7-1.JP_installer.exe [/server=ZabbixServerIPAddress] [/rmtcmd=1] [/S][/D=InstallPath]
- 
-where:
- . ZabbixServerIPAddress is the IP address of the ZABBIX server
- . rmtcmd: 1 to enable remote commands, 0 to disable remote command
- . /S: Silent mode. If not indicated on the command line, the install GUI will prompt
-       for confirmation of the indicated parameters (server and rmtcmd).
- . /D=InstallPath :sets the default installation directory. It must be the last parameter used in the command line and must not contain any quotes, 
-	even if the path contains spaces. 
+* Wed Apr 15 2009 Kodai Terashima <kodai74@gmail.com> 1.4.5-2
+- Add a patch to fix compilation on x86_64 architecture (Patch1)
+- Add a patch to fix selecting Japanese language when selected Chinese language (Patch2)
+- Add a patch to support Japanese font for Graph and Map (Patch3)
+- Update Japanese locale (Source5)
+- Change data.sql to select Japanese locale by default (Source6)
+- Add PHP Configuration to zabbix.conf
+- Add Requires: fonts-japanese to zabbix-web
 
- 
- Note: If Zabbix agent was installed with the package zabbix_agent-1.1.x_installer.exe 
-        the installation is uninstalled in silent mode and prompt for confiramtion in gui mode  
-
-#Since the the installer 1.4.7.1  
-#------------------------------
-If you have multiple Zabbix server monitoring by network you can create a file in the installer directory calling it zabbixlist.csv like :
-
-"NetworkAdress;ZabbixServeurAdress
- default;zabbix_server4
- 192.168.1.0;zabbix_server1
- 192.168.2.0;zabbix_server2
- 192.168.3.0;zabbix_server1
- 192.168.4.0;zabbix_server3"
-			 
-
-When the installer see this file it calculate the network adress and try to find it in the file and take the zabbix server attached to the network adress. 
-If the network adress is not in the file it take the default line if there is otherwise he take the server adresse given in the parameters
-
-
-You can add a directory name "script" in the installer directory : All file in this directory will be copy to the install path
-
-Now the uninstaller wil only remove the basic files :
-  Zabbix_agentd.pid, LICENSE.txt, README.txt, zabbix_agentd.conf, zabbix_agentd.exe, zabbix_get.exe, zabbix_sender.exe
-
-
-# Credits
-# -------
- . Vincent Besan - initial NSIS package for ZABBIX 1.1.2 - Win32
- . Diego Pedroso for his StrCase function
- . Chris Morgan for the getParameterValue function
- . NullSoft of course.
- . Kodai Terashima - Create Japanese package
- 
-# Links
-# -----
- . http://nsis.sf.net/
- . http://www.nullsoft.com/
- . http://www.zabbix.com/
- . http://www.zabbix.jp
+* Wed Apr 02 2008 Kodai Terashima <kodai74@gmail.com> 1.4.5-1
+- New upstream release
