@@ -15,6 +15,7 @@ This package includes from 1.8.4-1 provided ZABBIX-JP
 - Update to 1.8.5
 - Update config files (Source6, Source7, Source8)
 - Update Japanese translation (Source11)
+- Add userparameter_mysql.conf and userparameter_examples.conf
 
 * Sun Jan 23 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.4-1
 - Update to 1.8.4

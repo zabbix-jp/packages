@@ -350,7 +350,7 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/alertscripts
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/externalscripts
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
+#mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
 mkdir -p $RPM_BUILD_ROOT%{_datadir}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
@@ -375,6 +375,7 @@ install -m 0644 -p misc/conf/zabbix_agent.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{n
 install -m 0644 -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
 install -m 0644 -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
 install -m 0644 -p %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
+cp -a misc/conf/zabbix_agentd $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 # log rotation
 cat %{SOURCE5} | sed -e 's|COMPONENT|server|g' > \
@@ -587,6 +588,8 @@ fi
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
 %dir %{_sysconfdir}/zabbix/zabbix_agentd.d
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.d/userparameter_examples.conf
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.d/userparameter_mysql.conf
 %{_sysconfdir}/init.d/zabbix-agent
 %{_sbindir}/zabbix_agent
 %{_sbindir}/zabbix_agentd
@@ -639,6 +642,7 @@ fi
 - Update to 1.8.5
 - Update config files (Source6, Source7, Source8)
 - Update Japanese translation (Source11)
+- Add userparameter_mysql.conf and userparameter_examples.conf
 
 * Sun Jan 23 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.4-1
 - Update to 1.8.4
