@@ -43,6 +43,7 @@ Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 %define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
+%define is_el6 %(grep -i "release 6" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
 
 BuildRequires:   mysql-devel
 BuildRequires:   postgresql-devel
@@ -56,6 +57,10 @@ BuildRequires:   libssh2-devel >= 1.0.0
 
 %if %is_el5
 BuildRequires:   curl-devel >= 7.13.1
+BuildRequires:   OpenIPMI-devel >= 2.0.14
+%endif
+%if %is_el6
+BuildRequires:   libcurl-devel >= 7.13.1
 BuildRequires:   OpenIPMI-devel >= 2.0.14
 %endif
 
@@ -94,6 +99,10 @@ Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
 %if %is_el5
 Requires:        curl >= 7.13.1
+Requires:        OpenIPMI-libs >= 2.0.14
+%endif
+%if %is_el6
+Requires:        libcurl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
 Conflicts:       zabbix-proxy
@@ -171,6 +180,10 @@ Requires:        libssh2 >= 1.0.0
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
+%if %is_el6
+Requires:        libcurl >= 7.13.1
+Requires:        OpenIPMI-libs >= 2.0.14
+%endif
 Conflicts:       zabbix-web
 Conflicts:       zabbix-server
 
@@ -223,7 +236,7 @@ Requires:        php-mbstring
 Requires:        php-xml
 Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-web-database = %{version}-%{release}
-%if %is_el5
+%if %is_el5 || %is_el6
 Requires:        php-bcmath
 %endif
 Conflicts:       zabbix-proxy
@@ -316,7 +329,7 @@ common_flags="
     --without-libcurl \
     --without-openipmi \
   %endif
-  %if %is_el5
+  %if %is_el5 || %is_el6
     --with-openipmi \
     --with-libcurl \
   %endif
