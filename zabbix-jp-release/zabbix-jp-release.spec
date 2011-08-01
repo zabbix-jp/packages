@@ -1,5 +1,6 @@
 %define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 %define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
+%define is_el6 %(grep -i "release 6" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
 
 Name:           zabbix-jp-release
 %if %is_el4
@@ -8,7 +9,11 @@ Version:        4
 %if %is_el5
 Version:        5
 %endif
-Release:        3
+%if %is_el6
+Version:        6
+%endif
+
+Release:        4
 Summary:        ZABBIX-JP repository configuration
 
 Group:          System Environment/Base
@@ -65,8 +70,8 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.1.repo 10
 /usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.4.repo 20
-/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo 40
-/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.8.repo 30
+/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.6.repo 30
+/usr/sbin/alternatives --install /etc/yum.repos.d/zabbix-jp.repo %{name} %{_datadir}/%{name}/zabbix-jp-1.8.repo 40
 
 %preun
 if [ $1 = 0 ]; then
@@ -83,6 +88,10 @@ fi
 %config(noreplace) %{_datadir}/%{name}
 
 %changelog
+* Mon Aug 1 2011 Kodai Terashima <kodai74@gmail.com> - 6-4
+- Add support rhel6
+- Change recommended version to 1.8
+
 * Mon Jan 18 2010 Kodai Terashima <kodai74@gmail.com> - 5-3
 - Add zabbix 1.8 repository
 - Add check update or erase in preun script
