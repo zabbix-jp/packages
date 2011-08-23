@@ -655,6 +655,7 @@ fi
 - Update to 1.8.6
 - Update Japanese translation (Source11)
 - Update config files (Source6, Source7, Source8)
+- Update init scripts for reload of a configuration cache data
 
 * Wed Aug 10 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.5-2
 - Add support RHEL6/CentOS6
