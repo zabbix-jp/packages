@@ -651,7 +651,7 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Wed Aug 10 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.6-1
+* Tue Aug 30 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.6-1
 - Update to 1.8.6
 - Update Japanese translation (Source11)
 - Update config files (Source6, Source7, Source8)
