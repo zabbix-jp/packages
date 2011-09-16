@@ -38,6 +38,7 @@ Patch11:        zabbix-1.8-itservice_popup_translate.patch
 Patch16:         zabbix-1.8.4-setup_from_empty_conf.patch
 Patch17:         zabbix-1.8.4-default_period.patch
 Patch18:         zabbix-1.8.3-initial_datasql_status_and_error.patch
+Patch19:         zabbix-1.8.7-zbx4099.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -301,6 +302,7 @@ Zabbix web frontend for SQLite
 %patch16 -p1 -b .setup_from_empty_conf.orig
 %patch17 -p1 -b .default_period.orig
 %patch18 -p1 -b .initial_datasql_status_and_error.orig
+%patch19 -p1 -b .zbx4099.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE9} %{SOURCE10} frontends/php/fonts/
@@ -654,6 +656,7 @@ fi
 * Fri Sep 2 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.7-1
 - Update to 1.8.7
 - Update Japanese translation (Source11)
+- Fix possible crash zabbix server when use sum(),min(),max(),diff() function. ZBX-4099 (Source19)
 
 * Tue Aug 30 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.6-1
 - Update to 1.8.6

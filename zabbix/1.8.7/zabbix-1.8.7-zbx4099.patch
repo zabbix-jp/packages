@@ -1,0 +1,35 @@
+diff -Nru zabbix-1.8.7.orig/src/libs/zbxdb/db.c zabbix-1.8.7/src/libs/zbxdb/db.c
+--- zabbix-1.8.7.orig/src/libs/zbxdb/db.c	2011-09-01 10:55:36.000000000 +0300
++++ zabbix-1.8.7/src/libs/zbxdb/db.c	2011-09-16 15:32:04.000000000 +0300
+@@ -1275,13 +1275,13 @@
+ 
+ int	zbx_db_is_null(const char *field)
+ {
+-	int	ret = FAIL;
+-
+-	if (NULL == field)		ret = SUCCEED;
+-#if defined(HAVE_ORACLE)
+-	else if ('\0' == field[0])	ret = SUCCEED;
++	if (NULL == field)
++		return SUCCEED;
++#ifdef HAVE_ORACLE
++	if ('\0' == *field)
++		return SUCCEED;
+ #endif
+-	return ret;
++	return FAIL;
+ }
+ 
+ #if defined(HAVE_IBM_DB2)
+diff -Nru zabbix-1.8.7.orig/src/libs/zbxdbhigh/db.c zabbix-1.8.7/src/libs/zbxdbhigh/db.c
+--- zabbix-1.8.7.orig/src/libs/zbxdbhigh/db.c	2011-09-01 10:55:36.000000000 +0300
++++ zabbix-1.8.7/src/libs/zbxdbhigh/db.c	2011-09-16 15:32:04.000000000 +0300
+@@ -2068,7 +2068,7 @@
+ 
+ 	h_value = zbx_malloc(h_value, (h_alloc + 1) * sizeof(char *));
+ 
+-	while (NULL != (row = DBfetch(result)))
++	while (NULL != (row = DBfetch(result)) && SUCCEED != DBis_null(row[0]))
+ 	{
+ 		if (h_alloc == h_num)
+ 		{
