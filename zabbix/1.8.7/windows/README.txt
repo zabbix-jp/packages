@@ -11,6 +11,11 @@ This package includes from 1.8.7-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
+* Thu Sep 22 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.7-1
+- Update to 1.8.7
+- Update Japanese translation (Source11)
+- Fix possible crash zabbix server when use sum(),min(),max(),diff() function. ZBX-4099 (Source19)
+
 * Tue Aug 30 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.6-1
 - Update to 1.8.6
 - Update Japanese translation (Source11)
