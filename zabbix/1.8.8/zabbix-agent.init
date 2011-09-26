@@ -1,0 +1,74 @@
+#! /bin/sh
+#
+# chkconfig: - 85 15
+# description: zabbix agent daemon
+#
+
+### BEGIN INIT INFO
+# Provides: zabbix-agent
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs $network
+# Default-Start:
+# Default-Stop: 0 1 2 3 4 5 6
+# Short-Description: start and stop zabbix agent
+# Description: Zabbix Agent
+### END INIT INFO
+
+# zabbix details
+ZABBIX_AGENTD=/usr/sbin/zabbix_agentd
+CONF=/etc/zabbix/zabbix_agentd.conf
+PIDFILE=/var/run/zabbix/zabbix_agent.pid
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+[ -x $ZABBIX_AGENTD ] || exit 5
+[ -e $CONF ] || exit 6
+
+RETVAL=0
+
+case "$1" in
+    start)
+        echo -n "Starting zabbix agent: "
+        daemon $ZABBIX_AGENTD -c $CONF
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && touch /var/lock/subsys/zabbix-agent
+        ;;
+    stop)
+        echo -n "Shutting down zabbix agent: "
+        killproc zabbix_agentd
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/zabbix-agent
+        ;;
+    restart|reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+        ;;
+    condrestart)
+        if [ -f /var/lock/subsys/zabbix-agent ]; then
+            $0 stop
+            $0 start
+        fi
+        RETVAL=$?
+        ;;
+    status)
+        status zabbix_agentd
+        RETVAL=$?
+        ;;
+    *)
+	echo "Usage: $0 {start|stop|restart|condrestart|reload|status}"
+	exit 1
+	;;
+esac
+
+exit $RETVAL
+
