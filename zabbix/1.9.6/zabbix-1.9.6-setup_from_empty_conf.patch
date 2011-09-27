@@ -1,0 +1,15 @@
+diff -urN zabbix-1.9.6.orig/frontends/php/include/config.inc.php zabbix-1.9.6/frontends/php/include/config.inc.php
+--- zabbix-1.9.6.orig/frontends/php/include/config.inc.php	2011-09-10 16:11:01.000000000 +0900
++++ zabbix-1.9.6/frontends/php/include/config.inc.php	2011-09-27 14:08:44.376945741 +0900
+@@ -170,6 +170,11 @@
+ 	}
+ 
+ 	if (file_exists($ZBX_CONFIGURATION_FILE) && !isset($_COOKIE['ZBX_CONFIG']) && !isset($DENY_GUI)) {
++		ob_start();
++		include $ZBX_CONFIGURATION_FILE;
++		ob_end_clean();
++	}
++	if (file_exists($ZBX_CONFIGURATION_FILE) && isset($DB) && !isset($_COOKIE['ZBX_CONFIG']) && !isset($DENY_GUI)) {
+ 		$config = new CConfigFile($ZBX_CONFIGURATION_FILE);
+ 		if ($config->load()) {
+ 			$config->makeGlobal();

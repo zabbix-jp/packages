@@ -1,0 +1,21 @@
+diff -urN zabbix-1.9.6.orig/frontends/php/include/defines.inc.php zabbix-1.9.6/frontends/php/include/defines.inc.php
+--- zabbix-1.9.6.orig/frontends/php/include/defines.inc.php	2011-09-10 16:11:01.000000000 +0900
++++ zabbix-1.9.6/frontends/php/include/defines.inc.php	2011-09-27 13:45:29.836911523 +0900
+@@ -33,7 +33,7 @@
+ 	define('ZBX_WIDGET_ROWS',				20);
+ 
+ 	define('ZBX_FONTPATH',					realpath('fonts'));	// where to search for font (GD > 2.0.18)
+-	define('ZBX_GRAPH_FONT_NAME',			'DejaVuSans');		// font file name
++	define('ZBX_GRAPH_FONT_NAME',			'VL-PGothic-Regular');		// font file name
+ 	define('ZBX_GRAPH_LEGEND_HEIGHT',120); // when graph height is less then this value, some legend will not show up
+ 
+ 	define('ZBX_SCRIPT_TIMEOUT',			60); // in seconds
+@@ -83,7 +83,7 @@
+ 	define('EVENTS_OPTION_ALL',		2);
+ 	define('EVENTS_OPTION_NOT_ACK', 3);
+ 
+-	define('ZBX_FONT_NAME',			'DejaVuSans');
++	define('ZBX_FONT_NAME',			'VL-PGothic-Regular');
+ 
+ 	define('ZBX_AUTH_INTERNAL',	0);
+ 	define('ZBX_AUTH_LDAP',		1);
