@@ -1,0 +1,38 @@
+diff -urN zabbix-1.9.6.orig/src/zabbix_java/lib/logback.xml zabbix-1.9.6/src/zabbix_java/lib/logback.xml
+--- zabbix-1.9.6.orig/src/zabbix_java/lib/logback.xml	2011-09-10 16:10:55.000000000 +0900
++++ zabbix-1.9.6/src/zabbix_java/lib/logback.xml	2011-09-28 16:26:48.717180957 +0900
+@@ -2,10 +2,10 @@
+ 
+ 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+ 
+-		<file>/tmp/zabbix_java.log</file>
++		<file>/var/log/zabbix/zabbix_java.log</file>
+ 
+ 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+-			<fileNamePattern>/tmp/zabbix_java.log.%i</fileNamePattern>
++			<fileNamePattern>/var/log/zabbix/zabbix_java.log.%i</fileNamePattern>
+ 			<minIndex>1</minIndex>
+ 			<maxIndex>3</maxIndex>
+ 		</rollingPolicy>
+diff -urN zabbix-1.9.6.orig/src/zabbix_java/settings.sh zabbix-1.9.6/src/zabbix_java/settings.sh
+--- zabbix-1.9.6.orig/src/zabbix_java/settings.sh	2011-09-10 16:10:55.000000000 +0900
++++ zabbix-1.9.6/src/zabbix_java/settings.sh	2011-09-28 16:26:18.246164481 +0900
+@@ -16,6 +16,8 @@
+ # Default:
+ # LISTEN_PORT=10051
+ 
++LISTEN_PORT=10052
++
+ ### Option: zabbix.pidFile
+ #	Name of PID file.
+ #	If omitted, Zabbix Java Proxy is started as a console application.
+@@ -24,7 +26,8 @@
+ # Default:
+ # PID_FILE=
+ 
+-PID_FILE="/tmp/zabbix_java.pid"
++#PID_FILE="/tmp/zabbix_java.pid"
++PID_FILE="/var/run/zabbix/zabbix_java.pid"
+ 
+ ### Option: zabbix.startPollers
+ #	Number of worker threads to start.

@@ -18,6 +18,8 @@ Source8:        zabbix_proxy.conf
 Source9:        VLGothic-20110722.tar.bz2
 Patch1:         zabbix-1.9.6-graph_font.patch
 Patch2:         zabbix-1.9.6-setup_from_empty_conf.patch
+Patch3:         zabbix-1.9.6-java_settings.patch
+Patch4:         zabbix-1.9.6-java_makefile_destdir.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -79,12 +81,10 @@ Requires:        net-snmp
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
 %if %is_el5
-Requires:        java >= 1.6.0
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
 %if %is_el6
-Requires:        java >= 1.6.0
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
@@ -267,10 +267,24 @@ Conflicts:       zabbix-web-pgsql
 %description web-sqlite3
 Zabbix web frontend for SQLite
 
+%package java-bridge
+Summary:         Zabbix Java bridge server files
+Group:           Applications/Internet
+Requires:        zabbix = %{version}-%{release}
+Requires:        java >= 1.6.0
+Requires(post):  /sbin/chkconfig
+Requires(preun): /sbin/chkconfig
+Requires(preun): /sbin/service
+
+%description java-bridge
+Zabbix Java bridge server files
+
 %prep
 %setup0 -q -a 9
 %patch1 -p1 -b .graph_font.orig
 %patch2 -p1 -b .setup_from_empty_conf.orig
+%patch3 -p1 -b .java_settings.orig
+%patch4 -p1 -b .java_makefile_destdir.orig
 
 cp VLGothic/* frontends/php/fonts/
 
@@ -333,6 +347,8 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/externalscripts
 mkdir -p $RPM_BUILD_ROOT%{_datadir}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
+mkdir -p $RPM_BUILD_ROOT%{_sbindir}/zabbix_java/bin
+mkdir -p $RPM_BUILD_ROOT%{_sbindir}/zabbix_java/lib
 
 # php frontend
 find ./frontends/php -name '*.orig'|xargs rm -f
@@ -355,6 +371,7 @@ install -m 0644 -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agent
 install -m 0644 -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
 install -m 0644 -p %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
 cp -a conf/zabbix_agentd $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
+cp -a src/zabbix_java/settings.sh $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_java_settings.sh
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 # log rotation
 cat %{SOURCE5} | sed -e 's|COMPONENT|server|g' > \
@@ -367,6 +384,7 @@ cat %{SOURCE5} | sed -e 's|COMPONENT|proxy|g' > \
 install -m 0755 -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
 install -m 0755 -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-agent
 install -m 0755 -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-proxy
+#install -m 0755 -p %{SOURCEX} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-bridge
 
 # set up config dir
 
@@ -376,7 +394,6 @@ rm $RPM_BUILD_ROOT%{_sbindir}/zabbix_server
 install -m 0755 -p src/zabbix_server/zabbix_server_* $RPM_BUILD_ROOT%{_sbindir}/
 rm $RPM_BUILD_ROOT%{_sbindir}/zabbix_proxy
 install -m 0755 -p src/zabbix_proxy/zabbix_proxy_* $RPM_BUILD_ROOT%{_sbindir}/
-install -m 0755 -p src/zabbix_java/bin/zabbix-java-proxy-%{version}.jar $RPM_BUILD_ROOT%{_sbindir}/
 
 # nuke static libs and empty oracle upgrade sql
 rm -rf $RPM_BUILD_ROOT%{_libdir}/libzbx*.a
@@ -448,6 +465,9 @@ if [ $1 -eq 1 ]; then
   fi
 fi
 
+#%post java-bridge
+#/sbin/chkconfig --add zabbix-java-bridge || :
+
 %preun server
 if [ $1 -eq 0 ]
 then
@@ -511,6 +531,13 @@ if [ $1 -eq 0 ]; then
   fi
 fi
 
+#%preun java-bridge
+#if [ $1 -eq 0 ]
+#then
+#  /sbin/service zabbix-java-bridge stop >/dev/null 2>&1 || :
+#  /sbin/chkconfig --del zabbix-java-bridge
+#fi
+
 %postun server
 if [ $1 -gt 1 ]; then
   /sbin/service zabbix-server condrestart >/dev/null 2>&1 || :
@@ -525,6 +552,11 @@ fi
 if [ $1 -gt 1 ]; then
   /sbin/service zabbix-proxy condrestart >/dev/null 2>&1 || :
 fi
+
+#%postun java-bridge
+#if [ $1 -gt 1 ]; then
+#  /sbin/service zabbix-java-bridge condrestart >/dev/null 2>&1 || :
+#fi
 
 %files
 %defattr(-,root,root,-)
@@ -541,7 +573,6 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
 %dir %{_sysconfdir}/zabbix/alertscripts
 %dir %{_sysconfdir}/zabbix/externalscripts
-%{_sbindir}/zabbix-java-proxy-%{version}.jar
 %{_sysconfdir}/init.d/zabbix-server
 
 %files server-mysql
@@ -618,9 +649,27 @@ fi
 %files web-sqlite3
 %defattr(-,root,root,-)
 
+%files java-bridge
+%defattr(-,root,root,-)
+%dir %{_sbindir}/zabbix_java
+%dir %{_sbindir}/zabbix_java/bin
+%dir %{_sbindir}/zabbix_java/lib
+%config(noreplace) %attr(700,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_java_settings.sh
+%config(noreplace) %{_sbindir}/zabbix_java/lib/logback-console.xml
+%config(noreplace) %{_sbindir}/zabbix_java/lib/logback.xml
+%config(noreplace) %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/settings.sh
+%config(noreplace) %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/startup.sh
+%config(noreplace) %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/shutdown.sh
+%attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/bin/zabbix-java-proxy-%{version}.jar
+%{_sbindir}/zabbix_java/lib/logback-classic-0.9.27.jar
+%{_sbindir}/zabbix_java/lib/logback-core-0.9.27.jar
+%{_sbindir}/zabbix_java/lib/org-json-2010-12-28.jar
+%{_sbindir}/zabbix_java/lib/slf4j-api-1.6.1.jar
+
 %changelog
 * Tue Sep 27 2011 Takanori Suzuki <mail.tks@gmail.com> - 1.9.6-0
 - Update to 1.9.6
+- Add patch for Java bridge
 
 * Fri Sep 2 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.7-1
 - Update to 1.8.7
