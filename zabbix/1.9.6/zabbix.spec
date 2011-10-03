@@ -11,11 +11,12 @@ Source1:        zabbix-web.conf
 Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
-Source5:        zabbix-logrotate.in
-Source6:        zabbix_agentd.conf
-Source7:        zabbix_server.conf
-Source8:        zabbix_proxy.conf
-Source9:        VLGothic-20110722.tar.bz2
+Source5:        zabbix-java-bridge.init
+Source6:        zabbix-logrotate.in
+Source7:        zabbix_agentd.conf
+Source8:        zabbix_server.conf
+Source9:        zabbix_proxy.conf
+Source10:       VLGothic-20110722.tar.bz2
 Patch1:         zabbix-1.9.6-graph_font.patch
 Patch2:         zabbix-1.9.6-setup_from_empty_conf.patch
 Patch3:         zabbix-1.9.6-java_settings.patch
@@ -280,7 +281,7 @@ Requires(preun): /sbin/service
 Zabbix Java bridge server files
 
 %prep
-%setup0 -q -a 9
+%setup0 -q -a 10
 %patch1 -p1 -b .graph_font.orig
 %patch2 -p1 -b .setup_from_empty_conf.orig
 %patch3 -p1 -b .java_settings.orig
@@ -367,24 +368,23 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/classes/.htaccess
 # drop config files in place
 install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/zabbix.conf
 install -m 0644 -p conf/zabbix_agent.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-install -m 0644 -p %{SOURCE6} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
-install -m 0644 -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
-install -m 0644 -p %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
+install -m 0644 -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
+install -m 0644 -p %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
+install -m 0644 -p %{SOURCE9} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
 cp -a conf/zabbix_agentd $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
-cp -a src/zabbix_java/settings.sh $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_java_settings.sh
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 # log rotation
-cat %{SOURCE5} | sed -e 's|COMPONENT|server|g' > \
+cat %{SOURCE6} | sed -e 's|COMPONENT|server|g' > \
      $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-server
-cat %{SOURCE5} | sed -e 's|COMPONENT|agentd|g' > \
+cat %{SOURCE6} | sed -e 's|COMPONENT|agentd|g' > \
      $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-agent
-cat %{SOURCE5} | sed -e 's|COMPONENT|proxy|g' > \
+cat %{SOURCE6} | sed -e 's|COMPONENT|proxy|g' > \
      $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-proxy
 # init scripts
 install -m 0755 -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
 install -m 0755 -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-agent
 install -m 0755 -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-proxy
-#install -m 0755 -p %{SOURCEX} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-bridge
+install -m 0755 -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-bridge
 
 # set up config dir
 
@@ -465,8 +465,9 @@ if [ $1 -eq 1 ]; then
   fi
 fi
 
-#%post java-bridge
-#/sbin/chkconfig --add zabbix-java-bridge || :
+%post java-bridge
+/sbin/chkconfig --add zabbix-java-bridge || :
+ln -s %{_sbindir}/zabbix_java/settings.sh %{_sysconfdir}/%{name}/zabbix_java_settings.sh
 
 %preun server
 if [ $1 -eq 0 ]
@@ -531,12 +532,13 @@ if [ $1 -eq 0 ]; then
   fi
 fi
 
-#%preun java-bridge
-#if [ $1 -eq 0 ]
-#then
-#  /sbin/service zabbix-java-bridge stop >/dev/null 2>&1 || :
-#  /sbin/chkconfig --del zabbix-java-bridge
-#fi
+%preun java-bridge
+if [ $1 -eq 0 ]
+then
+  /sbin/service zabbix-java-bridge stop >/dev/null 2>&1 || :
+  /sbin/chkconfig --del zabbix-java-bridge
+  rm -f %{_sysconfdir}/%{name}/zabbix_java_settings.sh
+fi
 
 %postun server
 if [ $1 -gt 1 ]; then
@@ -553,10 +555,10 @@ if [ $1 -gt 1 ]; then
   /sbin/service zabbix-proxy condrestart >/dev/null 2>&1 || :
 fi
 
-#%postun java-bridge
-#if [ $1 -gt 1 ]; then
-#  /sbin/service zabbix-java-bridge condrestart >/dev/null 2>&1 || :
-#fi
+%postun java-bridge
+if [ $1 -gt 1 ]; then
+  /sbin/service zabbix-java-bridge condrestart >/dev/null 2>&1 || :
+fi
 
 %files
 %defattr(-,root,root,-)
@@ -654,7 +656,6 @@ fi
 %dir %{_sbindir}/zabbix_java
 %dir %{_sbindir}/zabbix_java/bin
 %dir %{_sbindir}/zabbix_java/lib
-%config(noreplace) %attr(700,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_java_settings.sh
 %config(noreplace) %{_sbindir}/zabbix_java/lib/logback-console.xml
 %config(noreplace) %{_sbindir}/zabbix_java/lib/logback.xml
 %config(noreplace) %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/settings.sh
@@ -665,11 +666,13 @@ fi
 %{_sbindir}/zabbix_java/lib/logback-core-0.9.27.jar
 %{_sbindir}/zabbix_java/lib/org-json-2010-12-28.jar
 %{_sbindir}/zabbix_java/lib/slf4j-api-1.6.1.jar
+%{_sysconfdir}/init.d/zabbix-java-bridge
 
 %changelog
 * Tue Sep 27 2011 Takanori Suzuki <mail.tks@gmail.com> - 1.9.6-0
 - Update to 1.9.6
 - Add patch for Java bridge
+- Add init script for Java bridge
 
 * Fri Sep 2 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.7-1
 - Update to 1.8.7
