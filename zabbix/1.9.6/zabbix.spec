@@ -11,7 +11,7 @@ Source1:        zabbix-web.conf
 Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
-Source5:        zabbix-java-bridge.init
+Source5:        zabbix-java-proxy.init
 Source6:        zabbix-logrotate.in
 Source7:        zabbix_agentd.conf
 Source8:        zabbix_server.conf
@@ -268,8 +268,8 @@ Conflicts:       zabbix-web-pgsql
 %description web-sqlite3
 Zabbix web frontend for SQLite
 
-%package java-bridge
-Summary:         Zabbix Java bridge server files
+%package java-proxy
+Summary:         Zabbix Java proxy server files
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
 Requires:        java >= 1.6.0
@@ -277,8 +277,8 @@ Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
 
-%description java-bridge
-Zabbix Java bridge server files
+%description java-proxy
+Zabbix Java proxy server files
 
 %prep
 %setup0 -q -a 10
@@ -384,7 +384,7 @@ cat %{SOURCE6} | sed -e 's|COMPONENT|proxy|g' > \
 install -m 0755 -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
 install -m 0755 -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-agent
 install -m 0755 -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-proxy
-install -m 0755 -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-bridge
+install -m 0755 -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-proxy
 
 # set up config dir
 
@@ -465,8 +465,8 @@ if [ $1 -eq 1 ]; then
   fi
 fi
 
-%post java-bridge
-/sbin/chkconfig --add zabbix-java-bridge || :
+%post java-proxy
+/sbin/chkconfig --add zabbix-java-proxy || :
 ln -s %{_sbindir}/zabbix_java/settings.sh %{_sysconfdir}/%{name}/zabbix_java_settings.sh
 
 %preun server
@@ -532,11 +532,11 @@ if [ $1 -eq 0 ]; then
   fi
 fi
 
-%preun java-bridge
+%preun java-proxy
 if [ $1 -eq 0 ]
 then
-  /sbin/service zabbix-java-bridge stop >/dev/null 2>&1 || :
-  /sbin/chkconfig --del zabbix-java-bridge
+  /sbin/service zabbix-java-proxy stop >/dev/null 2>&1 || :
+  /sbin/chkconfig --del zabbix-java-proxy
   rm -f %{_sysconfdir}/%{name}/zabbix_java_settings.sh
 fi
 
@@ -555,9 +555,9 @@ if [ $1 -gt 1 ]; then
   /sbin/service zabbix-proxy condrestart >/dev/null 2>&1 || :
 fi
 
-%postun java-bridge
+%postun java-proxy
 if [ $1 -gt 1 ]; then
-  /sbin/service zabbix-java-bridge condrestart >/dev/null 2>&1 || :
+  /sbin/service zabbix-java-proxy condrestart >/dev/null 2>&1 || :
 fi
 
 %files
@@ -651,7 +651,7 @@ fi
 %files web-sqlite3
 %defattr(-,root,root,-)
 
-%files java-bridge
+%files java-proxy
 %defattr(-,root,root,-)
 %dir %{_sbindir}/zabbix_java
 %dir %{_sbindir}/zabbix_java/bin
@@ -666,13 +666,14 @@ fi
 %{_sbindir}/zabbix_java/lib/logback-core-0.9.27.jar
 %{_sbindir}/zabbix_java/lib/org-json-2010-12-28.jar
 %{_sbindir}/zabbix_java/lib/slf4j-api-1.6.1.jar
-%{_sysconfdir}/init.d/zabbix-java-bridge
+%{_sysconfdir}/init.d/zabbix-java-proxy
 
 %changelog
 * Tue Sep 27 2011 Takanori Suzuki <mail.tks@gmail.com> - 1.9.6-0
 - Update to 1.9.6
 - Add patch for Java bridge
 - Add init script for Java bridge
+- Change package name from zabbix-java-bridge to zabbix-java-proxy
 
 * Fri Sep 2 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.7-1
 - Update to 1.8.7
