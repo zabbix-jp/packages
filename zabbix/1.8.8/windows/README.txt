@@ -11,6 +11,11 @@ This package includes from 1.8.8-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
+* Sat Oct 8 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.8-1
+- Update to 1.8.8
+- Update Japanese translation (Source11)
+- Delete ZBX-4099 patch (Source19)
+
 * Thu Sep 22 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.7-1
 - Update to 1.8.7
 - Update Japanese translation (Source11)
