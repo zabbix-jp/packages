@@ -109,6 +109,8 @@ case "$1" in
         RETVAL=$?
         ;;
     status)
+        status -p $PID_FILE $0
+        exit 0
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|condrestart|status}"
