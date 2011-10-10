@@ -21,6 +21,8 @@ Patch1:         zabbix-1.9.6-graph_font.patch
 Patch2:         zabbix-1.9.6-setup_from_empty_conf.patch
 Patch3:         zabbix-1.9.6-java_settings.patch
 Patch4:         zabbix-1.9.6-java_makefile_destdir.patch
+Patch5:         zabbix-1.9.6-datasql.patch
+Patch6:         zabbix-1.9.6-itservice_popup_translate.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -286,6 +288,8 @@ Zabbix Java proxy server files
 %patch2 -p1 -b .setup_from_empty_conf.orig
 %patch3 -p1 -b .java_settings.orig
 %patch4 -p1 -b .java_makefile_destdir.orig
+%patch5 -p1 -b .datasql.orig
+%patch6 -p1 -b .itservice_popup_translate.orig
 
 cp VLGothic/* frontends/php/fonts/
 
@@ -674,6 +678,7 @@ fi
 - Add patch for Java bridge
 - Add init script for Java bridge
 - Change package name from zabbix-java-bridge to zabbix-java-proxy
+- Add patch files for Japanese translation
 
 * Fri Sep 2 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.7-1
 - Update to 1.8.7
