@@ -13,10 +13,7 @@ Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
 Source5:        zabbix-java-proxy.init
 Source6:        zabbix-logrotate.in
-Source7:        zabbix_agentd.conf
-Source8:        zabbix_server.conf
-Source9:        zabbix_proxy.conf
-Source10:       VLGothic-20110722.tar.bz2
+Source7:        VLGothic-20110722.tar.bz2
 Patch1:         zabbix-1.9.7-graph_font.patch
 Patch2:         zabbix-1.9.7-setup_from_empty_conf.patch
 Patch3:         zabbix-1.9.6-java_settings.patch
@@ -265,7 +262,7 @@ Requires(preun): /sbin/service
 Zabbix Java proxy server files
 
 %prep
-%setup0 -q -a 10
+%setup0 -q -a 7
 %patch1 -p1 -b .graph_font.orig
 %patch2 -p1 -b .setup_from_empty_conf.orig
 %patch3 -p1 -b .java_settings.orig
@@ -353,9 +350,32 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/classes/.htaccess
 # drop config files in place
 install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/zabbix.conf
 install -m 0644 -p conf/zabbix_agent.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-install -m 0644 -p %{SOURCE7} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
-install -m 0644 -p %{SOURCE8} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
-install -m 0644 -p %{SOURCE9} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
+
+# fix config file options
+cat conf/zabbix_agentd.conf | sed \
+    -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_agentd.pid' \
+    -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_agentd.log|g' \
+    -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
+    -e '/^# Include=$/a \\nInclude=%{_sysconfdir}/%{name}/zabbix_agentd.d/' \
+    > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
+
+cat conf/zabbix_server.conf | sed \
+    -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_server.pid' \
+    -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
+    -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
+    -e 's|^# DBSocket=.*|# DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
+    -e '/^# AlertScriptsPath=/a \\nAlertScriptsPath=%{_sysconfdir}/%{name}/alertscripts' \
+    -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sysconfdir}/%{name}/externalscripts' \
+    > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
+
+cat conf/zabbix_proxy.conf | sed \
+    -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_proxy.pid' \
+    -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_proxy.log|g' \
+    -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
+    -e 's|^# DBSocket=.*|# DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
+    -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sysconfdir}/%{name}/externalscripts' \
+    > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
+    
 cp -a conf/zabbix_agentd $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
 # log rotation
