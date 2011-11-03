@@ -25,9 +25,7 @@ Patch5:         zabbix-1.9.6-itservice_popup_translate.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
-%define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
-%define is_el6 %(grep -i "release 6" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0) 
+%define rhel %(grep -i "release ." -o /etc/redhat-release |cut -c 9)
 
 BuildRequires:   mysql-devel
 BuildRequires:   postgresql-devel
@@ -38,13 +36,9 @@ BuildRequires:   iksemel-devel
 BuildRequires:   sqlite-devel
 BuildRequires:   unixODBC-devel
 BuildRequires:   libssh2-devel >= 1.0.0
-BuildRequires:   java-sdk >= 1.6.0
+BuildRequires:   java-devel >= 1.6.0
 
-%if %is_el5
-BuildRequires:   curl-devel >= 7.13.1
-BuildRequires:   OpenIPMI-devel >= 2.0.14
-%endif
-%if %is_el6
+%if %{rhel} >= 5
 BuildRequires:   curl-devel >= 7.13.1
 BuildRequires:   OpenIPMI-devel >= 2.0.14
 %endif
@@ -82,11 +76,7 @@ Requires:        iksemel
 Requires:        net-snmp
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
-%if %is_el5
-Requires:        curl >= 7.13.1
-Requires:        OpenIPMI-libs >= 2.0.14
-%endif
-%if %is_el6
+%if %{rhel} >= 5
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
@@ -161,11 +151,7 @@ Requires:        fping
 Requires:        net-snmp
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
-%if %is_el5
-Requires:        curl >= 7.13.1
-Requires:        OpenIPMI-libs >= 2.0.14
-%endif
-%if %is_el6
+%if %{rhel} >= 5
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
 %endif
@@ -221,10 +207,7 @@ Requires:        php-mbstring
 Requires:        php-xml
 Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-web-database = %{version}-%{release}
-%if %is_el5
-Requires:        php-bcmath
-%endif
-%if %is_el6
+%if %{rhel} >= 5
 Requires:        php-bcmath
 %endif
 Conflicts:       zabbix-proxy
@@ -308,11 +291,11 @@ common_flags="
     --with-ldap \
     --with-unixodbc \
     --with-ssh2 \
-  %if %is_el4
+  %if %{rhel} <= 4
     --without-libcurl \
     --without-openipmi \
   %endif
-  %if %is_el5 || %is_el6
+  %if %{rhel} >= 5
     --enable-java \
     --with-openipmi \
     --with-libcurl \
