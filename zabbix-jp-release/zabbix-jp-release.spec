@@ -1,19 +1,7 @@
-%define is_el4 %(grep -i "release 4" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
-%define is_el5 %(grep -i "release 5" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
-%define is_el6 %(grep -i "release 6" /etc/redhat-release > /dev/null 2>&1 && echo 1 || echo 0)
-
 Name:           zabbix-jp-release
-%if %is_el4
-Version:        4
-%endif
-%if %is_el5
-Version:        5
-%endif
-%if %is_el6
-Version:        6
-%endif
+Version:        %(grep -i "release ." -o /etc/redhat-release |cut -c 9)
 
-Release:        4
+Release:        5
 Summary:        ZABBIX-JP repository configuration
 
 Group:          System Environment/Base
@@ -53,15 +41,19 @@ install -dm 755 $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 cat %{SOURCE2} |sed \
     -e 's/{zbxver}/zabbix-1.1/g' \
+    -e 's/{version}/%{version}/g' \
     > $RPM_BUILD_ROOT%{_datadir}/%{name}/zabbix-jp-1.1.repo
 cat %{SOURCE2} |sed \
     -e 's/{zbxver}/zabbix-1.4/g' \
+    -e 's/{version}/%{version}/g' \
     > $RPM_BUILD_ROOT%{_datadir}/%{name}/zabbix-jp-1.4.repo
 cat %{SOURCE2} |sed \
     -e 's/{zbxver}/zabbix-1.6/g' \
+    -e 's/{version}/%{version}/g' \
     > $RPM_BUILD_ROOT%{_datadir}/%{name}/zabbix-jp-1.6.repo
 cat %{SOURCE2} |sed \
     -e 's/{zbxver}/zabbix-1.8/g' \
+    -e 's/{version}/%{version}/g' \
     > $RPM_BUILD_ROOT%{_datadir}/%{name}/zabbix-jp-1.8.repo
 
 %clean
@@ -88,6 +80,9 @@ fi
 %config(noreplace) %{_datadir}/%{name}
 
 %changelog
+* Fri Nov 11 2011 Kodai Terashima <kodai74@gmail.com> 6-5
+- fix redhat release version
+
 * Mon Aug 1 2011 Kodai Terashima <kodai74@gmail.com> - 6-4
 - Add support rhel6
 - Change recommended version to 1.8
