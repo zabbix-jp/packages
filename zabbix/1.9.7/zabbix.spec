@@ -11,7 +11,7 @@ Source1:        zabbix-web.conf
 Source2:        zabbix-server.init
 Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
-Source5:        zabbix-java-proxy.init
+Source5:        zabbix-java-gateway.init
 Source6:        zabbix-logrotate.in
 Source7:        VLGothic-20110722.tar.bz2
 Patch1:         zabbix-1.9.7-graph_font.patch
@@ -249,8 +249,8 @@ Conflicts:       zabbix-web-pgsql
 %description web-sqlite3
 Zabbix web frontend for SQLite
 
-%package java-proxy
-Summary:         Zabbix Java proxy server files
+%package java-gateway
+Summary:         Zabbix Java Gateway files
 Group:           Applications/Internet
 Requires:        zabbix = %{version}-%{release}
 Requires:        java >= 1.6.0
@@ -258,8 +258,8 @@ Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
 
-%description java-proxy
-Zabbix Java proxy server files
+%description java-gateway
+Zabbix Java Gateway files
 
 %prep
 %setup0 -q -a 7
@@ -325,13 +325,11 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/alertscripts
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/externalscripts
+mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/%{name}/alertscripts
+mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/%{name}/externalscripts
 mkdir -p $RPM_BUILD_ROOT%{_datadir}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
-mkdir -p $RPM_BUILD_ROOT%{_sbindir}/zabbix_java/bin
-mkdir -p $RPM_BUILD_ROOT%{_sbindir}/zabbix_java/lib
 
 # php frontend
 find ./frontends/php -name '*.orig'|xargs rm -f
@@ -364,8 +362,8 @@ cat conf/zabbix_server.conf | sed \
     -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
     -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
     -e 's|^# DBSocket=.*|# DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
-    -e '/^# AlertScriptsPath=/a \\nAlertScriptsPath=%{_sysconfdir}/%{name}/alertscripts' \
-    -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sysconfdir}/%{name}/externalscripts' \
+    -e '/^# AlertScriptsPath=/a \\nAlertScriptsPath=%{_sharedstatedir}/%{name}/alertscripts' \
+    -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sharedstatedir}/%{name}/externalscripts' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
 
 cat conf/zabbix_proxy.conf | sed \
@@ -378,6 +376,7 @@ cat conf/zabbix_proxy.conf | sed \
     
 cp -a conf/zabbix_agentd $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
+
 # log rotation
 cat %{SOURCE6} | sed -e 's|COMPONENT|server|g' > \
      $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-server
@@ -389,7 +388,7 @@ cat %{SOURCE6} | sed -e 's|COMPONENT|proxy|g' > \
 install -m 0755 -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
 install -m 0755 -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-agent
 install -m 0755 -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-proxy
-install -m 0755 -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-proxy
+install -m 0755 -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-gateway
 
 # set up config dir
 
@@ -400,11 +399,20 @@ install -m 0755 -p src/zabbix_server/zabbix_server_* $RPM_BUILD_ROOT%{_sbindir}/
 rm $RPM_BUILD_ROOT%{_sbindir}/zabbix_proxy
 install -m 0755 -p src/zabbix_proxy/zabbix_proxy_* $RPM_BUILD_ROOT%{_sbindir}/
 
+# java gateway
+mv $RPM_BUILD_ROOT%{_sbindir}/zabbix_java/settings.sh \
+    $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_java_settings.sh
+ln -s ../../../..%{_sysconfdir}/%{name}/zabbix_java_settings.sh \
+    $RPM_BUILD_ROOT%{_sbindir}/zabbix_java/settings.sh
+
 # nuke static libs and empty oracle upgrade sql
 rm -rf $RPM_BUILD_ROOT%{_libdir}/libzbx*.a
 # nuke extraneous sql files
 rm -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/create
 
+# remove unnecessary dirs and files
+rm -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/alertscripts
+rm -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/externalscripts
 rm $RPM_BUILD_ROOT%{_sysconfdir}/zabbix_agent.conf
 rm $RPM_BUILD_ROOT%{_sysconfdir}/zabbix_agentd.conf
 rm $RPM_BUILD_ROOT%{_sysconfdir}/zabbix_proxy.conf
@@ -475,9 +483,8 @@ if [ $1 -eq 1 ]; then
   fi
 fi
 
-%post java-proxy
-/sbin/chkconfig --add zabbix-java-proxy || :
-ln -s %{_sbindir}/zabbix_java/settings.sh %{_sysconfdir}/%{name}/zabbix_java_settings.sh
+%post java-gateway
+/sbin/chkconfig --add zabbix-java-gateway || :
 
 %preun server
 if [ $1 -eq 0 ]
@@ -542,12 +549,11 @@ if [ $1 -eq 0 ]; then
   fi
 fi
 
-%preun java-proxy
+%preun java-gateway
 if [ $1 -eq 0 ]
 then
-  /sbin/service zabbix-java-proxy stop >/dev/null 2>&1 || :
-  /sbin/chkconfig --del zabbix-java-proxy
-  rm -f %{_sysconfdir}/%{name}/zabbix_java_settings.sh
+  /sbin/service zabbix-java-gateway stop >/dev/null 2>&1 || :
+  /sbin/chkconfig --del zabbix-java-gateway
 fi
 
 %postun server
@@ -565,9 +571,9 @@ if [ $1 -gt 1 ]; then
   /sbin/service zabbix-proxy condrestart >/dev/null 2>&1 || :
 fi
 
-%postun java-proxy
+%postun java-gateway
 if [ $1 -gt 1 ]; then
-  /sbin/service zabbix-java-proxy condrestart >/dev/null 2>&1 || :
+  /sbin/service zabbix-java-gateway condrestart >/dev/null 2>&1 || :
 fi
 
 %files
@@ -583,8 +589,8 @@ fi
 %{_mandir}/man8/zabbix_server.8.*
 %config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_server.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
-%dir %{_sysconfdir}/zabbix/alertscripts
-%dir %{_sysconfdir}/zabbix/externalscripts
+%dir %{_sharedstatedir}/zabbix/alertscripts
+%dir %{_sharedstatedir}/zabbix/externalscripts
 %{_sysconfdir}/init.d/zabbix-server
 
 %files server-mysql
@@ -661,14 +667,14 @@ fi
 %files web-sqlite3
 %defattr(-,root,root,-)
 
-%files java-proxy
+%files java-gateway
 %defattr(-,root,root,-)
 %dir %{_sbindir}/zabbix_java
 %dir %{_sbindir}/zabbix_java/bin
 %dir %{_sbindir}/zabbix_java/lib
 %config(noreplace) %{_sbindir}/zabbix_java/lib/logback-console.xml
 %config(noreplace) %{_sbindir}/zabbix_java/lib/logback.xml
-%config(noreplace) %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/settings.sh
+%config(noreplace) %attr(700,zabbix,zabbix) %{_sysconfdir}/%{name}/zabbix_java_settings.sh
 %config(noreplace) %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/startup.sh
 %config(noreplace) %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/shutdown.sh
 %attr(700,zabbix,zabbix) %{_sbindir}/zabbix_java/bin/zabbix-java-proxy-%{version}.jar
@@ -676,7 +682,8 @@ fi
 %{_sbindir}/zabbix_java/lib/logback-core-0.9.27.jar
 %{_sbindir}/zabbix_java/lib/org-json-2010-12-28.jar
 %{_sbindir}/zabbix_java/lib/slf4j-api-1.6.1.jar
-%{_sysconfdir}/init.d/zabbix-java-proxy
+%{_sbindir}/zabbix_java/settings.sh
+%{_sysconfdir}/init.d/zabbix-java-gateway
 
 %changelog
 * Fri Oct 28 2011 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.9.7-0
