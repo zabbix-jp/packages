@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.6.9
-Release:        3%{?dist}
+Release:        5%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -45,6 +45,8 @@ Patch29:        zabbix-1.6.9-graphview_over372day.patch
 Patch30:        zabbix-1.6.9-sending_each_alert_for_logmonitoring.patch
 Patch31:        zabbix-1.6.9-default_period.patch
 Patch32:        zabbix-1.6.9-fix_timer_process.patch
+Patch33:        zabbix-1.6.9-fix_CVE-2011-3263_DoS_attack.patch
+Patch34:        zabbix-1.6.9-fix_CVE-2011-3264_path_disclosure.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -282,6 +284,8 @@ Zabbix web frontend for SQLite
 %patch30 -p1 -b .sending_each_alert_for_logmonitoring.orig
 %patch31 -p1 -b .default_period.orig
 %patch32 -p1 -b .fix_timer_process.orig
+%patch33 -p1 -b .fix_CVE-2011-3263_DoS_attack.orig
+%patch34 -p1 -b .fix_CVE-2011-3264_path_disclosure.orig
 
 rm frontends/php/include/locales/ja_jp.inc.php
 cp %{SOURCE6} frontends/php/include/locales/ja_jp.inc.php
@@ -601,6 +605,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Sun Nov 13 2011 Takanori Suzuki <mail.tks@gmail.com> - 1.6.9-5
+- Fix zabbix_agentd DoS attack issue (ZBX-3794) (CVE-2011-3263) (Patch33)
+- Fix path disclosure vulnerability (ZBX-3840) (CVE-2011-3264) (Patch34)
+
 * Wed Dec 29 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-4
 - Add requires fonts-japanese and ttfonts-ja to zabbix-web package
 
