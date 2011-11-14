@@ -24,6 +24,7 @@ Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define rhel %(grep -i "release ." -o /etc/redhat-release |cut -c 9)
 
+%if %{rhel} >= 5
 BuildRequires:   mysql-devel
 BuildRequires:   postgresql-devel
 BuildRequires:   net-snmp-devel
@@ -34,8 +35,6 @@ BuildRequires:   sqlite-devel
 BuildRequires:   unixODBC-devel
 BuildRequires:   libssh2-devel >= 1.0.0
 BuildRequires:   java-devel >= 1.6.0
-
-%if %{rhel} >= 5
 BuildRequires:   curl-devel >= 7.13.1
 BuildRequires:   OpenIPMI-devel >= 2.0.14
 %endif
@@ -63,6 +62,18 @@ role in monitoring IT infrastructure. This is equally true
 for small organisations with a few servers and for large
 companies with a multitude of servers.
 
+%package agent
+Summary:         Zabbix Agent
+Group:           Applications/Internet
+Requires:        zabbix = %{version}-%{release}
+Requires(post):  /sbin/chkconfig
+Requires(preun): /sbin/chkconfig
+Requires(preun): /sbin/service
+
+%description agent
+The Zabbix client agent, to be installed on monitored systems.
+
+%if %{rhel} >= 5
 %package server
 Summary:         Zabbix server common files
 Group:           Applications/Internet
@@ -73,10 +84,8 @@ Requires:        iksemel
 Requires:        net-snmp
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
-%if %{rhel} >= 5
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
-%endif
 Conflicts:       zabbix-proxy
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
@@ -125,17 +134,6 @@ Conflicts:       zabbix-server-pgsql
 %description server-sqlite3
 Zabbix server compiled to use SQLite
 
-%package agent
-Summary:         Zabbix Agent
-Group:           Applications/Internet
-Requires:        zabbix = %{version}-%{release}
-Requires(post):  /sbin/chkconfig
-Requires(preun): /sbin/chkconfig
-Requires(preun): /sbin/service
-
-%description agent
-The Zabbix client agent, to be installed on monitored systems.
-
 %package proxy
 Summary:         Zabbix Proxy
 Group:           Applications/Internet
@@ -148,10 +146,8 @@ Requires:        fping
 Requires:        net-snmp
 Requires:        unixODBC
 Requires:        libssh2 >= 1.0.0
-%if %{rhel} >= 5
 Requires:        curl >= 7.13.1
 Requires:        OpenIPMI-libs >= 2.0.14
-%endif
 Conflicts:       zabbix-web
 Conflicts:       zabbix-server
 
@@ -204,9 +200,7 @@ Requires:        php-mbstring
 Requires:        php-xml
 Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-web-database = %{version}-%{release}
-%if %{rhel} >= 5
 Requires:        php-bcmath
-%endif
 Conflicts:       zabbix-proxy
 
 %description web
@@ -260,6 +254,7 @@ Requires(preun): /sbin/service
 
 %description java-gateway
 Zabbix Java Gateway files
+%endif
 
 %prep
 %setup0 -q -a 7
@@ -280,26 +275,29 @@ chmod -R a+rX .
 %build
 
 common_flags="
-    --enable-server \
     --enable-agent \
+  %if %{rhel} >= 5
+    --enable-server \
     --enable-proxy \
     --enable-ipv6 \
     --with-net-snmp \
     --with-ldap \
     --with-unixodbc \
     --with-ssh2 \
-  %if %{rhel} <= 4
     --without-libcurl \
     --without-openipmi \
-  %endif
-  %if %{rhel} >= 5
     --enable-java \
     --with-openipmi \
     --with-libcurl \
-  %endif
     --with-jabber
+  %endif
 "
 
+%if %{rhel} <= 4
+%configure $common_flags
+%endif
+
+%if %{rhel} >= 5
 %configure $common_flags --with-mysql
 make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_mysql
@@ -317,6 +315,7 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_sqlite3
 
 touch src/zabbix_server/zabbix_server
 touch src/zabbix_proxy/zabbix_proxy
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -325,12 +324,15 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/init.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
+mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
+%if %{rhel} >= 5
 mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/%{name}/alertscripts
 mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/%{name}/externalscripts
 mkdir -p $RPM_BUILD_ROOT%{_datadir}
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
-mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
+%endif
 
+%if %{rhel} >= 5
 # php frontend
 find ./frontends/php -name '*.orig'|xargs rm -f
 find ./create -name '*.orig'|xargs rm -f
@@ -347,6 +349,8 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/.htaccess
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/classes/.htaccess
 # drop config files in place
 install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/zabbix.conf
+%endif
+
 install -m 0644 -p conf/zabbix_agent.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 
 # fix config file options
@@ -357,6 +361,10 @@ cat conf/zabbix_agentd.conf | sed \
     -e '/^# Include=$/a \\nInclude=%{_sysconfdir}/%{name}/zabbix_agentd.d/' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.conf
 
+
+cp -a conf/zabbix_agentd $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
+
+%if %{rhel} >= 5
 cat conf/zabbix_server.conf | sed \
     -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_server.pid' \
     -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
@@ -373,28 +381,38 @@ cat conf/zabbix_proxy.conf | sed \
     -e 's|^# DBSocket=.*|# DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
     -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sysconfdir}/%{name}/externalscripts' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
-    
-cp -a conf/zabbix_agentd $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_agentd.d
+
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
+%endif
 
 # log rotation
-cat %{SOURCE6} | sed -e 's|COMPONENT|server|g' > \
-     $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-server
 cat %{SOURCE6} | sed -e 's|COMPONENT|agentd|g' > \
      $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-agent
+
+%if %{rhel} >= 5
+cat %{SOURCE6} | sed -e 's|COMPONENT|server|g' > \
+     $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-server
 cat %{SOURCE6} | sed -e 's|COMPONENT|proxy|g' > \
      $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/zabbix-proxy
+%endif
+
 # init scripts
-install -m 0755 -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
 install -m 0755 -p %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-agent
+
+%if %{rhel} >= 5
+install -m 0755 -p %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-server
 install -m 0755 -p %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-proxy
 install -m 0755 -p %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/zabbix-java-gateway
+%endif
 
 # set up config dir
 
 # install
 make DESTDIR=$RPM_BUILD_ROOT install
+
+%if %{rhel} >= 5
 rm $RPM_BUILD_ROOT%{_sbindir}/zabbix_server
+
 install -m 0755 -p src/zabbix_server/zabbix_server_* $RPM_BUILD_ROOT%{_sbindir}/
 rm $RPM_BUILD_ROOT%{_sbindir}/zabbix_proxy
 install -m 0755 -p src/zabbix_proxy/zabbix_proxy_* $RPM_BUILD_ROOT%{_sbindir}/
@@ -409,14 +427,18 @@ ln -s ../../../..%{_sysconfdir}/%{name}/zabbix_java_settings.sh \
 rm -rf $RPM_BUILD_ROOT%{_libdir}/libzbx*.a
 # nuke extraneous sql files
 rm -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/create
+%endif
 
 # remove unnecessary dirs and files
 rm -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/alertscripts
 rm -rf $RPM_BUILD_ROOT%{_datadir}/%{name}/externalscripts
 rm $RPM_BUILD_ROOT%{_sysconfdir}/zabbix_agent.conf
 rm $RPM_BUILD_ROOT%{_sysconfdir}/zabbix_agentd.conf
+
+%if %{rhel} >= 5
 rm $RPM_BUILD_ROOT%{_sysconfdir}/zabbix_proxy.conf
 rm $RPM_BUILD_ROOT%{_sysconfdir}/zabbix_server.conf
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -426,6 +448,10 @@ rm -rf $RPM_BUILD_ROOT
 /usr/sbin/useradd -c "Zabbix Monitoring System" \
         -s /sbin/nologin -r -d %{_localstatedir}/lib/%{name} zabbix 2> /dev/null || :
 
+%post agent
+/sbin/chkconfig --add zabbix-agent || :
+
+%if %{rhel} >= 5
 %post server
 /sbin/chkconfig --add zabbix-server || :
 
@@ -452,9 +478,6 @@ if [ $1 -eq 1 ]; then
     ln -s zabbix_server_sqlite3 zabbix_server || :
   fi
 fi
-
-%post agent
-/sbin/chkconfig --add zabbix-agent || :
 
 %post proxy
 /sbin/chkconfig --add zabbix-proxy || :
@@ -485,7 +508,16 @@ fi
 
 %post java-gateway
 /sbin/chkconfig --add zabbix-java-gateway || :
+%endif
 
+%preun agent
+if [ $1 -eq 0 ]
+then
+  /sbin/service zabbix-agent stop >/dev/null 2>&1 || :
+  /sbin/chkconfig --del zabbix-agent
+fi
+
+%if %{rhel} >= 5
 %preun server
 if [ $1 -eq 0 ]
 then
@@ -512,13 +544,6 @@ if [ $1 -eq 0 ]; then
   if [ -L %{_sbindir}/zabbix_server ]; then
     rm -f %{_sbindir}/zabbix_server || :
   fi
-fi
-
-%preun agent
-if [ $1 -eq 0 ]
-then
-  /sbin/service zabbix-agent stop >/dev/null 2>&1 || :
-  /sbin/chkconfig --del zabbix-agent
 fi
 
 %preun proxy
@@ -555,15 +580,17 @@ then
   /sbin/service zabbix-java-gateway stop >/dev/null 2>&1 || :
   /sbin/chkconfig --del zabbix-java-gateway
 fi
-
-%postun server
-if [ $1 -gt 1 ]; then
-  /sbin/service zabbix-server condrestart >/dev/null 2>&1 || :
-fi
+%endif
 
 %postun agent
 if [ $1 -gt 1 ]; then
   /sbin/service zabbix-agent condrestart >/dev/null 2>&1 || :
+fi
+
+%if %{rhel} >= 5
+%postun server
+if [ $1 -gt 1 ]; then
+  /sbin/service zabbix-server condrestart >/dev/null 2>&1 || :
 fi
 
 %postun proxy
@@ -575,6 +602,7 @@ fi
 if [ $1 -gt 1 ]; then
   /sbin/service zabbix-java-gateway condrestart >/dev/null 2>&1 || :
 fi
+%endif
 
 %files
 %defattr(-,root,root,-)
@@ -582,6 +610,25 @@ fi
 %attr(0755,zabbix,zabbix) %dir %{_localstatedir}/log/zabbix
 %attr(0755,zabbix,zabbix) %dir %{_localstatedir}/run/zabbix
 
+%files agent
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING NEWS README
+%{_mandir}/man8/zabbix_agentd.8.*
+%{_mandir}/man1/zabbix_get.1.*
+%{_mandir}/man1/zabbix_sender.1.*
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agent.conf
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
+%config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
+%dir %{_sysconfdir}/zabbix/zabbix_agentd.d
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.d/userparameter_examples.conf
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.d/userparameter_mysql.conf
+%{_sysconfdir}/init.d/zabbix-agent
+%{_sbindir}/zabbix_agent
+%{_sbindir}/zabbix_agentd
+%{_bindir}/zabbix_sender
+%{_bindir}/zabbix_get
+
+%if %{rhel} >= 5
 %files server
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
@@ -607,24 +654,6 @@ fi
 %doc AUTHORS ChangeLog COPYING NEWS README
 %defattr(-,root,root,-)
 %{_sbindir}/zabbix_server_sqlite3
-
-%files agent
-%defattr(-,root,root,-)
-%doc AUTHORS ChangeLog COPYING NEWS README
-%{_mandir}/man8/zabbix_agentd.8.*
-%{_mandir}/man1/zabbix_get.1.*
-%{_mandir}/man1/zabbix_sender.1.*
-%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agent.conf
-%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
-%config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
-%dir %{_sysconfdir}/zabbix/zabbix_agentd.d
-%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.d/userparameter_examples.conf
-%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.d/userparameter_mysql.conf
-%{_sysconfdir}/init.d/zabbix-agent
-%{_sbindir}/zabbix_agent
-%{_sbindir}/zabbix_agentd
-%{_bindir}/zabbix_sender
-%{_bindir}/zabbix_get
 
 %files proxy
 %defattr(-,root,root,-)
@@ -684,10 +713,12 @@ fi
 %{_sbindir}/zabbix_java/lib/slf4j-api-1.6.1.jar
 %{_sbindir}/zabbix_java/settings.sh
 %{_sysconfdir}/init.d/zabbix-java-gateway
+%endif
 
 %changelog
-* Fri Oct 28 2011 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.9.7-0
+* Mon Nov 14 2011 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.9.7-0
 - Update to 1.9.7
+- Create only zabbix-agent package for RHEL/CentOS4
 
 * Tue Sep 27 2011 Takanori Suzuki <mail.tks@gmail.com> - 1.9.6-0
 - Update to 1.9.6
