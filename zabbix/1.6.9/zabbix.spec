@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.6.9
-Release:        5%{?dist}
+Release:        4%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -605,12 +605,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Sun Nov 13 2011 Takanori Suzuki <mail.tks@gmail.com> - 1.6.9-5
+* Mon Nov 14 2011 Kodai Terashima <kodai74@gmail.com> - 1.6.9-4
+- Add requires fonts-japanese and ttfonts-ja to zabbix-web package
 - Fix zabbix_agentd DoS attack issue (ZBX-3794) (CVE-2011-3263) (Patch33)
 - Fix path disclosure vulnerability (ZBX-3840) (CVE-2011-3264) (Patch34)
-
-* Wed Dec 29 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-4
-- Add requires fonts-japanese and ttfonts-ja to zabbix-web package
 
 * Tue Aug 31 2010 Kodai Terashima <kodai74@gmail.com> - 1.6.9-3
 - Fix not sending alert when receive error log or trap same time (Patch30)
