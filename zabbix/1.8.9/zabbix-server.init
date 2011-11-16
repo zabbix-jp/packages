@@ -71,7 +71,7 @@ case "$1" in
         RETVAL=$?
         ;;
     reload)
-        $ZABBIX -R config_cache_reload
+        $ZABBIX -c $CONF -R config_cache_reload
         RETVAL=$?
         ;;
     status)

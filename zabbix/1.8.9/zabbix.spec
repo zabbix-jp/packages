@@ -17,7 +17,7 @@ Source7:        zabbix_server.conf
 Source8:        zabbix_proxy.conf
 Source9:        ipagui.ttf
 Source10:        enduser_license.txt
-Source11:        zabbix-1.8.8-ja_jp.inc.php
+Source11:        zabbix-1.8.9-ja_jp.inc.php
 #Source12:        eventlog.c
 #Source13:       eventlog.h
 Patch1:         zabbix-1.8-datasql.patch
@@ -301,7 +301,7 @@ Zabbix web frontend for SQLite
 #%patch15 -p1 -b .pie_chart.orig
 %patch16 -p1 -b .setup_from_empty_conf.orig
 %patch17 -p1 -b .default_period.orig
-%patch18 -p1 -b .initial_datasql_status_and_error.orig
+#%patch18 -p1 -b .initial_datasql_status_and_error.orig
 #%patch19 -p1 -b .zbx4099.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
