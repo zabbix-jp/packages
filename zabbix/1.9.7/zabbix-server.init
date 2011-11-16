@@ -58,7 +58,7 @@ case "$1" in
         echo
         [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/zabbix
         ;;
-    restart|reload)
+    restart)
         $0 stop
         $0 start
         RETVAL=$?
@@ -68,6 +68,10 @@ case "$1" in
             $0 stop
             $0 start
         fi
+        RETVAL=$?
+        ;;
+    reload)
+        $ZABBIX -c $CONF -R config_cache_reload
         RETVAL=$?
         ;;
     status)

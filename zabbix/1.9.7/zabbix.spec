@@ -718,7 +718,9 @@ fi
 %changelog
 * Mon Nov 14 2011 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.9.7-0
 - Update to 1.9.7
+- Change package name from zabbix-java-proxy to zabbix-java-gateway
 - Create only zabbix-agent package for RHEL/CentOS4
+- Update init scripts for reload of a configuration cache data
 
 * Tue Sep 27 2011 Takanori Suzuki <mail.tks@gmail.com> - 1.9.6-0
 - Update to 1.9.6
