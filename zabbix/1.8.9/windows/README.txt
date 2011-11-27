@@ -11,6 +11,10 @@ This package includes from 1.8.9-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
+* Mon Nov 28 2011 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.9-1
+- Update to 1.8.9
+- Update Japanese translation (Source11)
+
 * Sat Oct 8 2011 Kodai Terashima <kodai74@gmail.com> - 1.8.8-1
 - Update to 1.8.8
 - Update Japanese translation (Source11)
