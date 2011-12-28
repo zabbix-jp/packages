@@ -1,0 +1,148 @@
+diff -Nru zabbix-1.8.4.orig/create/schema/ibm_db2.sql zabbix-1.8.4/create/schema/ibm_db2.sql
+--- zabbix-1.8.4.orig/create/schema/ibm_db2.sql	2011-01-04 22:58:34.000000000 +0900
++++ zabbix-1.8.4/create/schema/ibm_db2.sql	2011-01-07 14:18:12.000000000 +0900
+@@ -761,7 +761,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,
+ 	active		integer		DEFAULT '0'	NOT NULL,
+ 	severity		integer		DEFAULT '63'	NOT NULL,
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,
+ 	PRIMARY KEY (mediaid)
+ );
+ CREATE INDEX media_1 on media (userid);
+diff -Nru zabbix-1.8.4.orig/create/schema/mysql.sql zabbix-1.8.4/create/schema/mysql.sql
+--- zabbix-1.8.4.orig/create/schema/mysql.sql	2011-01-04 22:58:34.000000000 +0900
++++ zabbix-1.8.4/create/schema/mysql.sql	2011-01-07 14:18:56.000000000 +0900
+@@ -761,7 +761,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,
+ 	active		integer		DEFAULT '0'	NOT NULL,
+ 	severity		integer		DEFAULT '63'	NOT NULL,
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,
+ 	PRIMARY KEY (mediaid)
+ ) ENGINE=InnoDB;
+ CREATE INDEX media_1 on media (userid);
+diff -Nru zabbix-1.8.4.orig/create/schema/oracle.sql zabbix-1.8.4/create/schema/oracle.sql
+--- zabbix-1.8.4.orig/create/schema/oracle.sql	2011-01-04 22:58:35.000000000 +0900
++++ zabbix-1.8.4/create/schema/oracle.sql	2011-01-07 14:19:09.000000000 +0900
+@@ -1093,7 +1093,7 @@
+ 	sendto		nvarchar2(100)		DEFAULT '',
+ 	active		number(10)		DEFAULT '0'	NOT NULL,
+ 	severity		number(10)		DEFAULT '63'	NOT NULL,
+-	period		nvarchar2(100)		DEFAULT '1-7,00:00-23:59',
++	period		nvarchar2(100)		DEFAULT '1-7,00:00-24:0',
+ 	PRIMARY KEY (mediaid)
+ )
+ /
+diff -Nru zabbix-1.8.4.orig/create/schema/postgresql.sql zabbix-1.8.4/create/schema/postgresql.sql
+--- zabbix-1.8.4.orig/create/schema/postgresql.sql	2011-01-04 22:58:35.000000000 +0900
++++ zabbix-1.8.4/create/schema/postgresql.sql	2011-01-07 14:18:41.000000000 +0900
+@@ -761,7 +761,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,
+ 	active		integer		DEFAULT '0'	NOT NULL,
+ 	severity		integer		DEFAULT '63'	NOT NULL,
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,
+ 	PRIMARY KEY (mediaid)
+ ) with OIDS;
+ CREATE INDEX media_1 on media (userid);
+diff -Nru zabbix-1.8.4.orig/create/schema/sqlite.sql zabbix-1.8.4/create/schema/sqlite.sql
+--- zabbix-1.8.4.orig/create/schema/sqlite.sql	2011-01-04 22:58:35.000000000 +0900
++++ zabbix-1.8.4/create/schema/sqlite.sql	2011-01-07 14:18:25.000000000 +0900
+@@ -757,7 +757,7 @@
+ 	sendto		varchar(100)		DEFAULT ''	NOT NULL,
+ 	active		integer		DEFAULT '0'	NOT NULL,
+ 	severity		integer		DEFAULT '63'	NOT NULL,
+-	period		varchar(100)		DEFAULT '1-7,00:00-23:59'	NOT NULL,
++	period		varchar(100)		DEFAULT '1-7,00:00-24:00'	NOT NULL,
+ 	PRIMARY KEY (mediaid)
+ );
+ CREATE INDEX media_1 on media (userid);
+diff -Nru zabbix-1.8.4.orig/frontends/php/actionconf.php zabbix-1.8.4/frontends/php/actionconf.php
+--- zabbix-1.8.4.orig/frontends/php/actionconf.php	2011-01-04 22:57:52.000000000 +0900
++++ zabbix-1.8.4/frontends/php/actionconf.php	2011-01-07 14:20:12.000000000 +0900
+@@ -632,7 +632,7 @@
+ 					$rowCondition[] = $cmbCondVal;
+ 					break;
+ 				case CONDITION_TYPE_TIME_PERIOD:
+-					$rowCondition[] = new CTextBox('new_condition[value]', "1-7,00:00-23:59", 40);
++					$rowCondition[] = new CTextBox('new_condition[value]', "1-7,00:00-24:00", 40);
+ 					break;
+ 				case CONDITION_TYPE_TRIGGER_SEVERITY:
+ 					$cmbCondVal = new CComboBox('new_condition[value]');
+diff -Nru zabbix-1.8.4.orig/frontends/php/include/forms.inc.php zabbix-1.8.4/frontends/php/include/forms.inc.php
+--- zabbix-1.8.4.orig/frontends/php/include/forms.inc.php	2011-01-04 22:57:51.000000000 +0900
++++ zabbix-1.8.4/frontends/php/include/forms.inc.php	2011-01-07 14:19:38.000000000 +0900
+@@ -2031,7 +2031,7 @@
+ 						S_DELAY, SPACE,
+ 						new CNumericBox('new_delay_flex[delay]','50',5),
+ 						S_PERIOD, SPACE,
+-						new CTextBox('new_delay_flex[period]','1-7,00:00-23:59',27), BR(),
++						new CTextBox('new_delay_flex[period]','1-7,00:00-24:00',27), BR(),
+ 						new CButton('add_delay_flex',S_ADD)
+ 					),'form_row_r')), 'new');
+ 		$row->setAttribute('id', 'row_new_delay_flex');
+@@ -2326,7 +2326,7 @@
+ 										S_DELAY, SPACE,
+ 										new CNumericBox("new_delay_flex[delay]","50",5),
+ 										S_PERIOD, SPACE,
+-										new CTextBox("new_delay_flex[period]","1-7,00:00-23:59",27), BR(),
++										new CTextBox("new_delay_flex[period]","1-7,00:00-24:00",27), BR(),
+ 										new CButton("add_delay_flex",S_ADD)
+ 									));
+ 		$new_delay_flex_el->setAttribute('id', 'new_delay_flex_el');
+diff -Nru zabbix-1.8.4.orig/frontends/php/include/schema.inc.php zabbix-1.8.4/frontends/php/include/schema.inc.php
+--- zabbix-1.8.4.orig/frontends/php/include/schema.inc.php	2011-01-04 22:57:51.000000000 +0900
++++ zabbix-1.8.4/frontends/php/include/schema.inc.php	2011-01-07 14:19:56.000000000 +0900
+@@ -3401,7 +3401,7 @@
+ 				'null' => false,
+ 				'type' => DB::FIELD_TYPE_CHAR,
+ 				'length' => 100,
+-				'default' => '1-7,00:00-23:59',
++				'default' => '1-7,00:00-24:00',
+ 			),
+ 		),
+ 	),
+@@ -4703,4 +4703,4 @@
+ 		),
+ 	),
+ );
+-?>
+\ No newline at end of file
++?>
+diff -Nru zabbix-1.8.4.orig/frontends/php/popup_media.php zabbix-1.8.4/frontends/php/popup_media.php
+--- zabbix-1.8.4.orig/frontends/php/popup_media.php	2011-01-04 22:57:52.000000000 +0900
++++ zabbix-1.8.4/frontends/php/popup_media.php	2011-01-07 14:20:32.000000000 +0900
+@@ -100,7 +100,7 @@
+ 	$sendto		=  get_request('sendto','');
+ 	$mediatypeid	= get_request('mediatypeid',0);
+ 	$active		= get_request('active',0);
+-	$period		= get_request('period','1-7,00:00-23:59');
++	$period		= get_request('period','1-7,00:00-24:00');
+ 
+ 
+ 	$frmMedia = new CFormTable(S_NEW_MEDIA);
+diff -Nru zabbix-1.8.4.orig/src/libs/zbxdbhigh/dbschema.c zabbix-1.8.4/src/libs/zbxdbhigh/dbschema.c
+--- zabbix-1.8.4.orig/src/libs/zbxdbhigh/dbschema.c	2011-01-04 22:58:35.000000000 +0900
++++ zabbix-1.8.4/src/libs/zbxdbhigh/dbschema.c	2011-01-07 14:20:57.000000000 +0900
+@@ -1938,7 +1938,7 @@
+  sendto varchar(100) DEFAULT '' NOT NULL,\
+  active integer DEFAULT '0' NOT NULL,\
+  severity integer DEFAULT '63' NOT NULL,\
+- period varchar(100) DEFAULT '1-7,00:00-23:59' NOT NULL,\
++ period varchar(100) DEFAULT '1-7,00:00-24:00' NOT NULL,\
+  PRIMARY KEY (mediaid)\
+ );\
+ CREATE INDEX media_1 on media (userid);\
+diff -Nru zabbix-1.8.4.orig/upgrades/dbpatches/1.8/oracle/patch.sql zabbix-1.8.4/upgrades/dbpatches/1.8/oracle/patch.sql
+--- zabbix-1.8.4.orig/upgrades/dbpatches/1.8/oracle/patch.sql	2011-01-04 22:58:37.000000000 +0900
++++ zabbix-1.8.4/upgrades/dbpatches/1.8/oracle/patch.sql	2011-01-07 14:21:43.000000000 +0900
+@@ -571,7 +571,7 @@
+ alter table mappings modify newvalue                nvarchar2(64)           DEFAULT '';
+ 
+ alter table media modify sendto          nvarchar2(100)          DEFAULT '';
+-alter table media modify period          nvarchar2(100)          DEFAULT '1-7,00:00-23:59';
++alter table media modify period          nvarchar2(100)          DEFAULT '1-7,00:00-24:00';
+ 
+ alter table media_type modify description             nvarchar2(100)          DEFAULT '';
+ alter table media_type modify smtp_server             nvarchar2(255)          DEFAULT '';
