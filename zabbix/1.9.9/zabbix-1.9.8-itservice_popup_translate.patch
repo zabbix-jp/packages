@@ -1,0 +1,24 @@
+diff -urN zabbix-1.9.8.orig/frontends/php/js/functions.js zabbix-1.9.8/frontends/php/js/functions.js
+--- zabbix-1.9.8.orig/frontends/php/js/functions.js	2011-11-25 07:00:13.000000000 +0900
++++ zabbix-1.9.8/frontends/php/js/functions.js	2011-11-25 15:02:57.850643218 +0900
+@@ -534,16 +534,16 @@
+ 	if (id != 0) {
+ 		show_popup_menu(evnt, [
+ 				[name, null, null, {'outer' : ['pum_oheader'], 'inner' : ['pum_iheader']}],
+-				['Add Service', "javascript: window.location.href = 'services.php?form=1&parentid=" + id + "&parentname=" + name + "';", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}],
+-				['Edit Service', "javascript: window.location.href = 'services.php?form=1&serviceid=" + id + "';", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}],
+-				['Delete Service', "javascript: if (Confirm('Delete selected services?')) { window.location.href = 'services.php?form=1&delete=1&serviceid=" + id + "'; }", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}]
++				['サービスの追加', "javascript: window.location.href = 'services.php?form=1&parentid=" + id + "&parentname=" + name + "';", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}],
++				['サービスの変更', "javascript: window.location.href = 'services.php?form=1&serviceid=" + id + "';", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}],
++				['サービスの削除', "javascript: if (Confirm('Delete selected services?')) { window.location.href = 'services.php?form=1&delete=1&serviceid=" + id + "'; }", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}]
+ 			],
+ 			120
+ 		);
+ 	} else {
+ 		show_popup_menu(evnt, [
+ 				[name, null, null, {'outer' : ['pum_oheader'], 'inner' : ['pum_iheader']}],
+-				['Add Service',"javascript: window.location.href = 'services.php?form=1&parentid=" + id + "&parentname=" + name + "';", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}]
++				['サービスの追加',"javascript: window.location.href = 'services.php?form=1&parentid=" + id + "&parentname=" + name + "';", null, {'outer' : ['pum_o_item'], 'inner' : ['pum_i_item']}]
+ 			],
+ 			120
+ 		);
