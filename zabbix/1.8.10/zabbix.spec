@@ -653,6 +653,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Tue Jan 3 2012 Kodai Terashima <kodai74@gmail.com> - 1.8.10-1
+- Update to 1.8.10
+- Update Japanese translation (Source11)
+
 * Mon Nov 28 2011 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.9-1
 - Update to 1.8.9
 - Update Japanese translation (Source11)
