@@ -1,0 +1,29 @@
+diff -urN zabbix-1.9.8.orig/src/zabbix_java/lib/logback.xml zabbix-1.9.8/src/zabbix_java/lib/logback.xml
+--- zabbix-1.9.8.orig/src/zabbix_java/lib/logback.xml	2011-11-14 07:00:10.000000000 +0900
++++ zabbix-1.9.8/src/zabbix_java/lib/logback.xml	2011-11-14 16:02:07.547325151 +0900
+@@ -2,10 +2,10 @@
+ 
+ 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+ 
+-		<file>/tmp/zabbix_java.log</file>
++		<file>/var/log/zabbix/zabbix_java.log</file>
+ 
+ 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+-			<fileNamePattern>/tmp/zabbix_java.log.%i</fileNamePattern>
++			<fileNamePattern>/var/log/zabbix/zabbix_java.log.%i</fileNamePattern>
+ 			<minIndex>1</minIndex>
+ 			<maxIndex>3</maxIndex>
+ 		</rollingPolicy>
+diff -urN zabbix-1.9.8.orig/src/zabbix_java/settings.sh zabbix-1.9.8/src/zabbix_java/settings.sh
+--- zabbix-1.9.8.orig/src/zabbix_java/settings.sh	2011-11-14 07:00:10.000000000 +0900
++++ zabbix-1.9.8/src/zabbix_java/settings.sh	2011-11-14 16:01:03.666301154 +0900
+@@ -24,7 +24,8 @@
+ # Default:
+ # PID_FILE=
+ 
+-PID_FILE="/tmp/zabbix_java.pid"
++#PID_FILE="/tmp/zabbix_java.pid"
++PID_FILE="/var/run/zabbix/zabbix_java.pid"
+ 
+ ### Option: zabbix.startPollers
+ #	Number of worker threads to start.
