@@ -17,7 +17,7 @@ Source7:        zabbix_server.conf
 Source8:        zabbix_proxy.conf
 Source9:        ipagui.ttf
 Source10:        enduser_license.txt
-#Source11:        zabbix-1.8.10-ja_jp.inc.php
+Source11:        zabbix-1.8.11-ja_jp.inc.php
 #Source12:        eventlog.c
 #Source13:       eventlog.h
 Patch1:         zabbix-1.8-datasql.patch
@@ -306,8 +306,8 @@ Zabbix web frontend for SQLite
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE9} %{SOURCE10} frontends/php/fonts/
-#rm frontends/php/include/locales/ja_jp.inc.php
-#cp %{SOURCE11} frontends/php/include/locales/ja_jp.inc.php
+rm frontends/php/include/locales/ja_jp.inc.php
+cp %{SOURCE11} frontends/php/include/locales/ja_jp.inc.php
 #cp %{SOURCE12} %{SOURCE13} src/zabbix_agent/
 
 chmod -R a+rX .
@@ -653,9 +653,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Fri Mar 16 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.11-1
+* Thu Mar 22 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.11-1
 - Update to 1.8.11
 - Update zabbix_server.conf, zabbix_proxy.conf
+- Update Japanese translation (Source11)
 
 * Tue Jan 3 2012 Kodai Terashima <kodai74@gmail.com> - 1.8.10-1
 - Update to 1.8.10
