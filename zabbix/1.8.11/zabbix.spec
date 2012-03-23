@@ -653,10 +653,11 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Thu Mar 22 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.11-1
+* Fri Mar 23 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.11-1
 - Update to 1.8.11
 - Update zabbix_server.conf, zabbix_proxy.conf
 - Update Japanese translation (Source11)
+- Change default value of mbstring.func_overload for PHP (Source1)
 
 * Tue Jan 3 2012 Kodai Terashima <kodai74@gmail.com> - 1.8.10-1
 - Update to 1.8.10
