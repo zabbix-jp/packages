@@ -1,5 +1,5 @@
 Name:           zabbix
-Version:        2.0.0
+Version:        2.0.0rc2
 Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
@@ -13,9 +13,8 @@ Source3:        zabbix-agent.init
 Source4:        zabbix-proxy.init
 Source5:        zabbix-java-gateway.init
 Source6:        zabbix-logrotate.in
-Source7:        VLGothic-20110722.tar.bz2
-Source8:        zabbix-2.0.0-frontend-ja_jp.po
-Patch1:         zabbix-1.9.7-graph_font.patch
+Source7:        zabbix-2.0.0-frontend-ja_jp.po
+Patch1:         zabbix-2.0.0-graph_font.patch
 Patch2:         zabbix-1.9.7-setup_from_empty_conf.patch
 Patch3:         zabbix-1.9.8-java_settings.patch
 Patch4:         zabbix-1.9.9-datasql.patch
@@ -201,9 +200,14 @@ Requires:        php >= 5.0
 Requires:        php-gd
 Requires:        php-mbstring
 Requires:        php-xml
-Requires:        zabbix = %{version}-%{release}
 Requires:        zabbix-web-database = %{version}-%{release}
 Requires:        php-bcmath
+%if 0%{?fedora} > 9 || 0%{?rhel} >= 6
+BuildArch:	     noarch
+Requires:	     vlgothic-p-fonts
+%else
+Requires:        ipa-pgothic-fonts
+%endif
 Conflicts:       zabbix-proxy
 
 %description web
@@ -260,15 +264,13 @@ Zabbix Java Gateway files
 %endif
 
 %prep
-%setup0 -q -a 7
+%setup0 -q
 %patch1 -p1 -b .graph_font.orig
 %patch2 -p1 -b .setup_from_empty_conf.orig
 %patch3 -p1 -b .java_settings.orig
 %patch4 -p1 -b .datasql.orig
 %patch5 -p1 -b .itservice_popup_translate.orig
 %patch6 -p1 -b .powered_by_zabbixjp.orig
-
-cp VLGothic/* frontends/php/fonts/
 
 chmod -R a+rX .
 
@@ -353,7 +355,7 @@ rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/.htaccess
 rm -f $RPM_BUILD_ROOT%{_datadir}/%{name}/include/classes/.htaccess
 # drop config files in place
 install -m 0644 -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/zabbix.conf
-install -m 0644 -p %{SOURCE8} $RPM_BUILD_ROOT%{_datadir}/%{name}/locale/ja/LC_MESSAGES/frontend.po
+install -m 0644 -p %{SOURCE7} $RPM_BUILD_ROOT%{_datadir}/%{name}/locale/ja/LC_MESSAGES/frontend.po
 %endif
 
 install -m 0644 -p conf/zabbix_agent.conf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
@@ -515,6 +517,14 @@ if [ $1 -eq 1 ]; then
   fi
 fi
 
+%post web
+%if 0%{?fedora} || 0%{?rhel} >= 6
+  /usr/sbin/update-alternatives --install %{_datadir}/%{name}/fonts/graphfont.ttf zabbix-web-font %{_datadir}/fonts/vlgothic/VL-PGothic-Regular.ttf 20
+%else
+  /usr/sbin/update-alternatives --install %{_datadir}/%{name}/fonts/graphfont.ttf zabbix-web-font %{_datadir}/fonts/ipa-pgothic/ipagp.ttf 20
+%endif
+:
+
 %post java-gateway
 /sbin/chkconfig --add zabbix-java-gateway || :
 %endif
@@ -581,6 +591,16 @@ if [ $1 -eq 0 ]; then
   if [ -L %{_sbindir}/zabbix_proxy ]; then
     rm -f %{_sbindir}/zabbix_proxy || :
   fi
+fi
+
+%preun web
+if [ "$1" = 0 ]
+then
+  %if 0%{?fedora} || 0%{?rhel} >= 6
+    /usr/sbin/update-alternatives --remove zabbix-web-font %{_datadir}/fonts/vlgothic/VL-PGothic-Regular.ttf 
+  %else
+    /usr/sbin/update-alternatives --remove zabbix-web-font %{_datadir}/fonts/ipa-pgothic/ipagp.ttf
+  %endif
 fi
 
 %preun java-gateway
@@ -725,10 +745,12 @@ fi
 %endif
 
 %changelog
-* Fri Mar 16 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 2.0.0-1
+* Fri Mar 16 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 2.0.0rc2-1
 - Update to 2.0.0
 - Update patch to add link to ZABBIX-JP in header and footer (Patch6)
 - Update Japanese translation (Source8)
+- Update font patch, change to use font package of rhel
+- Delete mbstring.func_overload from zabbix-web.conf
 
 * Mon Mar 12 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.9.10-0
 - Update to 1.9.10
