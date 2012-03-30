@@ -333,8 +333,8 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/log/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_localstatedir}/run/%{name}
 %if %{rhel} >= 5
-mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/%{name}/alertscripts
-mkdir -p $RPM_BUILD_ROOT%{_sharedstatedir}/%{name}/externalscripts
+mkdir -p $RPM_BUILD_ROOT/usr/lib/%{name}/alertscripts
+mkdir -p $RPM_BUILD_ROOT/usr/lib/%{name}/externalscripts
 mkdir -p $RPM_BUILD_ROOT%{_datadir}
 %endif
 
@@ -377,8 +377,8 @@ cat conf/zabbix_server.conf | sed \
     -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
     -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
     -e 's|^# DBSocket=.*|# DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
-    -e '/^# AlertScriptsPath=/a \\nAlertScriptsPath=%{_sharedstatedir}/%{name}/alertscripts' \
-    -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sharedstatedir}/%{name}/externalscripts' \
+    -e '/^# AlertScriptsPath=/a \\nAlertScriptsPath=/usr/lib/%{name}/alertscripts' \
+    -e '/^# ExternalScripts=/a \\nExternalScripts=/usr/lib/%{name}/externalscripts' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_server.conf
 
 cat conf/zabbix_proxy.conf | sed \
@@ -386,7 +386,7 @@ cat conf/zabbix_proxy.conf | sed \
     -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_proxy.log|g' \
     -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
     -e 's|^# DBSocket=.*|# DBSocket=%{_localstatedir}/lib/mysql/mysql.sock|g' \
-    -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sysconfdir}/%{name}/externalscripts' \
+    -e '/^# ExternalScripts=/a \\nExternalScripts=/usr/lib/%{name}/externalscripts' \
     > $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/zabbix_proxy.conf
 
 chmod 644 $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d/%{name}.conf
@@ -665,8 +665,8 @@ fi
 %{_mandir}/man8/zabbix_server.8.*
 %config(noreplace) %attr(600,zabbix,zabbix) %{_sysconfdir}/zabbix/zabbix_server.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
-%dir %{_sharedstatedir}/zabbix/alertscripts
-%dir %{_sharedstatedir}/zabbix/externalscripts
+%dir /usr/lib/zabbix/alertscripts
+%dir /usr/lib/zabbix/externalscripts
 %{_sysconfdir}/init.d/zabbix-server
 
 %files server-mysql
@@ -751,6 +751,7 @@ fi
 - Update Japanese translation (Source8)
 - Update font patch, change to use font package of rhel
 - Delete mbstring.func_overload from zabbix-web.conf
+- Change externalscripts and alertscripts dir to /usr/lib/zabbix
 
 * Mon Mar 12 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.9.10-0
 - Update to 1.9.10
