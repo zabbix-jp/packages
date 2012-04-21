@@ -1,6 +1,6 @@
-diff -urN zabbix-2.0.0rc1.orig/frontends/php/include/page_footer.php zabbix-2.0.0rc1/frontends/php/include/page_footer.php
---- zabbix-2.0.0rc1.orig/frontends/php/include/page_footer.php	2012-03-14 03:12:20.000000000 +0900
-+++ zabbix-2.0.0rc1/frontends/php/include/page_footer.php	2012-03-14 10:23:20.972867770 +0900
+diff -urN zabbix-2.0.0rc3.orig/frontends/php/include/page_footer.php zabbix-2.0.0rc3/frontends/php/include/page_footer.php
+--- zabbix-2.0.0rc3.orig/frontends/php/include/page_footer.php	2012-04-20 18:12:54.000000000 +0900
++++ zabbix-2.0.0rc3/frontends/php/include/page_footer.php	2012-04-21 03:03:07.405940136 +0900
 @@ -99,9 +99,15 @@
  		}
  
@@ -8,7 +8,7 @@ diff -urN zabbix-2.0.0rc1.orig/frontends/php/include/page_footer.php zabbix-2.0.
 -			new CCol(new CLink(
 +			new CCol(array(
 +				new CLink(
- 				_s('Zabbix %s Copyright 2001-2011 by Zabbix SIA', ZABBIX_VERSION),
+ 				_s('Zabbix %s Copyright 2001-2012 by Zabbix SIA', ZABBIX_VERSION),
 -				'http://www.zabbix.com', 'highlight', null, true), 'center'),
 +				'http://www.zabbix.com', 'highlight', null, true),
 +				new CSpan(SPACE.SPACE.'|'.SPACE.SPACE, 'divider'),
@@ -19,10 +19,10 @@ diff -urN zabbix-2.0.0rc1.orig/frontends/php/include/page_footer.php zabbix-2.0.
  			new CCol(array(
  				new CSpan(SPACE.SPACE.'|'.SPACE.SPACE, 'divider'),
  				new CSpan($conString, 'footer_sign')
-diff -urN zabbix-2.0.0rc1.orig/frontends/php/include/page_header.php zabbix-2.0.0rc1/frontends/php/include/page_header.php
---- zabbix-2.0.0rc1.orig/frontends/php/include/page_header.php	2012-03-14 03:12:20.000000000 +0900
-+++ zabbix-2.0.0rc1/frontends/php/include/page_header.php	2012-03-14 10:19:43.183226967 +0900
-@@ -232,10 +232,18 @@
+diff -urN zabbix-2.0.0rc3.orig/frontends/php/include/page_header.php zabbix-2.0.0rc3/frontends/php/include/page_header.php
+--- zabbix-2.0.0rc3.orig/frontends/php/include/page_header.php	2012-04-20 18:12:54.000000000 +0900
++++ zabbix-2.0.0rc3/frontends/php/include/page_header.php	2012-04-21 02:58:03.888035194 +0900
+@@ -228,10 +228,18 @@
  }
  
  if (!defined('ZBX_PAGE_NO_MENU')) {
