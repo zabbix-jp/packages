@@ -11,6 +11,11 @@ This package includes from 1.8.12-1 provided ZABBIX-JP
 
 # Changelog
 # -----------------
+* Tue Apr 24 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.12-1
+- Update to 1.8.12
+- Update Japanese translation (Source11)
+- Update zabbix_aegntd.conf, zabbix_server.conf, zabbix_proxy.conf
+
 * Fri Mar 23 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.11-1
 - Update to 1.8.11
 - Update zabbix_server.conf, zabbix_proxy.conf
