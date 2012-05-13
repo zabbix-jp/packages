@@ -1,5 +1,5 @@
 Name:           zabbix
-Version:        2.0.0rc3
+Version:        2.0.0rc4
 Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
@@ -18,7 +18,7 @@ Patch1:         zabbix-2.0.0-graph_font.patch
 Patch2:         zabbix-1.9.7-setup_from_empty_conf.patch
 Patch3:         zabbix-1.9.8-java_settings.patch
 Patch4:         zabbix-2.0.0-datasql.patch
-Patch5:         zabbix-2.0.0-itservice_popup_translate.patch
+#Patch5:         zabbix-2.0.0-itservice_popup_translate.patch
 Patch6:         zabbix-2.0.0-powered_by_zabbixjp.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -269,7 +269,7 @@ Zabbix Java Gateway files
 %patch2 -p1 -b .setup_from_empty_conf.orig
 %patch3 -p1 -b .java_settings.orig
 %patch4 -p1 -b .datasql.orig
-%patch5 -p1 -b .itservice_popup_translate.orig
+#%patch5 -p1 -b .itservice_popup_translate.orig
 %patch6 -p1 -b .powered_by_zabbixjp.orig
 
 chmod -R a+rX .
@@ -745,7 +745,7 @@ fi
 %endif
 
 %changelog
-* Sat Apr 21 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 2.0.0rc3-1
+* Sun May 13 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 2.0.0rc4-1
 - Update to 2.0.0
 - Update patch to add link to ZABBIX-JP in header and footer (Patch6)
 - Update Japanese translation (Source8)
