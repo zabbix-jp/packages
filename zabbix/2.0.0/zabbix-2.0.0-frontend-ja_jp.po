@@ -3233,7 +3233,7 @@ msgstr[0] "選択した値のマッピングを削除しますか？この設定
 
 #: templates.php:594
 msgid "Delete selected with linked elements"
-msgstr "選択とリンクした要素も一緒に削除しますか？"
+msgstr "選択したテンプレートとリンクされた要素を削除"
 
 #: jsLoader.php:175
 msgid "Delete service"
