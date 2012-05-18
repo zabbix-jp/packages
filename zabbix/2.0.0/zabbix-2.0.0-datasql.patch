@@ -1,7 +1,7 @@
-diff -urN zabbix-2.0.0rc3.orig/database/ibm_db2/data.sql zabbix-2.0.0rc3/database/ibm_db2/data.sql
---- zabbix-2.0.0rc3.orig/database/ibm_db2/data.sql	2012-04-20 18:13:30.000000000 +0900
-+++ zabbix-2.0.0rc3/database/ibm_db2/data.sql	2012-04-21 00:39:46.013988388 +0900
-@@ -248,8 +248,8 @@
+diff -urN zabbix-2.0.0rc5.orig/database/ibm_db2/data.sql zabbix-2.0.0rc5/database/ibm_db2/data.sql
+--- zabbix-2.0.0rc5.orig/database/ibm_db2/data.sql	2012-05-18 02:00:14.000000000 +0900
++++ zabbix-2.0.0rc5/database/ibm_db2/data.sql	2012-05-18 11:37:29.281751499 +0900
+@@ -813,8 +813,8 @@
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('1','0','Email','mail.company.com','company.com','zabbix@company.com','','','','','0');
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('2','3','Jabber','','','','','','jabber@company.com','zabbix','0');
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('3','2','SMS','','','','','/dev/ttyS0','','','0');
@@ -12,24 +12,24 @@ diff -urN zabbix-2.0.0rc3.orig/database/ibm_db2/data.sql zabbix-2.0.0rc3/databas
  INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('7','Zabbix administrators','0','0','0');
  INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('8','Guests','0','0','0');
  INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('9','Disabled','0','1','0');
-diff -urN zabbix-2.0.0rc3.orig/database/mysql/data.sql zabbix-2.0.0rc3/database/mysql/data.sql
---- zabbix-2.0.0rc3.orig/database/mysql/data.sql	2012-04-20 18:13:30.000000000 +0900
-+++ zabbix-2.0.0rc3/database/mysql/data.sql	2012-04-21 00:40:07.229022807 +0900
-@@ -249,8 +249,8 @@
- INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('1','0','Email','mail.company.com','company.com','zabbix@company.com','','','','','0');
- INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('2','3','Jabber','','','','','','jabber@company.com','zabbix','0');
- INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('3','2','SMS','','','','','/dev/ttyS0','','','0');
--INSERT INTO users (userid,alias,name,surname,passwd,url,autologin,autologout,lang,refresh,type,theme,rows_per_page) values ('1','Admin','Zabbix','Administrator','5fce1b3e34b520afeffb37ce08c7cd66','','1','0','en_GB','30','3','originalblue','50');
--INSERT INTO users (userid,alias,name,surname,passwd,url,autologin,autologout,lang,refresh,type,theme,rows_per_page) values ('2','guest','Default','User','d41d8cd98f00b204e9800998ecf8427e','','0','900','en_GB','30','1','default.css','50');
-+INSERT INTO users (userid,alias,name,surname,passwd,url,autologin,autologout,lang,refresh,type,theme,rows_per_page) values ('1','Admin','Zabbix','Administrator','5fce1b3e34b520afeffb37ce08c7cd66','','1','0','ja_JP','30','3','originalblue','50');
-+INSERT INTO users (userid,alias,name,surname,passwd,url,autologin,autologout,lang,refresh,type,theme,rows_per_page) values ('2','guest','Default','User','d41d8cd98f00b204e9800998ecf8427e','','0','900','ja_JP','30','1','default.css','50');
- INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('7','Zabbix administrators','0','0','0');
- INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('8','Guests','0','0','0');
- INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('9','Disabled','0','1','0');
-diff -urN zabbix-2.0.0rc3.orig/database/oracle/data.sql zabbix-2.0.0rc3/database/oracle/data.sql
---- zabbix-2.0.0rc3.orig/database/oracle/data.sql	2012-04-20 18:13:30.000000000 +0900
-+++ zabbix-2.0.0rc3/database/oracle/data.sql	2012-04-21 00:40:26.372959509 +0900
-@@ -721,10 +721,10 @@
+diff -urN zabbix-2.0.0rc5.orig/database/mysql/data.sql zabbix-2.0.0rc5/database/mysql/data.sql
+--- zabbix-2.0.0rc5.orig/database/mysql/data.sql	2012-05-18 02:00:14.000000000 +0900
++++ zabbix-2.0.0rc5/database/mysql/data.sql	2012-05-18 11:37:50.356720287 +0900
+@@ -814,8 +814,8 @@
+ INSERT INTO `media_type` (`mediatypeid`,`type`,`description`,`smtp_server`,`smtp_helo`,`smtp_email`,`exec_path`,`gsm_modem`,`username`,`passwd`,`status`) values ('1','0','Email','mail.company.com','company.com','zabbix@company.com','','','','','0');
+ INSERT INTO `media_type` (`mediatypeid`,`type`,`description`,`smtp_server`,`smtp_helo`,`smtp_email`,`exec_path`,`gsm_modem`,`username`,`passwd`,`status`) values ('2','3','Jabber','','','','','','jabber@company.com','zabbix','0');
+ INSERT INTO `media_type` (`mediatypeid`,`type`,`description`,`smtp_server`,`smtp_helo`,`smtp_email`,`exec_path`,`gsm_modem`,`username`,`passwd`,`status`) values ('3','2','SMS','','','','','/dev/ttyS0','','','0');
+-INSERT INTO `users` (`userid`,`alias`,`name`,`surname`,`passwd`,`url`,`autologin`,`autologout`,`lang`,`refresh`,`type`,`theme`,`rows_per_page`) values ('1','Admin','Zabbix','Administrator','5fce1b3e34b520afeffb37ce08c7cd66','','1','0','en_GB','30','3','originalblue','50');
+-INSERT INTO `users` (`userid`,`alias`,`name`,`surname`,`passwd`,`url`,`autologin`,`autologout`,`lang`,`refresh`,`type`,`theme`,`rows_per_page`) values ('2','guest','Default','User','d41d8cd98f00b204e9800998ecf8427e','','0','900','en_GB','30','1','default.css','50');
++INSERT INTO `users` (`userid`,`alias`,`name`,`surname`,`passwd`,`url`,`autologin`,`autologout`,`lang`,`refresh`,`type`,`theme`,`rows_per_page`) values ('1','Admin','Zabbix','Administrator','5fce1b3e34b520afeffb37ce08c7cd66','','1','0','ja_JP','30','3','originalblue','50');
++INSERT INTO `users` (`userid`,`alias`,`name`,`surname`,`passwd`,`url`,`autologin`,`autologout`,`lang`,`refresh`,`type`,`theme`,`rows_per_page`) values ('2','guest','Default','User','d41d8cd98f00b204e9800998ecf8427e','','0','900','ja_JP','30','1','default.css','50');
+ INSERT INTO `usrgrp` (`usrgrpid`,`name`,`gui_access`,`users_status`,`debug_mode`) values ('7','Zabbix administrators','0','0','0');
+ INSERT INTO `usrgrp` (`usrgrpid`,`name`,`gui_access`,`users_status`,`debug_mode`) values ('8','Guests','0','0','0');
+ INSERT INTO `usrgrp` (`usrgrpid`,`name`,`gui_access`,`users_status`,`debug_mode`) values ('9','Disabled','0','1','0');
+diff -urN zabbix-2.0.0rc5.orig/database/oracle/data.sql zabbix-2.0.0rc5/database/oracle/data.sql
+--- zabbix-2.0.0rc5.orig/database/oracle/data.sql	2012-05-18 02:00:14.000000000 +0900
++++ zabbix-2.0.0rc5/database/oracle/data.sql	2012-05-18 11:38:07.599948063 +0900
+@@ -2400,10 +2400,10 @@
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('3','2','SMS','','','','','/dev/ttyS0','','','0')
  /
  
@@ -42,10 +42,10 @@ diff -urN zabbix-2.0.0rc3.orig/database/oracle/data.sql zabbix-2.0.0rc3/database
  /
  
  INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('7','Zabbix administrators','0','0','0')
-diff -urN zabbix-2.0.0rc3.orig/database/postgresql/data.sql zabbix-2.0.0rc3/database/postgresql/data.sql
---- zabbix-2.0.0rc3.orig/database/postgresql/data.sql	2012-04-20 18:13:30.000000000 +0900
-+++ zabbix-2.0.0rc3/database/postgresql/data.sql	2012-04-21 00:40:44.917079319 +0900
-@@ -249,8 +249,8 @@
+diff -urN zabbix-2.0.0rc5.orig/database/postgresql/data.sql zabbix-2.0.0rc5/database/postgresql/data.sql
+--- zabbix-2.0.0rc5.orig/database/postgresql/data.sql	2012-05-18 02:00:14.000000000 +0900
++++ zabbix-2.0.0rc5/database/postgresql/data.sql	2012-05-18 11:38:25.053792880 +0900
+@@ -814,8 +814,8 @@
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('1','0','Email','mail.company.com','company.com','zabbix@company.com','','','','','0');
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('2','3','Jabber','','','','','','jabber@company.com','zabbix','0');
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('3','2','SMS','','','','','/dev/ttyS0','','','0');
@@ -56,10 +56,10 @@ diff -urN zabbix-2.0.0rc3.orig/database/postgresql/data.sql zabbix-2.0.0rc3/data
  INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('7','Zabbix administrators','0','0','0');
  INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('8','Guests','0','0','0');
  INSERT INTO usrgrp (usrgrpid,name,gui_access,users_status,debug_mode) values ('9','Disabled','0','1','0');
-diff -urN zabbix-2.0.0rc3.orig/database/sqlite3/data.sql zabbix-2.0.0rc3/database/sqlite3/data.sql
---- zabbix-2.0.0rc3.orig/database/sqlite3/data.sql	2012-04-20 18:13:30.000000000 +0900
-+++ zabbix-2.0.0rc3/database/sqlite3/data.sql	2012-04-21 00:41:04.027900989 +0900
-@@ -249,8 +249,8 @@
+diff -urN zabbix-2.0.0rc5.orig/database/sqlite3/data.sql zabbix-2.0.0rc5/database/sqlite3/data.sql
+--- zabbix-2.0.0rc5.orig/database/sqlite3/data.sql	2012-05-18 02:00:14.000000000 +0900
++++ zabbix-2.0.0rc5/database/sqlite3/data.sql	2012-05-18 11:38:42.430892451 +0900
+@@ -814,8 +814,8 @@
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('1','0','Email','mail.company.com','company.com','zabbix@company.com','','','','','0');
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('2','3','Jabber','','','','','','jabber@company.com','zabbix','0');
  INSERT INTO media_type (mediatypeid,type,description,smtp_server,smtp_helo,smtp_email,exec_path,gsm_modem,username,passwd,status) values ('3','2','SMS','','','','','/dev/ttyS0','','','0');

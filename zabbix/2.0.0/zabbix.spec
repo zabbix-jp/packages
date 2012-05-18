@@ -1,5 +1,5 @@
 Name:           zabbix
-Version:        2.0.0rc4
+Version:        2.0.0rc5
 Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
@@ -745,7 +745,7 @@ fi
 %endif
 
 %changelog
-* Sun May 13 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 2.0.0rc4-1
+* Fri May 18 2012 Atsushi Tanaka <a.tanaka77@gmail.com> - 2.0.0rc5-1
 - Update to 2.0.0
 - Update patch to add link to ZABBIX-JP in header and footer (Patch6)
 - Update Japanese translation (Source8)
