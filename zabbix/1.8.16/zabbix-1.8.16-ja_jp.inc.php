@@ -1383,7 +1383,7 @@
 	'S_DELETE_SELECTED_SCREENS_Q'=>			'選択したスクリーンを削除しますか？',
 	'S_SLIDESHOW_MUST_CONTAIN_SLIDES'=>			'スライドショーには必ずスライドを設定してください',
 	'S_SLIDESHOWS'=>			'スライドショー',
-	'S_SLIDESHOW'=>			'スライドショーの作成',
+	'S_SLIDESHOW'=>			'スライドショー',
 	'S_CONFIGURATION_OF_SLIDESHOWS_BIG'=>			'スライドショーの設定',
 	'S_CONFIGURATION_OF_SLIDESHOWS'=>			'スライドショーの設定',
 	'S_SLIDESHOWS_BIG'=>			'スライドショー',
