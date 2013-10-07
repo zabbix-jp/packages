@@ -1,6 +1,6 @@
 Name:           zabbix
 Version:        1.8.17
-Release:        2%{?dist}
+Release:        1%{?dist}
 Summary:        Open-source monitoring solution for your IT infrastructure
 
 Group:          Applications/Internet
@@ -39,7 +39,6 @@ Patch16:         zabbix-1.8.4-setup_from_empty_conf.patch
 Patch17:         zabbix-1.8.17-default_period.patch
 #Patch18:         zabbix-1.8.3-initial_datasql_status_and_error.patch
 #Patch19:         zabbix-1.8.7-zbx4099.patch
-Patch20:         cve-2013-5743.patch
 
 Buildroot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -275,7 +274,6 @@ Zabbix web frontend for PostgreSQL
 %patch17 -p1 -b .default_period.orig
 #%patch18 -p1 -b .initial_datasql_status_and_error.orig
 #%patch19 -p1 -b .zbx4099.orig
-%patch20 -p0 -b .cve-2013-5743.orig
 
 rm frontends/php/fonts/DejaVuSans.ttf
 cp %{SOURCE9} %{SOURCE10} frontends/php/fonts/
@@ -603,9 +601,6 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Mon Oct 7 2013 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.17-2
-- fix CVE-2013-5743 (Patch20)
-
 * Fri Jul 26 2013 Atsushi Tanaka <a.tanaka77@gmail.com> - 1.8.17-1
 - Update to 1.8.17
 - Update patch for default time period (Patch17)
