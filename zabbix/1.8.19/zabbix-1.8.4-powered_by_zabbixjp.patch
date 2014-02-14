@@ -1,0 +1,42 @@
+diff -urN zabbix-1.8.4.orig/frontends/php/include/page_footer.php zabbix-1.8.4/frontends/php/include/page_footer.php
+--- zabbix-1.8.4.orig/frontends/php/include/page_footer.php	2011-01-04 22:57:51.000000000 +0900
++++ zabbix-1.8.4/frontends/php/include/page_footer.php	2011-01-05 10:39:52.000000000 +0900
+@@ -86,9 +86,15 @@
+ 			$table->setCellSpacing(0);
+ 			$table->setCellPadding(1);
+ 			$table->addRow(array(
+-				new CCol(new CLink(
++                                new CCol(array(
++                                        new CLink(
+ 					S_ZABBIX.SPACE.ZABBIX_VERSION.SPACE.S_COPYRIGHT_BY.SPACE.S_SIA_ZABBIX,
+ 					'http://www.zabbix.com', 'highlight', null, true),
++                                        new CSpan(SPACE.SPACE.'/'.SPACE.SPACE,'divider'),
++                                        new CLink(
++                                        'Powered by ZABBIX-JP',
++                                        'http://www.zabbix.jp','highlight', null, true) 
++                                        ),
+ 					'page_footer_l'),
+ 				new CCol(array(
+ 						new CSpan(SPACE.SPACE.'|'.SPACE.SPACE,'divider'),
+diff -urN zabbix-1.8.4.orig/frontends/php/include/page_header.php zabbix-1.8.4/frontends/php/include/page_header.php
+--- zabbix-1.8.4.orig/frontends/php/include/page_header.php	2011-01-04 22:57:51.000000000 +0900
++++ zabbix-1.8.4/frontends/php/include/page_header.php	2011-01-05 10:39:52.000000000 +0900
+@@ -179,10 +179,18 @@
+ 	if(!defined('ZBX_PAGE_NO_MENU')){
+ COpt::compare_files_with_menu($ZBX_MENU);
+ 
++		if ($USER_DETAILS["lang"] == "ja_jp"){
++		$help = new CLink(S_HELP, 'http://www.zabbix.jp/documents', 'small_font', null, true);
++		$help->setTarget('_blank');
++		$support = new CLink(S_GET_SUPPORT, 'http://www.zabbix.jp/forum', 'small_font', null, true);
++		$support->setTarget('_blank');
++		}
++		else {
+ 		$help = new CLink(S_HELP, 'http://www.zabbix.com/documentation/', 'small_font', null, 'nosid');
+ 		$help->setTarget('_blank');
+ 		$support = new CLink(S_GET_SUPPORT, 'http://www.zabbix.com/support.php', 'small_font', null, 'nosid');
+ 		$support->setTarget('_blank');
++		}
+ 
+ 		$req = new CUrl($_SERVER['REQUEST_URI']);
+ 		$req->setArgument('print', 1);
